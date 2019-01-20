@@ -1,0 +1,303 @@
+% THESIS TEMPLATE FOR LATEX
+% Pedher Johansson (pedher@cs.umu.se), january 2012
+%
+% \NeedsTeXFormat{LaTeX2e} 
+\ProvidesPackage{UmUThesis} [2012/01/19 Layout for Master/Bachelor Thesis Reports]
+
+% INCLUDED PACKAGES
+% -----------------
+
+% If you got a latex distribution where one of them are not included,
+% either download it or remove it. If it is removed you may get
+% problems with some of the other stuff in the package, but it should
+% be save to comment out that row. 
+% \RequirePackage{remreset}          % For internal use in the package.
+\RequirePackage{float}             % Adds functionality for floats.
+\RequirePackage{fancyhdr}          % Used for nice page headings.
+% \RequirePackage{changepage}        % Used for changing page size on front page.
+\RequirePackage[hang]{caption}     % Nicer figure and table captions.
+\RequirePackage{lastpage}          % Used to get the last page of the document.
+\ifx\pdftexversion\undefined
+  \RequirePackage[dvips]{graphicx} % Graphics package used for ps-files.
+\else
+  \RequirePackage[pdftex]{graphicx}% Graphics package used for pdf-files.
+\fi
+
+
+% INTERNAL COMMAND
+% ----------------
+
+% Ignore this.
+\newif\if@article\@articlefalse
+\@ifundefined{chapter}{\@articletrue}
+
+\def\subtitle#1{\gdef\@subtitle{#1}}
+\def\@subtitle{}
+\def\course#1{\gdef\@course{#1}}
+\def\@course{\@latex@warning@no@line{No \noexpand\course given}}
+\def\education#1{\gdef\@education{#1}}
+\def\@education{}
+\def\semester#1{\gdef\@semester{#1}}
+\def\@semester{\@latex@warning@no@line{No \noexpand\semester given}}
+\def\supervisor#1{\gdef\@supervisor{#1}}
+\def\@supervisor{\@latex@warning@no@line{No \noexpand\supervisor given}}
+\def\supervisore#1{\gdef\@supervisore{#1}}
+\def\@supervisore{}
+\def\examiner#1{\gdef\@examiner{#1}}
+\def\@examiner{\@latex@warning@no@line{No \noexpand\examiner given}}
+\def\supervisorname{Supervisor}
+\def\supervisorename{Extern Supervisor}
+\def\examinername{Examiner}
+
+\def\redefine#1#2{
+   \ifx#1\@undefined\else%
+   \renewcommand#1{#2}%
+   \fi%
+}
+\def\title#1{\gdef\@title{#1}\gdef\thetitle{#1}}
+\redefine{\bibname}{References}
+
+% \RequirePackage[backend=biber]{biblatex}
+
+% PAGE SIZE
+% ---------
+% \hoffset         -1in % reset offset to top left corner
+\voffset         -1in %       - " - 
+\textheight     231mm 
+% \textwidth      140mm 
+\topmargin       12mm % Distance before the head
+% \oddsidemargin   35mm % Good for two sided printing
+% \evensidemargin  35mm %       - " -
+\headheight      14mm
+\headsep         5mm  % Distance betwen the head and the text.
+\marginparwidth  15mm % You should not use margins.
+\marginparsep     7pt  
+\marginparpush   12pt
+
+\setlength{\parskip}{3pt}
+
+% PACKAGE OPTIONS
+% ---------------
+
+% % Swedish option. Use the package as 
+% %   \usepackage[se]{umuthesis} 
+% % if it is written in Swedish. 
+% \DeclareOption{se}{
+%   % Text indentation and paragraph separation usualy differs between
+%   % text writing in Swedish and text in English. In Swedish texts (and
+%   % sometimes in English texts) you prefer to have a larger space
+%   % between paragraphs, but no indentation. This is can be adjusted with
+%   % the following commands. If you like to have this style even in
+%   % English texts, copy these two line and put the in the document.
+%   \setlength{\parindent}{0pt}  % Text indentation.
+%   \setlength{\parskip}{6pt}  % Space between paragraphs 
+
+%   % French spacing makes non-english text more readable.
+%   \frenchspacing
+
+%   % The following commands redefines some commands to use Swedish
+%   % instead of English labels.
+%   \redefine{\today}{\number\day\space\ifcase\month\or
+%     januari\or februari\or mars\or april\or maj\or juni\or
+%     juli\or augusti\or september\or oktober\or november\or december\fi
+%     \space\number\year}
+%   \redefine{\chaptername}{Kapitel}
+%   \redefine{\contentsname}{Inneh{\aa}llsf{\"o}rteckning}
+%   \redefine{\listfigurename}{Figurf{\"o}rteckning}
+%   \redefine{\listtablename}{Tabellf{\"o}rteckning}
+%   \redefine{\figurename}{Figur}
+%   \redefine{\tablename}{Tabell}
+%   \redefine{\partname}{Del}
+%   \redefine{\appendixname}{Appendix}
+%   \redefine{\bibname}{K{\"a}llf{\"o}rteckning}
+%   \redefine{\refname}{K{\"a}llf{\"o}rteckning}
+%   \redefine{\indexname}{Index}
+%   \redefine{\supervisorname}{Handledare}
+%   \redefine{\supervisorename}{Extern handledare}
+%   \redefine{\examinername}{Examinator}
+% }
+
+% \DeclareOption{noindent}{
+%   % If you prefer not to have indentation of paragraphs
+%   \setlength{\parindent}{0pt}  % Text indentation.
+%   \setlength{\parskip}{6pt}  % Space between paragraphs 
+% }
+
+\ProcessOptions
+
+% DOCUMENT SETTINGS
+% -----------------
+
+% Only number chapters, sections and subsections. Change this to 1, if
+% you only like to number chapter and sections.
+\setcounter{secnumdepth}{3}
+% This makes chapters, sections and subsections, but not
+% subsubsections appear in the table of contents.
+\setcounter{tocdepth}{1}
+
+% This does not make the text stretch to absolutely fill each page. 
+\raggedbottom
+
+
+% PAGE HEADERS
+% ------------
+
+% \renewcommand{\headrulewidth}{0pt} 
+
+% \fancyhead[LE,RO]{\thepage(\pageref{LastPage})}
+% \fancyheadoffset[LE,RO]{12mm}
+% \fancyhead[LO,RE,C]{}
+% \fancyfoot[L,R,C]{}
+
+
+
+% CHANGE HEADERS
+% --------------
+
+% If you use the report document class, this makes sure a new chapter
+% will be on an odd page. If this is not necessary, comment out the
+% following redefinition.
+\if@article\else
+  \renewcommand\chapter{\cleardoublepage
+    \global\@topnum\z@
+    \@afterindentfalse
+    \secdef\@chapter\@schapter}
+  \renewcommand\@makechapterhead[1]{%
+    \vspace*{20\p@}%
+      \ifnum \c@secnumdepth >\m@ne
+	{\noindent\huge\bfseries \thechapter\space\space}
+      \fi
+      {\interlinepenalty\@M
+      \huge\bfseries #1\par}
+   
+    \nobreak
+    \vskip 40\p@}
+  \renewcommand\@makeschapterhead[1]{%
+    \vspace*{20\p@}%
+      {\interlinepenalty\@M
+      \noindent\huge\bfseries #1\par}
+   
+    \nobreak
+    \vskip 40\p@
+  }
+\fi
+
+% \renewcommand\maketitle{%
+%   \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+%   %\changepage { text height }{ text width }{ even-side margin }
+%   %                   { odd-side margin }{ column sep. } { topmargin }{ headheight }{ headsep }{ footskip }
+%   \changepage { 10mm }{ 20mm }{ -10mm }{ -10mm }{}{}{-10mm}{}{}
+%   \begin{raggedright}%
+%     \includegraphics[width=3cm]{umu-logo}
+%     \par\vskip3\baselineskip\par\noindent\Huge\bfseries{\@title}\normalfont%
+%     \if\@empty\@subtitle\else%
+%       \par\vskip.3\baselineskip\par\noindent\Large{\@subtitle}\normalfont\fi%
+%     \par\vskip3\baselineskip\par\noindent\Large\slshape\@author\normalfont%
+%     \vfill
+%     \par\noindent\small\sffamily\bfseries{\@author}\normalfont\newline
+%     \mbox{\noindent\small\sffamily{\@semester\normalfont}}\newline
+%     \mbox{\noindent\small\sffamily{\@course}}\normalfont\newline
+%     \if\@empty\@supervisor\else%
+%       \mbox{\noindent\small\sffamily{\supervisorname:\ \@supervisor}}\normalfont\newline\fi
+%     \if\@empty\@supervisore\else%
+%       \mbox{\noindent\small\sffamily{\supervisorename:\ \@supervisore}}\normalfont\newline\fi
+%     \mbox{\noindent\small\sffamily{\examinername:\ \@examiner}}\normalfont\newline
+%     \if\@empty\@education\else%
+%       \mbox{\noindent\small\sffamily{\@education}}\normalfont\fi
+%   \end{raggedright}%
+   
+%   \setcounter{footnote}{0}%
+%   \global\let\thanks\relax
+%   \global\let\maketitle\relax
+%   \global\let\@thanks\@empty
+%   \global\let\@author\@empty
+%   \global\let\@date\@empty
+%   \global\let\@title\@empty
+%   \global\let\title\relax
+%   \global\let\author\relax
+%   \global\let\date\relax
+%   \global\let\and\relax
+%   \renewcommand{\thefootnote}{\arabic{footnote}}
+%   \newpage
+%   \changepage { -10mm }{ -20mm }{ 10mm }{ 10mm }{}{}{10mm}{}{}}
+
+
+% Redefines the \section command
+\renewcommand{\section}{%
+ \@startsection%
+  {section}%
+  {1}%                          % Level
+  {0pt}%                        % Indentation
+  {-2\baselineskip}%            % Distance before the header (ignore
+                                % the `-` sign. It indicatas that the
+                                % indentation of the paragraph
+                                % following the section is surpressed).
+  {0.5\baselineskip}%           % Distance after the header.
+  {\normalfont\large\bfseries}} % The font used for the header. Add 
+                                % \sffamily if you like a sans-serif font.
+
+% Redefines the \subsection command
+\renewcommand{\subsection}{%
+ \@startsection%
+  {subsection}%
+  {2}%
+  {0pt}%
+  {\baselineskip}%
+  {0.25\baselineskip}%
+  {\normalfont\normalsize\bfseries}}
+
+% TABLE OF CONTENTS
+% ------------------------
+
+%\def\@nodottedtocline#1#2#3#4#5{\ifnum #1>\c@tocdepth \else
+%  \vskip \z@ \@plus.2\p@
+%  {\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
+%    \parindent #2\relax\@afterindenttrue
+%   \interlinepenalty\@M
+%   \leavevmode
+%   \@tempdima #3\relax
+%   \advance\leftskip \@tempdima \null\hskip -\leftskip
+%    {#4}\nobreak\leaders\hbox{$\m@th
+%       \mkern \@dotsep mu\hbox{ }\mkern \@dotsep
+%       mu$}\hfill \nobreak
+%           \hb@xt@\@pnumwidth{%
+%             \hfil\normalfont \normalcolor #5}\par}\fi}
+%\renewcommand*\l@section{\@nodottedtocline{1}{1.5em}{2.3em}}
+%\renewcommand*\l@subsection{\@nodottedtocline{2}{3.8em}{3.2em}}
+%\renewcommand*\l@subsubsection{\@nodottedtocline{3}{7em}{4.1em}}
+%\renewcommand*\l@figure{\@nodottedtocline{1}{1.5em}{2.3em}}
+
+
+% ABSTRACT
+% --------
+
+% \renewenvironment{abstract}[1][Abstract]{
+%   \vskip\baselineskip\begin{center}{\large\bfseries#1}\end{center}
+%   \begin{adjustwidth}{3mm}{3mm}
+% }{\end{adjustwidth}}
+
+% TABLES AND FIGURES
+% ------------------
+
+% Let tables have a continuous numbering and not reset by chapters
+\if@article\else
+  \@removefromreset{table}{chapter}
+  \@removefromreset{figure}{chapter}
+\fi
+\renewcommand\thetable{\mbox{\@arabic\c@table}}
+\renewcommand\thefigure{\mbox{\@arabic\c@figure}}
+
+% % This makes (in my opinion) the table floats look nicer. 
+% \renewcommand\floatc@ruled[2]{{\@fs@cfont #1} #2\par}
+% \renewcommand\fs@ruled{\def\@fs@cfont{\bfseries}\let\@fs@capt\floatc@ruled
+%   \def\@fs@pre{\hrule height1.5pt depth0pt \kern4pt}%
+%   \def\@fs@post{\kern2pt\hrule height0.8pt\relax}%
+%   \def\@fs@mid{\kern2pt\hrule height0.8pt\kern2pt}%
+%   \let\@fs@iftopcapt\iftrue}
+% \floatstyle{ruled} 
+% \restylefloat{table}
+
+% Captions
+\renewcommand{\captionlabelfont}{\bfseries} % Font used for the name
+\renewcommand{\captionfont}{\small}         % Font size 
+\setlength{\captionmargin}{0.05\linewidth} 

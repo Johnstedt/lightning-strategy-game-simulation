@@ -1,0 +1,132 @@
+\documentclass[a4paper, twocolumn, oneside]{article}
+%twoside if print,
+\setlength{\columnsep}{.03\textwidth}
+
+\usepackage{UmUThesis}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage{marginnote}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{stackrel}
+\usepackage{xfrac}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{blindtext}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+% \usepackage{upgreek}
+\usepackage{tikz}
+
+\def\mytitle{Routing Fee Estimation in Lightning Network}
+
+% Routing Fee Estimation in Bidirectional payment channel networks
+% Non Eploitable pricing of liqid channels in the lightning network
+
+\title{\mytitle}
+\def\theauthor{John-John Markstedt}
+\author{John-John Markstedt}
+\supervisor{Oskar Janson}
+\examiner{Henrik Bj\"{o}rklund}
+\semester{VT17}
+\course{5DV097}
+\def\umu{Ume\r{a} University}
+\def\journal{
+    MSc Computing Science and Engineering, \umu{} 2017}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newcommand{\csp}{\mathcal{C}}
+\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
+% \newcommand{\red}[1]{\colorbox{red!40}{#1}}
+\newcommand{\red}[1]{{\setlength{\fboxsep}{1pt}\colorbox{blue!27}{#1}}}
+\newcommand{\bm}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+\newcommand{\logto}{\Rightarrow}
+\newcommand{\mvec}[1]{{#1}}
+\newcommand{\minx}[1]{\, \stackrel[#1]{}{\min}}
+\newcommand{\eq}[1]{\begin{equation} #1 \end{equation}}
+% \newcommand{\um}{$\upmu$m}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\RMS}{RMS}
+
+\makeatletter         
+\def\@maketitle{
+  %  \begin{tabular}{p{2.4cm}p{.3cm}P{.9cm}P{6.8cm}P{.9cm}p{.3cm}p{2.4cm}}
+   %     \multirow{3}{*}{
+            \centering
+            
+            \includegraphics[width=3.0cm]{umu-logo} \\
+            \\
+            
+            
+%        } \\
+%        &&& {\small \journal}
+%        \\ [2ex]
+%        && \multicolumn{4}{p{11.5cm}}{
+        
+            \centering
+            
+            \begin{minipage}[t]{10.5cm}
+                {\large \bfseries \@title} \\ [1ex]
+                {\bfseries \@author}\\[.5ex] 
+                {Supervisor: \@supervisor}\\[.5ex] 
+                {Examiner: \@examiner}\\
+            \end{minipage} 
+        
+ %   \end{tabular}
+ %   \vspace{2ex}
+}
+\makeatother
+
+\usepackage{fancyhdr}
+    \renewcommand{\headrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+    \pagestyle{fancy}
+    \fancyhead{}
+    % \fancyhead[L]{\sc\footnotesize{\mytitle}}
+    \fancyhead[R]{\nouppercase{\sc\footnotesize\leftmark}}
+    \fancyfoot{}
+    \fancyfoot[L]{\footnotesize{\theauthor}}
+    \fancyfoot[C]{\thepage}
+    \fancyfoot[R]{\footnotesize{\today}}
+
+\begin{document}
+    \onecolumn
+    \maketitle
+    \pagenumbering{arabic}
+    \input{abstract}
+
+    \vspace{-.1cm}
+
+    \paragraph{Keywords}
+    pre-calibration, weighting, IP distribution, simulation, calibration object
+
+    \vspace{-.4cm}
+
+    \newpage
+
+    \setcounter{secnumdepth}{2}
+    \setcounter{tocdepth}{2}
+    \tableofcontents
+    \thispagestyle{empty}
+    \newpage
+    \setcounter{page}{1}
+    \setcounter{section}{0}
+
+    \twocolumn
+
+    \input{contents}
+
+    \clearpage
+    \addcontentsline{toc}{section}{References}
+
+    \bibliographystyle{plain}
+    \bibliography{references.bib}
+
+    %\input{appendices}
+
+\end{document}
