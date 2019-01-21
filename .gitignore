@@ -2,3 +2,6 @@ problem.log
 *.aux
 *.pdf
 *.gz
+*.toc
+*.log
+*.out
