@@ -1,58 +1,6 @@
 \subsection{Background}
     \label{sec:background}
 
-    In 3D reconstruction, 2D information from multiple images can be used to 
-    partially recover the depth information that was lost when the images where taken.
-    3D reconstruction has an abundance of applications,
-    including topography \cite{Fraser1989:Optimization}, 
-    motion capture \cite{DApuzzo2003:Thesis}, 
-    robot navigation \cite{Cornelis2008:3D}, gait analysis \citep{Brostrm2004},
-    cultural heritage restoration \cite{Grun2004:Photogrammetric},
-    industrial measurements \cite{Fraser1995:Multi_sensor_self_calib}
-    and many more.
-
-    When performing 3D reconstruction, measured \textit{image points} (IP) 
-    are used to estimate three types of parameters: 
-    the \textit{interior orientation} (IO) of the camera;
-    the pose, i.e., the \textit{exterior orientation} (EO) 
-    of the camera when taking the different photos; and the 
-    3D locations of the \textit{object points} (OP).
-    A core technique for 3D reconstruction is \textit{bundle adjustment} (BA),
-    which simultaneously estimates these three types of parameters
-    \citep[Ch. 15]{forstner_pmv}.
-
-    If the IO, EO and OP are estimated simultaneously, 
-    this process is called \textit{self-calibration} \citep{Kenefick1972:Analytical}, 
-    and if the IO is estimated for a separate data set and kept
-    constant during the reconstruction,
-    this process is called \textit{pre-calibration}
-    \citep[Ch. 15.4]{forstner_pmv}.
-
-    When performing pre-calibration, 
-    a calibration object is photographed from different positions.
-    The camera is usually positioned such that the entire
-    object is visible in each image.
-    When photographing the object from certain angles, 
-    the object will not fill the entire images.
-    \citet{Fraser1997:Digital, fraser_close_range} 
-    has shown that this results in an estimation of the camera 
-    parameters that produces smaller residuals for observations
-    close to the image centers.
-
-    Furthermore, even if the IP from all the images 
-    cover the entire camera sensor,
-    most IP will be concentrated close to the image centers.
-    Thus the center of the sensor will be given a higher weight
-    during the calibration if every IP is assigned the same weight.
-    
-    Additionally, the disparity between the idealized linear projection 
-    described by the \textit{pinhole camera model} and the 
-    non-linearity caused by \textit{lens distortion}
-    is larger far from the image centers \citep{Brown1971:Close-range}.
-
-    \citet{fraser_close_range} argued that performing camera pre-calibration,
-    in certain situations it is important to utilize a 3D calibration object
-    for a quality calibration.
 
 \subsection{Aim}
     \label{sec:aim}

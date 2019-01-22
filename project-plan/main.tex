@@ -1,0 +1,162 @@
+\documentclass[10pt, titlepage, oneside, a4paper]{article}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[titletoc]{appendix}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb, graphicx, fancyhdr}
+\usepackage{amsmath}
+\usepackage{amsthm,algorithm,yhmath,enumitem,lscape}
+\usepackage[noend]{algpseudocode}
+\usepackage{pifont}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{subcaption} 
+\usepackage{amstext}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+
+\usepackage{caption}
+
+
+
+
+%\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+%\usepackage[table,xcdraw]{xcolor}
+%\usepackage[normalem]{ulem}
+%\useunder{\uline}{\ul}{}
+
+\usepgfplotslibrary{external}
+\pgfplotsset{compat=1.10}
+\tikzexternalize 
+\makeatletter
+\def\verbatim{\tiny\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+\makeatother
+
+% Define a \HEADER{Title} ... \ENDHEADER block
+\makeatletter
+\newcommand{\HEADER}[1]{\ALC@it\underline{\textsc{#1}}\begin{ALC@g}}
+\newcommand{\ENDHEADER}{\end{ALC@g}}
+\makeatother
+\usepackage{float}
+\usepackage{courier}
+\usepackage{hyperref, url}
+\usepackage{hyperref,xcolor}% http://ctan.org/pkg/{hyperref,xcolor}
+\definecolor{wine-stain}{rgb}{0.5,0,0}
+\hypersetup{
+  colorlinks,
+  linkcolor=black,
+  linktoc=all
+}
+
+\addtolength{\textheight}{20mm}
+\addtolength{\voffset}{-5mm}
+\renewcommand{\sectionmark}[1]{\markleft{#1}}
+
+\addtolength{\textheight}{20mm}
+\addtolength{\voffset}{-5mm}
+\renewcommand{\sectionmark}[1]{\markleft{#1}}
+
+\def\inst{}
+\def\course{ Routing Fee Estimation in the Lightning Network }
+\def\title{Project Plan}
+\def\name{John-John Markstedt}
+\def\username{}
+\def\email{\username{c14nbn}@cs.umu.se}
+\def\path{FIXA THE GOD DAMN SÖKPATH}
+
+\def\mfullpath{\raisebox{1pt}{$\scriptstyle \sim$}\musername/\path}
+\def\nfullpath{\raisebox{1pt}{$\scriptstyle \sim$}\nusername/\path}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Rn}{\mathbb{R}^n}
+\newcommand{\Rnn}{\mathbb{R}^{n \times n}}
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bms}{\begin{multline*}}
+\newcommand{\emults}{\end{multline*}}
+\newcommand{\bbm}{\begin{bmatrix}}
+\newcommand{\ebm}{\end{bmatrix}}
+\newcommand{\eps}{\epsilon}
+\newcommand{\fl}{\text{fl}}
+\newcommand{\Lp}{{L^p}}
+\newcommand{\Ker}{\text{Ker}\,}
+\newcommand{\loc}{{\text{loc}}}
+\newcommand{\ccinf}{C_c^\infty}
+\newcommand{\supp}{\text{supp}}
+\newcommand{\dist}{\text{dist}}
+
+
+\begin{document}
+\setcounter{secnumdepth}{5}
+	\begin{titlepage}
+		\thispagestyle{empty}
+		\begin{large}
+			\begin{tabular}{@{}p{\textwidth}@{}}
+				\textbf{UMEÅ UNIVERSITY \hfill \today} \\
+				\textbf{Department of Computing Science} \\
+			
+			\end{tabular}
+		\end{large}
+		\vspace{25mm}
+		\begin{center}
+			
+			\huge{\textbf{\course}}\\
+			\vspace{10mm}
+			\LARGE{\title} \\
+			\vspace{2mm}
+		    \LARGE{preliminary 1.0} \\
+            \vspace{10mm}
+			\begin{large}
+				\begin{tabular}{ll}
+                	\textbf{Name} & \name \\
+					\textbf{Cinnober Supervisor} & Oskar Janson\\
+					\textbf{University Supervisor} & ?\\
+					\textbf{Examinator} & Henrik Björklund\\
+				\end{tabular}
+			\vfill
+            \vfill			\end{large}
+
+
+		\end{center}
+	\end{titlepage}
+    
+    % fixar sidfot
+	\rfoot{\footnotesize{\today}}
+	\lhead{\sc\footnotesize\title}
+	\rhead{\nouppercase{\sc\footnotesize\leftmark}}
+	\pagestyle{fancy}
+	\renewcommand{\headrulewidth}{0.2pt}
+	\renewcommand{\footrulewidth}{0.2pt}
+
+	% skapar innehållsförteckning.
+	% Tänk på att köra latex 2ggr för att uppdatera allt
+	% och lägger in en sidbrytning
+    \pagenumbering{roman}
+	\newpage
+
+	\pagenumbering{arabic}
+
+	% i Sverige har vi normalt inget indrag vid nytt stycke
+	\setlength{\parindent}{0pt}
+	% men däremot lite mellanrum
+	\setlength{\parskip}{5pt}
+\tableofcontents
+\newpage
+
+\section{Introduction}
+\section{Literature and references}
+\section{Communication}
+
+\bibliographystyle{plain}
+\bibliography{references.bib}
+
+\end{document}

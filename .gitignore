@@ -5,3 +5,4 @@ problem.log
 *.toc
 *.log
 *.out
+*.auxlock
