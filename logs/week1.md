@@ -2,7 +2,11 @@
 
 ## Done
 
-* Set up this basic weekly loging structure.
+* Set up this basic weekly logging structure.
+* Read the lightning whitepaper.
+* Set up bitcoin reference impl @ Cinnober
+* Downloaded testnet history @ home
+
 
 ## Problems
 

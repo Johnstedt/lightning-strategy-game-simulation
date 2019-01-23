@@ -153,8 +153,119 @@
 \newpage
 
 \section{Introduction}
+
+This is the project plan for the master thesis of Routing Fee Estimation in the Lightning Network. Some parts are directly taken from the project specification to make it a self contained document.
+
+\section{Background}
+
+Although still very much in its early stages, blockchain and distributed ledger
+solutions are said to be able to transform the current financial infrastructure,
+especially the post-trade side. Most notable of all applications of blockchain
+technology is Bitcoin, which is an open decentralized network with an effectively
+immutable database of transactions, shared by all full nodes in the network. The
+internal currency, bitcoins, is provided to miners who help secure the network by
+participating in the Proof of Work consensus algorithm. Since Bitcoin’s nascence,
+other similar solutions have appeared. Some are modified forks of Bitcoin while
+some are built from scratch using the same ideas.
+One of the challenges that all public decentralized blockchain networks faces is
+how it should handle an increased number of transactions. Increasing throughput
+is important in order to make the network capable of supporting e.g. regular
+payments. There are various ways to increase throughput, but roughly they sort
+into two categories:
+\begin{itemize}
+	\item Increase throughput on the base layer, with consequences of increased requirements for participation in the base layer as a full node.
+	\item  Create layers on top of the base layer where most updates happen, only
+	resolving the sum of updates to the layer below.
+\end{itemize}
+
+In 2017, the Bitcoin scaling debate raged on, in the end resulting in a split of
+both community and coin. In the aftermath a fork of Bitcoin was created, called
+Bitcoin Cash. Bitcoin Cash had the approach that throughput should increase in
+the base layer, in the way of increasing block size. Bitcoin itself had a more
+restrained strategy for the base layer, favoring the additional layers approach.
+Specifically, payment channels and the Lightning Network would provide an
+outlet for smaller transactions in the network.
+In a payment channel, a set amount of bitcoin is committed for use by the
+senders and the channel is created by an opening transaction. Once the
+transaction has been registered, parties in the channel that have a positive
+
+\subsection{Problem Description}
+
+In order to get compensation for providing channels for routing, the routing node
+can decide to take a fee for the use of its channels. One of the problems a node
+operator faces is what the fair price of routing through its channels is. A too high
+fee would result in the channel being ignored and payments would be routed
+through other nodes with competitive fees. It does not want to be too cheap
+either, since running a routing node carries risk (nodes are always online and are
+a target for attacks) and has requirements in terms of hardware and time spent.
+The task then comes to finding a competitive fee that is fair but profitable.
+Examples on factors that can be considered:
+\begin{itemize}
+	\item Competing fees for routing towards the same segment of the network.
+	\item The cost for the operator in rebalancing their channels.
+	\item Operating costs for running the node.
+\end{itemize}
+The main problem to solve in this thesis project is that of finding the optimal fee
+for a routing node.
+Further, the optimal strategy for operating a routing node should be
+investigated. Sample questions to answer are:
+\begin{itemize}
+	\item What is the fair discount for a transaction that balances the channel, as
+	opposed to an unbalancing one?
+	\item When should a new channel be opened, and what node should the new
+	channel connect to in order to incentivize routing through the node?
+	\item When should a manual rebalancing of the channels occur, as opposed to
+	incentivized rebalancing using discounts?
+\end{itemize}
+
+\subsection{Goal}
+
+The goal of the thesis is to investigate and implement models for the
+estimation of routing fees for a routing node on the lightning network.
+
+\section{Objectives}
+
+These are the main objectives with the project:
+
+\begin{itemize}
+	\item A study of payment channels, the current Lightning Network and
+	proposed future improvements.
+	\item A study of routing node operation, what are the actions, costs and risks
+	that need to be considered when operating a node?
+	\item A study of techniques useful for estimating the routing fee.
+	\item A model for estimating the routing fee should be produced.
+\end{itemize}
+
 \section{Literature and references}
+
+The literature and references listed below will make up the base of the thesis. More literature and references will be added as the project progresses. 
+
+Andreas Antonopoulos book Mastering Bitcoin\cite{antonopoulos:mastering:bitcoin} is the book on bitcoin and will provide a sound basis for the on-chain necessities.
+
+The original bitcoin\cite{nakamoto:bitcoin} and lightning\cite{Poon:Dryja:lightning:network} papers and all proposed protocol improvements\cite{bip} are great primary sources.
+
+The bitcoin reference implementation\cite{repository:bitcoin}, along with other node implementations\cite{repository:neutrino}\cite{repository:btcd} as well as lightning specification\cite{repository:lightning:rfc} and implementations\cite{repository:lnd}\cite{repository:clightning}\cite{repository:eclair} will be studied and used during the project.
+
 \section{Communication}
+
+In this section the various aspects of communication during the project is discussed.
+
+\subsection{Weekly report}
+
+A report in the form of a markdown document will be written each week and be available in the thesis repository\cite{repository:me:thesis}. Each document will roughly follow the same structure with three major categories, namely, What I've been doing during the week, Problems I'm faced with going forward and what I should be doing the following week.
+
+\subsection{Documents and thesis report}
+
+All the project's resources will be available through a git repository\cite{repository:me:thesis}. There the project's progression can be observed. Git is a version control system, this will provide an extensive history over the project. Every type of resource will be made available through git including text, images and source code. 
+
+\subsection{Meetings}
+
+\section{Time plan}
+
+An external timeplan for the project should most likely be attached alongside this document. Otherwise it shall always be available in the thesis repository\cite{repository:me:thesis}. The timeline contains deadlines set be the university as well as a rough estimation on the project tasks.
+
+
+
 
 \bibliographystyle{plain}
 \bibliography{references.bib}
