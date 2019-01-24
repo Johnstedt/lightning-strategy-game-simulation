@@ -1,0 +1,53 @@
+\begin{thebibliography}{10}
+
+\bibitem{bip}
+Bitcoin improvement proposals.
+\newblock \url{https://github.com/bitcoin/bips}.
+
+\bibitem{repository:bitcoin}
+bitcoin reference implementation.
+\newblock \url{https://github.com/bitcoin/bitcoin}.
+
+\bibitem{repository:btcd}
+fullt node bitcoin implementation.
+\newblock \\ \url{https://github.com/btcsuite/btcd}.
+
+\bibitem{repository:neutrino}
+Light weight bitcoin client.
+\newblock \url{https://github.com/lightninglabs/neutrino}.
+
+\bibitem{repository:clightning}
+Lightning node c-lightning developed by blockstream.
+\newblock \url{https://github.com/ElementsProject/lightning}.
+
+\bibitem{repository:lnd}
+Lightning node daemon.
+\newblock \url{https://github.com/lightningnetwork/lnd}.
+
+\bibitem{repository:eclair}
+Lightning node eclair developed by acinq.
+\newblock \url{https://github.com/ACINQ/eclair}.
+
+\bibitem{repository:lightning:rfc}
+Lightning specification, request for comments.
+\newblock \\ \url{https://github.com/lightningnetwork/lightning-rfc}.
+
+\bibitem{repository:me:thesis}
+Thesis source repository.
+\newblock \url{https://github.com/Johnstedt/master-thesis-ln-fee-estimation}.
+
+\bibitem{antonopoulos:mastering:bitcoin}
+Andreas Antonopoulos.
+\newblock {\em Mastering Bitcoin}.
+\newblock O'Reilly Media, first edition, July 2014.
+
+\bibitem{nakamoto:bitcoin}
+Satoshi Nakamoto.
+\newblock Bitcoin: A peer-to-peer electronic cash system.
+
+\bibitem{Poon:Dryja:lightning:network}
+Thaddeus Poon, Joseph;~Dryja.
+\newblock The bitcoin lightning network: Scalable off-chain instant payments.
+\newblock \url{https://lightning.network/lightning-network-paper.pdf}.
+
+\end{thebibliography}

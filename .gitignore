@@ -6,3 +6,5 @@ problem.log
 *.log
 *.out
 *.auxlock
+
+.idea
