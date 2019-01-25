@@ -32,7 +32,18 @@ func main() {
 	}
 	fmt.Println(blocks)
 
+	acc, err := client.GetNewAddress("acc1")
+	if err != nil {
+		//log.Fatalf("error listing accounts: %v", err2)
+	}
+	fmt.Println(acc)
 
-	//thing, err := client.
+	fmt.Println(client.DumpPrivKey(acc))
 
+	amount, err := client.GetReceivedByAddress(acc)
+	if err != nil {
+		log.Fatalf("error listing amount: %v", err)
+	}
+
+	fmt.Println(amount)
 }

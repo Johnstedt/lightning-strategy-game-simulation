@@ -15,8 +15,10 @@
 # The first run will setup the SSH tunnel, and leave it running. 
 # Subsequent runs will be fast.
 
+# Set port for mainnet
+
 REMOTE_HOST=jj@willingdon.johnstedt.se
-LOCAL_FORWARD_PORT=18332
+LOCAL_FORWARD_PORT=8332
 RPC_PASSWORD=admin
 
 # Check if the tunnel is already open:
@@ -30,6 +32,26 @@ then
   # Check if the tunnel was created successfully:
   port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
   if [ $port_open -lt 1 ] 
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Set port for testnet
+
+LOCAL_FORWARD_PORT=18332
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:18332 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
   then
     echo "Could not create port forward"
     exit 1
