@@ -94,7 +94,6 @@
 \newcommand{\supp}{\text{supp}}
 \newcommand{\dist}{\text{dist}}
 
-
 \begin{document}
 \setcounter{secnumdepth}{5}
 	\begin{titlepage}
@@ -242,11 +241,11 @@ The literature and references listed below will make up the base of the thesis. 
 
 Andreas Antonopoulos book Mastering Bitcoin\cite{antonopoulos:mastering:bitcoin} is the book on bitcoin and will provide a sound basis for the on-chain necessities.
 
-The original bitcoin\cite{nakamoto:bitcoin} and lightning\cite{Poon:Dryja:lightning:network} papers and all proposed protocol improvements\cite{bip} are great primary sources.
+The original bitcoin\cite{nakamoto:bitcoin} and lightning\cite{poon:dryja:lightning:network} papers and all proposed protocol improvements\cite{bip} are great primary sources.
 
 The bitcoin reference implementation\cite{repository:bitcoin}, along with other node implementations\cite{repository:neutrino}\cite{repository:btcd} as well as lightning specification\cite{repository:lightning:rfc} and implementations\cite{repository:lnd}\cite{repository:clightning}\cite{repository:eclair} will be studied and used during the project.
 
-
+It is still unclear if Game Theory is applicable to this problem, however a couple of books on the topic are borrowed from the Jerry Eriksson. Namely Noncooperative Game Theory\cite{hespanha:noncooperative:game:theory} and \cite{lasaulce:tembine:game:theory:and:learning:for:wireless:networks}.
 
 \section{Communication}
 
@@ -264,17 +263,25 @@ All the project's resources will be available through a git repository\cite{repo
 
 As the thesis will be written from the Cinnober office, meetings with the Cinnober supervisor Oskar Janson can easily be had when needed.
 
-<Some plan with Jerry>
-
+Meetings with the University supervisor will not be had on a time schedule but on an 'as needed' basis.
 
 \section{Time plan}
 
 An external timeplan for the project should most likely be attached alongside this document. Otherwise it shall always be available in the thesis repository\cite{repository:me:thesis}. The timeline contains deadlines set be the university as well as a rough estimation on the project tasks.
 
+\section{Risk}
 
+As with any thesis there is some inherit risk that no proper result is even possible. Regarding this thesis there is some 
+major question marks. How is an estimation deemed better than another one when much of the network happens off-chain and with Onion Routing? Does the whole network be simulated to get proper benchmarks and is a simulation a satisfactory replacement for real network?
 
+I believe these problems can be dealt with and if they're to become insurmountable I have no doubt that a slight shift of focus
+still could deliver a proper master level thesis.
+
+It is of course important to force these issues early in the project so if major problems arise a modification of the thesis can be done early.
+
+\newpage
 
 \bibliographystyle{plain}
-\bibliography{references.bib}
+\bibliography{../references.bib}
 
 \end{document}

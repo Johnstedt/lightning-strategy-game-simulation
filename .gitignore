@@ -5,6 +5,8 @@ problem.log
 *.toc
 *.log
 *.out
+*.bbl
+*.blg
 *.auxlock
 
 .idea

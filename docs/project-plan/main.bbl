@@ -5,15 +5,15 @@ Bitcoin improvement proposals.
 \newblock \url{https://github.com/bitcoin/bips}.
 
 \bibitem{repository:bitcoin}
-bitcoin reference implementation.
+Bitcoin reference implementation.
 \newblock \url{https://github.com/bitcoin/bitcoin}.
 
 \bibitem{repository:btcd}
-fullt node bitcoin implementation.
+btcd: a full node bitcoin implementation.
 \newblock \\ \url{https://github.com/btcsuite/btcd}.
 
 \bibitem{repository:neutrino}
-Light weight bitcoin client.
+Light weight bitcoin node implementation.
 \newblock \url{https://github.com/lightninglabs/neutrino}.
 
 \bibitem{repository:clightning}
@@ -41,11 +41,23 @@ Andreas Antonopoulos.
 \newblock {\em Mastering Bitcoin}.
 \newblock O'Reilly Media, first edition, July 2014.
 
+\bibitem{hespanha:noncooperative:game:theory}
+João~P. Hespanha.
+\newblock {\em Noncooperative Game Theory}.
+\newblock Princeton University Press, 41 William Street, Princton, New Jersey,
+  first edition, 2017.
+
+\bibitem{lasaulce:tembine:game:theory:and:learning:for:wireless:networks}
+Hamidou Lasaulce, Samson;~Tembine.
+\newblock {\em Game Theory and Learning for Wireless Networks}.
+\newblock Academic Press, The boulivard, Langford Lane, Kidlington, Oxford, OX5
+  1GB, first edition, 2011.
+
 \bibitem{nakamoto:bitcoin}
 Satoshi Nakamoto.
 \newblock Bitcoin: A peer-to-peer electronic cash system.
 
-\bibitem{Poon:Dryja:lightning:network}
+\bibitem{poon:dryja:lightning:network}
 Thaddeus Poon, Joseph;~Dryja.
 \newblock The bitcoin lightning network: Scalable off-chain instant payments.
 \newblock \url{https://lightning.network/lightning-network-paper.pdf}.
