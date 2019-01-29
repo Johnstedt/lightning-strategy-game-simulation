@@ -25,22 +25,22 @@
 % Routing Fee Estimation in Bidirectional payment channel networks
 % Non Eploitable pricing of liqid channels in the lightning network
 
-\title{\mytitle}
-\def\theauthor{John-John Markstedt}
-\author{John-John Markstedt}
-\supervisor{Oskar Janson}
-\examiner{Henrik Bj\"{o}rklund}
-\semester{VT17}
-\course{5DV097}
-\def\umu{Ume\r{a} University}
-\def\journal{
-    MSc Computing Science and Engineering, \umu{} 2017}
+%\title{\mytitle}
+%\def\theauthor{John-John Markstedt}
+%\author{John-John Markstedt}
+%\supervisor{Oskar Janson}
+%\examiner{Henrik Bj\"{o}rklund}
+%\semester{VT17}
+%\course{5DV097}
+%\def\umu{Ume\r{a} University}
+%\def\journal{
+%    MSc Computing Science and Engineering, \umu{} 2017}
 
-\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+%\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
-\newcommand{\csp}{\mathcal{C}}
-\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
-% \newcommand{\red}[1]{\colorbox{red!40}{#1}}
+%\newcommand{\csp}{\mathcal{C}}
+%\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
+ \newcommand{\red}[1]{\colorbox{red!40}{#1}}
 \newcommand{\red}[1]{{\setlength{\fboxsep}{1pt}\colorbox{blue!27}{#1}}}
 \newcommand{\bm}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 \newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
@@ -53,33 +53,33 @@
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\RMS}{RMS}
 
-\makeatletter         
-\def\@maketitle{
+%\makeatletter         
+%\def\@maketitle{
   %  \begin{tabular}{p{2.4cm}p{.3cm}P{.9cm}P{6.8cm}P{.9cm}p{.3cm}p{2.4cm}}
    %     \multirow{3}{*}{
-            \centering
+     %       \centering
             
-            \includegraphics[width=3.0cm]{umu-logo} \\
-            \\
-            
+       %     \includegraphics[width=3.0cm]{umu-logo} \\
+     %       \\
             
 %        } \\
 %        &&& {\small \journal}
 %        \\ [2ex]
 %        && \multicolumn{4}{p{11.5cm}}{
         
-            \centering
+    %        \centering
             
-            \begin{minipage}[t]{10.5cm}
-                {\large \bfseries \@title} \\ [1ex]
-                {\bfseries \@author}\\[.5ex] 
-                {Supervisor: \@supervisor}\\[.5ex] 
-                {Examiner: \@examiner}\\
-            \end{minipage} 
+    %        \begin{minipage}[t]{10.5cm}
+     %           {\large \bfseries \@title} \\ [1ex]
+      %          {\bfseries \@author}\\[.5ex] 
+     %           {Supervisor: \@supervisor}\\[.5ex] 
+     %           {Examiner: \@examiner}\\
+    %        \end{minipage} 
         
  %   \end{tabular}
  %   \vspace{2ex}
-}
+%}
+
 \makeatother
 
 \usepackage{fancyhdr}
@@ -96,12 +96,54 @@
 
 \begin{document}
     \onecolumn
-    \maketitle
-    \pagenumbering{arabic}
-    \input{abstract}
-    \vspace{-.1cm}
-    \paragraph{Keywords}
-    pre-calibration, weighting, IP distribution, simulation, calibration object
+	\pagenumbering{arabic}
+  
+  
+ 	\setcounter{secnumdepth}{5}
+	\begin{titlepage}
+  	\thispagestyle{empty}
+  	\begin{large}
+  		\begin{tabular}{@{}p{\textwidth}@{}}
+  			\textbf{UMEÅ UNIVERSITY \hfill \today} \\
+  			\textbf{Department of Computing Science} \\
+  			
+  		\end{tabular}
+  	\end{large}
+  	\vspace{25mm}
+  	\begin{center}
+
+  		
+  		\includegraphics[width=3.0cm]{umu-logo} \\
+
+  		\huge{\textbf{\course}}\\
+  		\vspace{10mm}
+  		\LARGE{ Routing Fee Estimation in the Lightning Network } \\
+  		\vspace{2mm}
+%  		\LARGE{preliminary 1.0} \\
+
+		\input{abstract}
+
+  		\vspace{10mm}
+  		\begin{large}
+  			\begin{tabular}{ll}
+  				\textbf{Name} & John-John Markstedt \\
+  				\textbf{Cinnober Supervisor} & Oskar Janson\\
+  				\textbf{University Supervisor} & Jerry Eriksson\\
+  				\textbf{Examinator} & Henrik Björklund\\
+  			\end{tabular}
+  			\vfill
+  			\vfill			\end{large}
+  		
+  		
+  	\end{center}
+  \end{titlepage}
+  
+ 
+  
+%    \input{abstract}
+  %  \vspace{-.1cm}
+ %   \paragraph{Keywords}
+  %  pre-calibration, weighting, IP distribution, simulation, calibration object
 
     \vspace{-.4cm}
 

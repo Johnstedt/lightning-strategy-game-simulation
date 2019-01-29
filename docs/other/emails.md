@@ -5,6 +5,7 @@
 * hello@acinq.co
 
 * adam@cypherspace.org
+* decker.christian@gmail.com
 
 # base mail to send
 
