@@ -19,46 +19,17 @@ This thesis aim to address following three questions:
 \subsection{Related work}
     \label{sec:related_work}
 
-    Little in the literature has been found that addresses the issue
-    with uneven calibration directly.
-    \citet{jung_lee_yoon_inverse_mapping} addresses the problem with
-    polynomials being poor extrapolators by making assumptions 
-    about the characteristics of the radial distortion function.
-    These assumptions improved the calibration of wide angle lenses,
-    using a calibration software adapted for general camera lenses.
-
-    When estimating the quality of a calibration,
-    several metrics have been proposed.
-    \citet{Rabbani2007:Integrated} and 
-    \citet{Grussenmeyer2008:Comparison}
-    compared 3D reconstruction techniques by fitting a model object,
-    e.g., a plane or a cylinder to points estimated by one technique and
-    examined the distribution of the orthogonal distances between the object and 
-    the points estimated by another technique.
-    \citet{Boehler2003:Investigating} compared the absolute distances between 
-    the corresponding estimated points for different calibration techniques.
-
-    Some authors estimate whether the resulting 
-    calibrations are consistent with each other, 
-    \citet{Rabbani2007:Integrated} compared the maximal distance between
-    the fitted models for the different techniques.
-    \citet{Dickscheid2008:benchmarking} and \citet{Labe2008:Quality}
-    examined whether the estimated accuracy for the estimated parameters
-    is similar enough.
-
-    \citet{Rabbani2007:Integrated} and \citet{Fraser1995:Multi_sensor_self_calib} 
-    compared the estimated measurement uncertainty to the accuracy stated by
-    the instrument manufacturer.
-
-    \citet{Fraser1995:Multi_sensor_self_calib} and \citet{Labe2008:Quality}
-    estimated the standard deviations of the estimated IO, EO and OP.
-    \citet{Fraser1995:Multi_sensor_self_calib} used the 
-    \textit{root-mean-square} (RMS) standard deviation of the OP as a 
-    measure of quality while \citet{Rabbani2007:Integrated} used the 
-    mean absolute standard deviation.
-    Furthermore, \citet{Fraser1995:Multi_sensor_self_calib} separated 
-    the $XY$ uncertainty from the $Z$ uncertainty since the $Z$ uncertainty
-    is usually much larger for weak networks, e.g., in aerial imagery.
-    Additionally, \citet{Fraser1995:Multi_sensor_self_calib} 
-    estimated and the anticipated uncertainty to detect any 
-    systematic error in the calibration.
+	Nothing in the literature that addresses the estimation of the Lightning
+	Network Routing Fee has been found. 
+	
+	A similar problem at first glance, the estimation of the on-chain
+	Bitcoin Network(BN) Fee has been covered extensively. However it's not applicable, nor
+	is it similar other than domain. The BN Fee problem is more direct since the competing transaction 
+	fees(mem-pool) are known at all times and estimating a fee too low can be corrected by \textit{fee bumping}\footnote{Broadcasting a new transaction spending the same UTXO with a higher fee.} or 
+	\textit{child-pay-for-parent}\footnote{Using the unconfirmed parent UTXO in a new transaction, a miner must include the parent tx to be able to mine the child tx  and receive the child tx fee.} implementations. Most wallets have a decent fee estimator implemented.
+	
+	Problems dealing with competing interests are many in the bitcoin domain. Game Theory has mostly been 
+	applied to \textit{mining}. E.g. How electricity prices affect mining\cite{singh:dwivedi:strivastava:energy:consumption:mining} and How the introduction of uncle and 
+	nephew rewards would affect mining strategies\cite{niu:feng:selfish:mining:ethereum}.
+	
+	

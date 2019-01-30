@@ -19,6 +19,7 @@
 \usepackage{array}
 % \usepackage{upgreek}
 \usepackage{tikz}
+\usepackage{csquotes}
 
 \def\mytitle{Routing Fee Estimation in Lightning Network}
 
@@ -41,7 +42,7 @@
 %\newcommand{\csp}{\mathcal{C}}
 %\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
  \newcommand{\red}[1]{\colorbox{red!40}{#1}}
-\newcommand{\red}[1]{{\setlength{\fboxsep}{1pt}\colorbox{blue!27}{#1}}}
+%\newcommand{\red}[1]{{\setlength{\fboxsep}{1pt}\colorbox{blue!27}{#1}}}
 \newcommand{\bm}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 \newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
 \newcommand{\logto}{\Rightarrow}
@@ -77,7 +78,7 @@
     %        \end{minipage} 
         
  %   \end{tabular}
- %   \vspace{2ex}
+ %   \vspace{2ex}2
 %}
 
 \makeatother
@@ -87,10 +88,10 @@
     \renewcommand{\footrulewidth}{0.4pt}
     \pagestyle{fancy}
     \fancyhead{}
-    % \fancyhead[L]{\sc\footnotesize{\mytitle}}
+     \fancyhead[L]{\sc\footnotesize{\mytitle}}
     \fancyhead[R]{\nouppercase{\sc\footnotesize\leftmark}}
     \fancyfoot{}
-    \fancyfoot[L]{\footnotesize{\theauthor}}
+    \fancyfoot[L]{\footnotesize{John-John Markstedt}}
     \fancyfoot[C]{\thepage}
     \fancyfoot[R]{\footnotesize{\today}}
 
@@ -158,15 +159,10 @@
     \setcounter{section}{0}
 
     \twocolumn
-
     \input{contents}
-
-    \clearpage
-    \addcontentsline{toc}{section}{References}
-
+    \newpage
+%    \addcontentsline{toc}{section}{References}
     \bibliographystyle{plain}
     \bibliography{references.bib}
-
     %\input{appendices}
-
 \end{document}

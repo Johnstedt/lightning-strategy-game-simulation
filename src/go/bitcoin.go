@@ -1,13 +1,18 @@
 package main
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/btcsuite/btcd/chaincfg/chainhash"
 
-	// "github.com/btcsuite/btcd/chaincfg" // What is this
+
+	"github.com/btcsuite/btcd/wire"
+
 	"github.com/btcsuite/btcd/rpcclient"
-	// "github.com/btcsuite/btcutil"
 	"log"
+
+	"github.com/itchyny/base58-go"
 )
 
 type EstimateSmartFeeCmd struct {
@@ -36,24 +41,44 @@ func main() {
 	}
 	fmt.Println(blocks)
 
-	acc, err := client.GetNewAddress("acc1")
-	if err != nil {
-		//log.Fatalf("error listing accounts: %v", err2)
-	}
-	fmt.Println(acc)
-
-	fmt.Println(client.DumpPrivKey(acc))
-
-	amount, err := client.GetReceivedByAddress(acc)
-	if err != nil {
-		log.Fatalf("error listing amount: %v", err)
-	}
-
-	fmt.Println(amount)
 
 	reply := rawFee(client, 6)
 
 	fmt.Printf("%f\n", reply.FeeRate)
+
+	roughTx()
+}
+
+func roughTx()  {
+
+	//tx := wire.NewMsgTx(2)
+
+	encoding := base58.FlickrEncoding
+
+	encoded, err := encoding.Encode([]byte("100"))
+	if err != nil {
+		fmt.Println(err.Error())
+
+	}
+	fmt.Println(encoded)
+
+	out1, _ := encoding.Decode([]byte("2N8UVXCopUgBtCbi1j5E8HBCFdKLXsjkEdc"))
+
+	fmt.Println(out1)
+
+	//output2, _ := hex.DecodeString()
+
+}
+
+func Input() *wire.OutPoint{
+	txHash, _ := hex.DecodeString("cf6ac19824c3e35d22c2feaf8e2e7fbd60803137c537220f80774ea21f09add0")
+	txHash = reverse(txHash)
+	prevTxHash, _ := chainhash.NewHash(txHash)
+
+	prevTxHash.SetBytes(txHash)
+
+	return wire.NewOutPoint(prevTxHash, 0)
+
 }
 
 func rawFee(client *rpcclient.Client, fee int) *reply {
@@ -125,4 +150,12 @@ type transaction = struct {
 	Category string `json:"category"`
 	Amount  float64    `json:"blocks"`
 	Errors  []string `json:"errors,omitempty"`
+}
+
+func reverse(numbers []byte) []byte {
+	newNumbers := make([]byte, len(numbers))
+	for i, j := 0, len(numbers)-1; i < j; i, j = i+1, j-1 {
+		newNumbers[i], newNumbers[j] = numbers[j], numbers[i]
+	}
+	return newNumbers
 }
