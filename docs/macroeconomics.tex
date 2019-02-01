@@ -4,13 +4,15 @@ benefit from understanding money and systems of trust. Nakamoto encoded "the tim
 \subsection{Origin of money}
 
 On the fringes of our specie barter became the first
-medium of which made trade viable, removing the risk 
+medium in which trade became22 viable, removing the risk 
 from otherwise simple delayed reciprocity. It is possible
 for a trade to be mutual beneficial as Nick Szabo 
 se elegantly explained:
 
 \begin{displayquote}
+
 "individuals, clans, and tribes all vary in their preferences, vary in their ability to satisfy these preferences, and vary in the beliefs they have about these skills and preferences and the objects that are consequent of them, there are always gains to be made from trade."\cite{szabo:shelling:out}
+
 \end{displayquote}
 
 Barter is by itself quite limiting, consider a \textit{System S}
@@ -22,17 +24,19 @@ commodity barter\cite{menger:origins:money}. If the same System S is considered 
 
 \subsubsection{Properties of money}
 
+Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap Islands, The Wampun shells and tobacco in North America\footnote{The wampun shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England}\cite{szabo:shelling:out} and Aggry beeds to name a few. Although many different types of commodities have acted as money during certain time in history there are some properties that seem favorable. 
+
 \subsection{Bearer promissory notes}
 
 Although gold emerged as the commodity best suited as money
 it still had two major problems:
 
 \begin{enumerate}
-	\item It's unsuitable for small transactions due to the limit in divisibility.
-	\item It's expensive to carry around and protect.
+	\item Gold is unsuitable for small transactions due to the limit in divisibility.
+	\item Gold is expensive to carry around and protect.
 \end{enumerate}
 
-Private banks started to issue bearer promissory notes to the owners of the underlying asset it stored(e.g figure \ref{fig:seb:promissory:note}). 
+Private and central banks began to issue bearer promissory notes to the owners of the underlying asset it stored(e.g figure \ref{fig:seb:promissory:note}). 
 The asset could then be retrieved for the note on demand. The notes themselves could then be traded 
 instead of the underlying gold. This solved both the above problems, notes are easy to carry, conceal and 
 could be minted in very small amounts. 
@@ -48,27 +52,105 @@ could be minted in very small amounts.
 	\label{fig:seb:promissory:note}
 \end{figure}
 
-By the late 19th century almost all currency was redeemable for gold.[?]
+By the late 19th century almost all major currencies was under the gold standard as seen in table \ref{tab:gold:standard}.
+
+\begin{table}[!htb]
+	\begin{tabular}{lllll}
+		Nation & Currency & Period & Years \\
+		France & Franc & 1814-1914 & 100 \\
+		Netherlands & Guilder & 1816-1914 & 98 \\
+		G.Britain & P. Sterling & 1821-1914 & 93 \\
+		Switzerland & Franc & 1850-1936 & 86 \\
+		Belgium & Franc & 1832-1914 & 82 \\
+		Sweden & Kronor & 1873-1931 & 58 \\
+		Germany & Mark & 1875-1914 & 39 \\
+		Italy & Lira & 1883-1914 & 31 \\   
+	\end{tabular}
+	\caption{\textit{ Major European nations periods under the gold standard
+			as composed by Ferdinand Lips\cite{lips:gold:wars} from 1975 Pickís Currency Yearbook data.
+	}}
+	\label{tab:gold:standard}
+\end{table}
 
 \subsubsection{Bank runs}
 
 The introduction of the promissory note solved the two previously mentioned problems but also 
-introduced trust. 
+introduced trust.\footnote{Note that this a much wider problem than for only promissory notes. This trust model is what makes banks in the first place.} 
+
+Although the gold deposits could be regularly audited by a third party there is little to no guarantee that the bank in question wouldn't issue more notes than gold it holds in reserve. Banks utilizing this sort of practice could go on for a very long time before getting caught. Consider a bank that issue twice as many notes as it holds gold in reserve. It would require 50\% of it's notes to be demanded for the bank to default.  
   
+There has been many so called bank runs in history. The public gets suspicious in the bank and the trust disappear - leading to massive withdrawals in a short time span. Even if banks are technically solvent, having assets tied up in different ventures, they could fail to deliver on the notes promises. This can also be viewed as a negative spiral, people start to withdraw, increasing the risk of default, more people start to withdraw due to the higher risk. R.H. Patterson elaborates in detail the bank run in Great Britain in 1866 leading to the default of Overend, Gurney and Company and the behavior under panic: 
+
+\begin{displayquote}
+	"When a Panic occurs, a much more serious home-drain is produced upon the bank. At such time cheques fall somewhat into disrepute, so that merchants in some cases require payment in cash. The public also, to some extent, take to hoarding[...]. But a very large part of the drain upon the Bank of England in the form of hoarding ,[...],is made by other banks: for these banks being liable to unusual demands on the part of their customers, have to keep in hand a larger stock of money than usual"\cite{patterson:monetary:drains}
+\end{displayquote}
+
+\subsection{Elasticity of money}
+
+
+
+
+
+\begin{tikzpicture}
+\begin{axis}
+\addplot[color=red]{exp(x)};
+\end{axis}
+\end{tikzpicture}
+%Here ends the furst plot
+\hskip 5pt
+%Here begins the 3d plot
+\begin{tikzpicture}
+\begin{axis}
+\addplot3[
+surf,
+]
+{exp(-x^2-y^2)*x};
+\end{axis}
+\end{tikzpicture}
+
+
+
+\begin{tikzpicture}
+\begin{axis}[
+title={Temperature dependence of CuSO$_4\cdot$5H$_2$O solubility},
+xlabel={Temperature [\textcelsius]},
+ylabel={Solubility [g per 100 g water]},
+xmin=0, xmax=100,
+ymin=0, ymax=120,
+xtick={0,20,40,60,80,100},
+ytick={0,20,40,60,80,100,120},
+legend pos=north west,
+ymajorgrids=true,
+grid style=dashed,
+]
+
+\addplot[
+color=blue,
+mark=none,
+]
+coordinates {
+	(0,23.1)(10,27.5)(20,32)(30,37.8)(40,44.6)(60,61.8)(80,83.8)(100,114)
+};
+\legend{CuSO$_4\cdot$5H$_2$O}
+
+\end{axis}
+\end{tikzpicture}
 
 
 
 
 
 
-in the 1800 hundreds gold was 
-
-\subsection{Elastic money}
 \subsection{Relevancy}
 In many ways it help to think of bitcoin
 as both a bearer instrument and as a monetary system and how the 
 system is designed as such. This
-section is an incomplete view on it's own and
-further reading is encouraged: 
+section is an incomplete view on it's own and for
+further reading these recommendations are good starting points: 
 
-* Nick Szabo's Enumerated 
+\begin{itemize}
+	\item Nick Szabo's blog Enumerated and above cited Shelling out\cite{szabo:shelling:out}.
+	\item Saifedean Ammous's The bitcoin standard.
+\end{itemize}
+
+

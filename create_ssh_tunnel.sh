@@ -58,4 +58,64 @@ then
   fi
 fi
 
-#bitcoind -rpcport=$LOCAL_FORWARD_PORT -rpcpassword=$RPC_PASSWORD $*
+# Set port for ZMQ mainnet
+
+LOCAL_FORWARD_PORT=28332
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:28332 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Set port for ZMQ mainnet
+
+LOCAL_FORWARD_PORT=28333
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:28333 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+
+# Set port for ZMQ mainnet
+
+LOCAL_FORWARD_PORT=47536
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:47536 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
