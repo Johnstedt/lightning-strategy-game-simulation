@@ -15,16 +15,22 @@ se elegantly explained:
 
 \end{displayquote}
 
-Barter is by itself quite limiting, consider a \textit{System S}
-consisting of \textit{n} commodities, the amount of possible exchanges
-between commodities in \textit{S} is \textit{n x n}. When n increases, the exchange pairs increases exponentially,
-taxing the mind and decrease the coincidence of trade\footnote{The coincidence of finding another party who is looking to exchange the same commoditiy pair but in opposite order.}. 
+Barter is by itself quite limiting, consider a System \textbf{S}
+consisting of \textbf{n} commodities, the amount of possible exchanges
+between commodities in \textbf{S} is \textbf{n x n}. When \textbf{n} increases, the exchange pairs explodes exponentially.
+This makes it difficult asses fair pricing and decreases the coincidence of a trade\footnote{The coincidence of finding another party who is looking to exchange the same commoditiy pair you are but in reverse order.}. 
 The economist Carl Menger described it as inevitable for money to evolve from a sufficient volume of
-commodity barter\cite{menger:origins:money}. If the same System S is considered with money - the possible exchange pairs would be reduced to only \textit{n} pairs. 
+commodity barter\cite{menger:origins:money}. If the same System \textbf{S} is considered with money - the possible exchange pairs would be reduced to only \textbf{n} pairs. 
 
-\subsubsection{Properties of money}
+\subsubsection{Characteristics of money}
 
-Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap Islands, The Wampun shells and tobacco in North America\footnote{The wampun shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England}\cite{szabo:shelling:out} and Aggry beeds to name a few. Although many different types of commodities have acted as money during certain time in history there are some properties that seem favorable. 
+Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap islands, The Wampun shells in North America\footnote{The wampun shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England.}\cite{szabo:shelling:out} and Aggry beeds to name a few. Although many different types of commodities have acted as money during certain time in history there are some properties that seem favorable and recur. X has x list:
+
+list
+
+Many of the previous mentioned monies have expressed many these properties well. Changes in these properties have also lead to there downfall. Rai stones are carved limestone which are not native to the Yap islands, when outsiders started to bring in these on large ships it quickly changed their stock-to-flow ratio for the worst\cite{ammous:bitcoin:standard}. Aggry beeds met the same fate when Europeans started to export them to Africa and modern shell fishing ruined the Wampun shells function as money\cite{szabo:shelling:out}.
+
+Rare metals have held these attributes since the beginning of history and in many ways still hold them today.
 
 \subsection{Bearer promissory notes}
 
@@ -89,56 +95,17 @@ There has been many so called bank runs in history. The public gets suspicious i
 
 
 
-
-
-\begin{tikzpicture}
-\begin{axis}
-\addplot[color=red]{exp(x)};
-\end{axis}
-\end{tikzpicture}
-%Here ends the furst plot
-\hskip 5pt
-%Here begins the 3d plot
-\begin{tikzpicture}
-\begin{axis}
-\addplot3[
-surf,
-]
-{exp(-x^2-y^2)*x};
-\end{axis}
-\end{tikzpicture}
-
-
-
-\begin{tikzpicture}
-\begin{axis}[
-title={Temperature dependence of CuSO$_4\cdot$5H$_2$O solubility},
-xlabel={Temperature [\textcelsius]},
-ylabel={Solubility [g per 100 g water]},
-xmin=0, xmax=100,
-ymin=0, ymax=120,
-xtick={0,20,40,60,80,100},
-ytick={0,20,40,60,80,100,120},
-legend pos=north west,
-ymajorgrids=true,
-grid style=dashed,
-]
-
-\addplot[
-color=blue,
-mark=none,
-]
-coordinates {
-	(0,23.1)(10,27.5)(20,32)(30,37.8)(40,44.6)(60,61.8)(80,83.8)(100,114)
-};
-\legend{CuSO$_4\cdot$5H$_2$O}
-
-\end{axis}
-\end{tikzpicture}
-
-
-
-
+\newpage
+\onecolumn
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=16cm]{gold-price.png}
+	\caption{\textit{The relation of major currencies against it's value in gold since the end of the Bretton Woods agreement to
+			today. The graph is composed with data from the World Gold Council\cite{world:gold:council}. 
+	}}
+	\label{fig:seb:promissory:note}
+\end{figure}
+\twocolumn
 
 
 \subsection{Relevancy}
@@ -150,7 +117,7 @@ further reading these recommendations are good starting points:
 
 \begin{itemize}
 	\item Nick Szabo's blog Enumerated and above cited Shelling out\cite{szabo:shelling:out}.
-	\item Saifedean Ammous's The bitcoin standard.
+	\item Saifedean Ammous's The bitcoin standard.\cite{ammous:bitcoin:standard}
 \end{itemize}
 
 

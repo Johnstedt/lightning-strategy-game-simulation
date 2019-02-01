@@ -98,7 +98,6 @@ then
   fi
 fi
 
-
 # Set port for ZMQ mainnet
 
 LOCAL_FORWARD_PORT=47536
