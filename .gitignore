@@ -10,3 +10,6 @@ problem.log
 *.auxlock
 
 .idea
+
+*output/
+target/

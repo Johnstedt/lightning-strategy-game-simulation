@@ -18,17 +18,30 @@ se elegantly explained:
 Barter is by itself quite limiting, consider a System \textbf{S}
 consisting of \textbf{n} commodities, the amount of possible exchanges
 between commodities in \textbf{S} is \textbf{n x n}. When \textbf{n} increases, the exchange pairs explodes exponentially.
-This makes it difficult asses fair pricing and decreases the coincidence of a trade\footnote{The coincidence of finding another party who is looking to exchange the same commoditiy pair you are but in reverse order.}. 
+This makes it difficult asses fair pricing and decreases the coincidence of a trade\footnote{The coincidence of finding another party who is looking to exchange the same commodity pair you are but in reverse order.}. 
 The economist Carl Menger described it as inevitable for money to evolve from a sufficient volume of
 commodity barter\cite{menger:origins:money}. If the same System \textbf{S} is considered with money - the possible exchange pairs would be reduced to only \textbf{n} pairs. 
 
 \subsubsection{Characteristics of money}
+	\label{sec:characteristics:money}
 
-Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap islands, The Wampun shells in North America\footnote{The wampun shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England.}\cite{szabo:shelling:out} and Aggry beeds to name a few. Although many different types of commodities have acted as money during certain time in history there are some properties that seem favorable and recur. X has x list:
+Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap islands, The Wampum shells in North America\footnote{The Wampum shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England.}\cite{szabo:shelling:out} and Aggry beeds to name a few. Although many different types of commodities have acted as money during certain time in history there are some characteristics that seem favorable and recur. The Federal Reserve Bank of Saint Luis lists them as\cite{fed:function:money}\footnote{Note that only the characteristics are from the Federal Reserve, the descriptions are not.}:
 
-list
+\begin{itemize}
+	\item \textbf{Durability}. The ability of remain intact over time.
+	
+	\item \textbf{Portability}. The ability to move across physical distance.
+	
+	\item \textbf{Divisibility}. The ability to be divided across scale, to be used in any size of value transaction.
+	
+	\item \textbf{Uniformity}. The ability to use one unit interchangeably with another. Also referred to as \textbf{fungibility}.
+	
+	\item \textbf{Limited supply}. The ability to be scarce over time. Usually quantified by stock-to-flow. The amount of new supply in relation to already existing supply.
+	
+	\item \textbf{Acceptability}. The likelihood of being accepted in trade by others.
+\end{itemize}
 
-Many of the previous mentioned monies have expressed many these properties well. Changes in these properties have also lead to there downfall. Rai stones are carved limestone which are not native to the Yap islands, when outsiders started to bring in these on large ships it quickly changed their stock-to-flow ratio for the worst\cite{ammous:bitcoin:standard}. Aggry beeds met the same fate when Europeans started to export them to Africa and modern shell fishing ruined the Wampun shells function as money\cite{szabo:shelling:out}.
+Many of the previous mentioned monies have expressed many these characteristics well. Changes in these characteristics have also lead to there downfall. Rai stones are carved limestone which are not native to the Yap islands, when outsiders started to bring in these on large ships it quickly changed their stock-to-flow ratio for the worst\cite{ammous:bitcoin:standard}. Aggry beads met the same fate when Europeans started to export them to Africa and modern shell fishing ruined the Wampum shells function as money\cite{szabo:shelling:out}.
 
 Rare metals have held these attributes since the beginning of history and in many ways still hold them today.
 
@@ -95,20 +108,55 @@ Overall most larger institutions stayed solvent and bank runs is more an excepti
 
 \subsection{Elasticity of money}
 
-It all came crashing down with the 
-
-\newpage
+It all came crashing down with the outbreak of the first world war. Nations central banks Began to issue more notes than gold in reserve to fund the war effort. It effectively ended the gold standard and countries not effected by the war followed shortly after.
 \onecolumn
+As response the Great Depression U.S President Franklin Roosevelt issued Executive order 6102 confiscating all gold coins, bullion and certificates and banned trade in gold\cite{roosevelt:6102}. The U.S Dollar was devalued the following year from \$20.67 per troy ounce to \$35 under the Gold Reserve Act\cite{gold:reserve:act} to enable spending their way out of recession. 
+
+A new economic era began following ideas of Maynard Keynes of economic interventionism and monetary policies set to aid growth. Keynes rebutted the classical idea that supply creates it own demand and that aggregated demand and aggregated supply may get stuck in a equilibrium with high unemployment\cite{keynes:general:theory}. This would motivate government intervention to increase the aggregated demand. While demand can be altered by a government in multiple ways the far most effective one was altering the money supply\footnote{fund rate, quantitative easing}. Although the dollar was still technically redeemable for gold the elastic money supply made it possible to steer the economy by means of monetary policy. 
+
+The dollar was re-pegged multiple times between 1968-1971 as part of the Nixon chock\cite{bordo:bretton:woods}. In 1971 Nixon ended the Bretton Woods agreement\cite{bordo:bretton:woods}, the international agreement of exchange rates between currencies, rendering the dollar and all currencies pegged to the Dollar true fiat currencies. After the initial shock the free floating currencies failed to keep pace with gold due to money supply increase causing inflation(Se figure \ref{fig:gold:price:major:currency}).
+
 \begin{figure}[!htb]
 	\centering
 	\includegraphics[width=16cm]{gold-price.png}
 	\caption{\textit{The relation of major currencies against it's value in gold since the end of the Bretton Woods agreement to
 			today. The graph is composed with data from the World Gold Council\cite{world:gold:council}. 
 	}}
-	\label{fig:seb:promissory:note}
+	\label{fig:gold:price:major:currency}
 \end{figure}
+
+\subsubsection{Hyperinflation}
+
+The major currencies seen in figure \ref{fig:gold:price:major:currency} is very far from worst in their ability to hold value. Fiat currencies are highly dependent on it's authority and their willingness to increase the money supply and history supplies us with some catastrophes as seen in table \ref{tab:inflation}.
+
 \twocolumn
 
+\begin{table}[!htb]
+	\begin{tabular}{llllll}
+		Nation & Currency & Period & Highest monthly Inf. & Avg. daily Inf. & Type of index\\
+		Hungary & Pengő & Aug. 1945 - Jul. 1946 & $ 4.19 × 10^{16}\% $ & 207\% & Consumer \\
+		Zimbabwe & Dollar & Mar.2007 - Mid-Nov.2008 & $7.96 × 10^{10}\%$ & 98.0\% & Implied Exchange \\
+		Yugoslavia & Dinar & 3 Apr.1992 - Jan.1994 & 313,000,000\% & 64.6\% & Consumer \\
+		Germany & Papiermark & Aug. 1922 - Dec.1923 & 29,500\% & 20.9\% & Wholesale \\
+		China & Yuan & Oct.1947 - Mid-May.1949 & 5,070\% & 14.1\% &	Wholesale \\
+		Venezuela(§) & Bolívar & Jan. 2018 - ongoing & - & 4.1\% & - \\ 
+
+	\end{tabular}
+	\caption{\textit{ Hyperinflation of selected fiat currencies. From the Hanke-Krus Hyperinflation Table \cite{hanke:krus:hyperinflation:table}. §The Venezuela numbers are only a projection by the International Monetary Fund
+			and the dates and rate will most likely change with more accurate data\cite{hanke:hyperinflation} and when the inflationary period is over.
+	}}
+	\label{tab:inflation}
+\end{table}
+
+During the last 250 years hyperinflation\footnote{There is no official definition of what constitutes hyper inflation but a rule of thumb seem to be over 50\% annual inflation.} have occured at least 54 times\cite{hanke:krus:hyperinflation:table}\cite{hanke:hyperinflation}. Many countries going through multiple inflationary periods, e.g. China 43-45, 47-49 and Georgia 92, 93-94. Hyperinflation devastates all savings and effectually letting savings subsidize the newly printed currency. The inflation narrows the time horizon of trade, since capital will go worthless in a short while, making it very difficult to formalize any long term investment or running a normal economy. 
+
+\subsection{Trust}
+
+The economic system build upon fiat currencies are based on the trust in the issuing body not to increase the money supply excessively. It's almost been common knowledge that value is lost in currencies, moving money away from currency and bonds into stock and real estate. Modern currencies have been decoupled from the underlying reasons of it's nascence, discussed in section \ref{sec:characteristics:money}, leading up to the failures of 08 coinciding with Nakamoto's publication going full circle.
+
+\newpage
+\noindent
+\vspace{3cm}
 
 \subsection{Relevancy}
 In many ways it help to think of bitcoin
@@ -120,4 +168,5 @@ further reading these recommendations are good starting points:
 \begin{itemize}
 	\item Nick Szabo's blog Enumerated and above cited Shelling out\cite{szabo:shelling:out}.
 	\item Saifedean Ammous's The bitcoin standard.\cite{ammous:bitcoin:standard}
+	\item Waren Weber's paper A bitcoin standard.\cite{weber:bitcoin:standard}
 \end{itemize}
