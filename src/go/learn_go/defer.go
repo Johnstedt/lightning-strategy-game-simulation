@@ -10,7 +10,7 @@ func c() (i int) {
 func main()  {
 
 	fmt.Println(c())
-	defer func() { fmt.Println("Hello dear main")}()
+	defer func() { fmt.Println("Game dear main")}()
 	f()
 	fmt.Println("Back from f")
 }
@@ -20,7 +20,7 @@ func f() {
 	//	if r := recover(); r != nil {  // recover from panic, will allow main to print line
 	//		fmt.Println("Recovered in f", r)
 	//	}
-		fmt.Println("Hello dear friends")
+		fmt.Println("Game dear friends")
 	}()
 	fmt.Println("Calling g.")
 	g(0)

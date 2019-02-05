@@ -5,7 +5,7 @@
     <artifactId>LN-Simulation</artifactId>
     <version>1</version>
     <packaging>jar</packaging>
-    <name>Arboreal</name>
+    <name>Simulation</name>
     <description>Maven based dependency structure for master thesis LN Simulation</description>
     <url>http://johnstedt.se</url>
 
@@ -38,7 +38,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>Hello</mainClass>
+                            <mainClass>Main</mainClass>
                             <classpathPrefix>dependency-jars/</classpathPrefix>
                         </manifest>
                     </archive>

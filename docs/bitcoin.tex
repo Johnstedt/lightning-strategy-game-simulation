@@ -1,4 +1,27 @@
-Bitcoin is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in Oktober 2008\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of nodes and the system's native currency. The network is usually refereed with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While this have been convention since 2008, it's not been widely followed in mainstream or semi-mainstream outlets. Also the plural form of bitcoin, is bitcoin without the s. The convention will be followed in this report.}
+Bitcoin is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in Oktober 2008\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of nodes and the system's native currency. The network and protocol is usually refereed with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While it's convention to not capitalize currencies in the English language, it's not been widely followed in mainstream or semi-mainstream outlets. Also the plural form of currencies is equivalent to the singular. The convention will be followed in this report.}
 
 \subsection{Digital Signatures}
+
+
 \subsection{The Double-Spending problem}
+
+
+
+\subsection{Script}
+
+Transactions utilize a forth-like polish-notation stack base execution scripting language\cite{antonopoulos:mastering:bitcoin}. Each transaction output consist of a locking script\footnote{Also refereed to as scriptPubKey. Locking script is a broader term and technically scriptPubKey scripts $ \subseteq $ locking scripts.}. In order to spend a valid unlocking script must be provided in the input to the spending transaction that solves the locking script\footnote{scriptSig, witness $\subseteq $ locking scripts.}. Validation is performed by executing the unlocking script and locking script sequentially as seen in figure \ref{fig:simple:script}. 
+
+\begin{figure}[!hbt]
+	
+	\begin{lstlisting}
+ <@\texttt{\textcolor{red}{OP\_1}}@>   <@\texttt{\textcolor{green}{OP\_2 OP\_ADD OP\_3 OP\_EQUAL}}@>
+<@\texttt{\textcolor{red}{unlock}}@>           <@\texttt{\textcolor{green}{lock}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ A simple predicate. Evaluated from left to right (1 2 +) -> 3 and
+			(3 3 =) -> true. This lock script can obviously be solved by anyone and is thus not used.
+	}}
+	\label{fig:simple:script}
+\end{figure}
+
+The two scripts essentially forms a predicate. If the predicate is true the transaction is true, Nakamoto considered naming the language predicate but went with script to be more inclusive to a broader audience[?].
