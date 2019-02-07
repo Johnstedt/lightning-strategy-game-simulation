@@ -41,6 +41,4 @@ public class Channel {
     public boolean isAdvertiesed() {
         return advertiesed;
     }
-
-
 }

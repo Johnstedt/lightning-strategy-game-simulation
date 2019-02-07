@@ -2,7 +2,7 @@
 \label{sec:macroeconomics}
 
 Bitcoin was not created in a vacuum and to understand the design of Bitcoin and by extension the Lightning Network one would
-benefit from understanding money and systems of trust. Nakamoto encoded the string "the times 03/jan/2009 chancellor on brink of second bailout for banks"\cite{repository:bitcoin:sourceforge}\cite{bitcoin:genesis:coinbase} in the coinbase transaction of the genesis block as an alleged comment on the current banking system as well as a time stamp. He later cemented this view with multiple forum posts while he still was active\cite{nakamoto:post:deflation}\cite{nakamoto:govern:print}.
+benefit from understanding money and systems of trust. Nakamoto encoded the string "the times 03/jan/2009 chancellor on brink of second bailout for banks"\cite{repository:bitcoin:sourceforge}\cite{bitcoin:genesis:coinbase} in the coinbase transaction of the genesis block as an alleged comment on the current banking system as well as a time stamp. He later cemented this view with multiple forum posts while he was still active\cite{nakamoto:post:deflation}\cite{nakamoto:govern:print}.
 
 \subsection{Origin of money}
 
@@ -15,15 +15,15 @@ On the fringes of our specie barter became the first medium in which trade becam
 \end{displayquote}
 
 Barter is by itself quite limited, consider a System \textbf{S}
-consisting of \textbf{n} commodities, the amount of possible exchanges between commodities in \textbf{S} is \textbf{n x n}. When \textbf{n} eventually increases, the exchange pairs explodes exponentially. This makes it difficult asses fair pricing and decreases the coincidence of a trade\footnote{The coincidence of finding another party who is looking to exchange the same commodity pair you are but in reverse order.}. The economist Carl Menger described it as inevitable for money to evolve from a sufficient volume of commodity barter\cite{menger:origins:money}. If the same System \textbf{S} is considered with money - the possible exchange pairs would be reduced to only \textbf{n} pairs. 
+consisting of \textbf{n} commodities, the amount of possible exchanges between commodities in \textbf{S} is \textbf{n x n}. When \textbf{n} eventually increases, the exchange pairs explodes exponentially. This makes it difficult to assess fair pricing and decreases the coincidence of a trade\footnote{The coincidence of finding another party who is looking to exchange the same commodity pair you are but in reverse order.}. The economist Carl Menger described it as inevitable for money to evolve from a sufficient volume of commodity barter\cite{menger:origins:money}. If the same System \textbf{S} is considered with money - the possible exchange pairs would be reduced to only \textbf{n} pairs. 
 
 \subsubsection{Characteristics of money}
 	\label{sec:characteristics:money}
 
-Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap islands, The Wampum shells in North America\footnote{The Wampum shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England.}\cite{szabo:shelling:out} and Aggry beeds in Africa to name a few. Although many different types of commodities have acted as money during certain time in history there are some characteristics that seem favorable and recur. The Federal Reserve Bank of Saint Louis lists them as\cite{fed:function:money}\footnote{Note that only the characteristics are from the Federal Reserve, the descriptions are not.}:
+Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap islands, The Wampum shells in North America\footnote{The Wampum shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England.}\cite{szabo:shelling:out} and Aggry beads in Africa to name a few. Although many different types of commodities have acted as money during certain time in history there are some characteristics that seem favorable and recur. The Federal Reserve Bank of Saint Louis lists them as\cite{fed:function:money}\footnote{Note that only the characteristics are from the Federal Reserve, the descriptions are not.}:
 
 \begin{itemize}
-	\item \textbf{Durability}. The ability of remain intact over time.
+	\item \textbf{Durability}. The ability to remain intact over time.
 	
 	\item \textbf{Portability}. The ability to move across physical distance.
 	
@@ -36,7 +36,7 @@ Out of these commodities money emerged and history has provided many peculiar fo
 	\item \textbf{Acceptability}. The likelihood of being accepted in trade by others.
 \end{itemize}
 
-Many of the previous mentioned monies have expressed many of these characteristics well. Changes in these characteristics have also lead to there downfall. Rai stones are carved limestone which are not native to the Yap islands, when outsiders started to bring in these on large ships it quickly changed their stock-to-flow ratio for the worst\cite{ammous:bitcoin:standard}. Aggry beads met the same fate when Europeans, with efficient means to produce them, started to export them to Africa and modernized shell fishing ruined the Wampum shells function as money\cite{szabo:shelling:out}.
+Many of the previous mentioned monies have expressed many of these characteristics well. Changes in these characteristics have also led to their downfall. Rai stones are carved limestone which are not native to the Yap islands, when outsiders started to bring in these on large ships it quickly changed their stock-to-flow ratio for the worst\cite{ammous:bitcoin:standard}. Aggry beads met the same fate when Europeans, with efficient means to produce them, started to export them to Africa and modernized shell fishing ruined the Wampum shells function as money\cite{szabo:shelling:out}.
 
 Rare metals have held these attributes since the beginning of history and in many ways still hold them today. Gold especially stands out with it's very low stock-to-flow ratio.
 
@@ -93,7 +93,7 @@ introduced trust.\footnote{Note that this a much wider problem than for only pro
 
 Although the gold deposits could be regularly audited by a third party there is little to no guarantee that the bank in question wouldn't issue more notes than gold it holds in reserve. Banks utilizing this sort of practice could go on for a very long time before getting caught. Consider a bank that issue twice as many notes as it holds gold in reserve. It would require 50\% of it's notes to be demanded before the bank would default.  
   
-There has been many so called bank runs in history. The public gets suspicious in the bank and the trust disappearo - leading to massive withdrawals in a short time span. Even if a bank is technically solvent, having assets tied up in different ventures, they could fail to deliver on the notes promises. This can also be viewed as a negative spiral, people start to withdraw, increasing the risk of default, more people start to withdraw due to the new higher risk. R.H. Patterson elaborates in detail the bank run in Great Britain in 1866 leading to the default of Overend, Gurney and Company and the behavior under panic: 
+There has been many so called bank runs in history. The public gets suspicious about the bank and the trust disappears - leading to massive withdrawals in a short time span. Even if a bank is technically solvent, having assets tied up in different ventures, they could fail to deliver on the notes promises. This can also be viewed as a negative spiral, people start to withdraw, increasing the risk of default, more people start to withdraw due to the new higher risk. R.H. Patterson elaborates in detail the bank run in Great Britain in 1866 leading to the default of Overend, Gurney and Company and the behavior under panic: 
 
 \begin{displayquote}
 	"When a Panic occurs, a much more serious home-drain is produced upon the bank. At such time cheques fall somewhat into disrepute, so that merchants in some cases require payment in cash. The public also, to some extent, take to hoarding[...]. But a very large part of the drain upon the Bank of England in the form of hoarding ,[...],is made by other banks: for these banks being liable to unusual demands on the part of their customers, have to keep in hand a larger stock of money than usual"\cite{patterson:monetary:drains}
@@ -105,7 +105,7 @@ Overall most larger institutions stayed solvent and bank runs is more an excepti
 
 \subsection{Elasticity of money}
 
-It all came crashing down with the outbreak of the first world war. Nations central banks Began to issue more notes than gold in reserve to fund the war effort. It effectively ended the gold standard and countries not effected by the war followed shortly after.
+It all came crashing down with the outbreak of the first world war. Nations central banks began to issue more notes than gold in reserve to fund the war effort. It effectively ended the gold standard and countries not effected by the war followed shortly after.
 
 As response the Great Depression U.S President Franklin Roosevelt issued Executive order 6102 confiscating all gold coins, bullion and certificates and banned trade in gold\cite{roosevelt:6102}. The U.S Dollar was devalued the following year from \$20.67 per troy ounce to \$35 under the Gold Reserve Act\cite{gold:reserve:act} to enable spending their way out of recession. 
 
