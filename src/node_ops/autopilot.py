@@ -52,7 +52,9 @@ class Autopilot():
     def __init__(self):
         self.__add_logger()
         #FIXME: find out where the config file is placed:
-        self.__rpc_interface = LightningRpc(expanduser("~")+"/.lightning/lightning-rpc")
+        self.__rpc_interface = LightningRpc(expanduser("~")+"/will/home/jj/.lightning/lightning-rpc")
+
+        self.__rpc_interface.getinfo()
 
         #FIXME: do we have seed nodes?
         self.__rpc_interface.connect("029fcf3069d01023c06b505e9426b1617af36df8c4cd840aa1fd9aa2c22f68788b")

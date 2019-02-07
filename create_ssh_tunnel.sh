@@ -137,3 +137,22 @@ then
     exit 1
   fi
 fi
+
+
+LOCAL_FORWARD_PORT=14224
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:14224 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi

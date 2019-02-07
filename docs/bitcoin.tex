@@ -5,7 +5,13 @@ Bitcoin is a peer-to-peer electronic cash system without any trusted third party
 
 \subsection{The Double-Spending problem}
 
+asd
 
+aasd
+
+asd
+
+asd
 
 \subsection{Script}
 
@@ -25,3 +31,82 @@ Transactions utilize a forth-like polish-notation stack base execution scripting
 \end{figure}
 
 The two scripts essentially forms a predicate. If the predicate is true the transaction is true, Nakamoto considered naming the language predicate but went with script to be more inclusive to a broader audience[?].
+
+\subsubsection{Pay to Public Key Hash}
+
+The Pay-to-Public-key-hash or P2PKH for short was the standard script for a long time. It allows only the owner of 
+the private key to the public key to spend the output.
+
+
+\begin{figure}[!hbt]
+	
+	\begin{lstlisting}
+<@\texttt{\textcolor{red}{<Sig><Pub\_Key>}}@>   
+   <@\texttt{\textcolor{red}{unlock}}@>
+   
+<@\texttt{\textcolor{green}{OP\_DUP OP\_HASH160 <Pub\_Key\_Hash> OP\_EQUALVERIFY OP\_CHECKSIG}}@>
+   <@\texttt{\textcolor{green}{lock}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ The P2PKH locking and unlocking scripts.
+	}}
+	\label{fig:P2PKH}
+\end{figure}
+
+The P2PKH pushed the signature produced by the private key and the public key to the stack. The public key get duplicated and one of them get hashed. The \texttt{OP\_HASH160} is a double hash and first hashes the key with \texttt{SHA256} and then \texttt{RIPEMD160}. This is done to hide the public key until expenditure, which is useful if, for example, the ECDSA would break and private keys could be reversed. The combination of these two hashes makes it way harder to break. In the early days of the network this obfuscation technique wasn't used, for example the first transaction between Nakamoto and Finney didn't\cite{nakamoto:finney:tx}.
+The \texttt{OP\_EQUALVERIFY} pops the two public key hashes and terminates the script with false if they are unequal.
+The \texttt{OP\_CHECKSIG} verifies that the signature is indeed a match with the public key. 
+% In the scripting language uses guard clauses than OP\_EQUALVERIFY, OP\_CHECKSIG should this be mentioned?
+
+\subsubsection{Pay to Script Hash}
+
+The Pay-to-Script-Hash or P2SH is a more flexible transaction than the P2PKH and was introduced with BIP016\cite{bip:0016:p2sh}. It allows the locking script to only be the hash of the redeemable script. If a cumbersome script with many public keys is considered as seen in figure \ref{fig:cumbersome:script}:
+
+\begin{figure}
+	
+	\begin{lstlisting}
+<@\texttt{\textcolor{red}{0 <Sig A> <Sig B>}}@>   
+   <@\texttt{\textcolor{red}{unlock}}@>
+	
+<@\texttt{\textcolor{green}{2 <Pk\_A><Pk\_B><Pk\_C> 3 OP\_CHECKMULTISIG}}@>
+   <@\texttt{\textcolor{green}{lock}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ Showing a multisig transaction which require to signatures out of three to be spent. Note the \texttt{0} in the unlock script, it's there due to a bug with \texttt{OP\_CHECKMULTISIG} which pops an extra item from the stack. If not for the \texttt{0} it would try to pop an empty stack. The dummy value must be a \texttt{0} with BIP 147 compliant node implementations\cite{bip:0147:dummy:zero}.
+	}}
+	\label{fig:cumbersome:script}
+\end{figure} 
+
+This multisig transaction(in figure \ref{fig:cumbersome:script}) could be rewritten as a P2SH by hashing the locking script with \texttt{SHA256} and  \texttt{RIPEMD160} and utilizing it as seen in figure \ref{fig:p2sh}. Note that 'redeem script' refers to the lock script of figure \ref{fig:cumbersome:script} and 'redeem script hash' it's hash.
+
+\begin{figure}[hbt!]
+	
+	\begin{lstlisting}
+<@\texttt{\textcolor{red}{0 <Sig A> <Sig B> <redeem script> }}@>   
+   <@\texttt{\textcolor{red}{unlock}}@>
+	
+<@\texttt{\textcolor{green}{OP\_HASH160 <redeem script hash> OP\_CHECKVERIFY}}@>
+   <@\texttt{\textcolor{green}{lock}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ The P2SH transaction which is essentially equivalent to the multisig in figure \ref{fig:cumbersome:script}
+	}}
+	\label{fig:p2sh}
+\end{figure}
+
+Converting to a P2SH transaction does two things:
+
+\begin{itemize}
+
+	\item It shifts the fee burden from the sender to the recipient. The locking script is shorter, the unlocking script is longer.
+	
+	\item All unspent UTXOs must be kept in the RAM of the node, shifting the burden does reduces the node RAM load. 
+	
+\end{itemize}
+
+P2SH also allows the script to be used as an address(see BIP013\cite{bip:0013:p2shaddr}). By simplt sending to the script address could fund any type of complex transaction with no added complexity to the sender.
+
+The Lightning Network utilize many complex transactions and more on this topic in section \ref{sec:lightning:network}.
+
+\subsection{Network}
+
