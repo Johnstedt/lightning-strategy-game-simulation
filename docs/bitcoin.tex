@@ -2,16 +2,57 @@ Bitcoin is a peer-to-peer electronic cash system without any trusted third party
 
 \subsection{Digital Signatures}
 
+Part of the solution is provided by one way asymmetric encryption utilizing the \texttt{secp256k1} elliptic curve. Asymmetric encryption or public-key encryption essentially boils down to the ability to derive a public key from a private key without the ability to derive the private key from the public key and the ability to prove ownership of a private key through signatures without disclosing the private key. Ownership of bitcoin is proved by signing a previous transaction output payable to the public key derived bitcoin address\footnote{A bitcoin address is derived from the public key by hashing the public key with both \texttt{SHA256} and \texttt{RIPEMD160}}. 
+
+\begin{figure}[!htb]
+	\hspace*{-2cm} 
+	\centering
+	\includegraphics[width=8cm]{transaction.png}
+	\caption{\textit{A simplified illustration of two transactions. 
+	}}
+	\label{fig:merkle:tree}
+	\hspace*{2mm} 	
+\end{figure}
+
+Bitcoin is essentially a long ledger of inputs and outputs. Note that the whole output must be spent in the same transaction and usually there is an output leading back to an address the spender controls with the 'change'. The sum of all the inputs and the sum of all the outputs usually does not line up, the differential is the implicit miners fee the miner receives if the transaction is included in a block. 
 
 \subsection{The Double-Spending problem}
 
-While digital signatures prove that are only part of the solution. There is nothing to stop the owner of an amount of bitcoin to sign multiple transactions using the same bitcoin. This is called the double-spending problem which is a variation of the more general Byzantine's General Problem.
+While digital signatures are able prove ownership of bitcoin. There is nothing to stop the owner of an amount of bitcoin to sign multiple transactions spending the same transaction output. This is called the double-spending problem which is a variation of the more general Byzantine's General Problem.
 
-Bitcoin solves this by using a data structure composite of a chain of blocks. For a block to be valid a hash of the block header must be found that  
+Bitcoin solves this by using a data structure composite of a chain of blocks as seen in figure \ref{fig:blockchain}.
+
+\begin{figure}[!htb]
+	\hspace*{-2cm} 
+	\centering
+	\includegraphics[width=10cm]{blockchain.png}
+	\caption{\textit{The blockchain. 
+	}}
+	\label{fig:blockchain}
+	\hspace{2mm} 
+\end{figure}
+
+The blocks are chained through the hash of the previous block's header. A block is only valid if the hash is lower than an number imposed by the difficulty target. The hash is deterministic but for all intents and purposes it is random and to find a valid hash one simply hashes the header until a valid hash is found. This process is known as \textbf{mining}. The difficulty target adjusts every 2015th\footnote{This is off by one bug, 2016 blocks is two weeks} block\cite{repository:bitcoin} and forces the average time for a block to be mined to always be ten minutes. This sort of design is known as \textit{Proof-of-Work} and bitcoin differentiate from previous implementations with the difficulty adjustment\cite{back:hashcash}\footnote{Bitcoin uses the dubble \texttt{SHA256} hash, it is essentially the same as hashcash in hte cost function being non-interactive, publicly auditable, trapdoor-free and unbounded probabilistic cost\cite{back:hashcash}.}.
+
+\subsubsection{Merkle Tree}
+
+The content in the block header is effectively unchangeable since a change would make the chain of hash invalid. The transactions are not in the header but are still immutable by the use of a Merkle tree. A Merkle tree is a tree in which the parent is the hash of its two children. The root of the tree is included 
+
+\subsubsection{Incentive}
+
+\begin{figure}[!htb]
+
+	\centering
+	\includegraphics[width=8cm]{merkle.png}
+	\caption{\textit{The blockchain. 
+	}}
+	\label{fig:merkle:tree}
+
+\end{figure}
 
 \subsection{Script}
 
-Transactions utilize a forth-like polish-notation stack base execution scripting language\cite{antonopoulos:mastering:bitcoin}. Each transaction output consist of a locking script\footnote{Also refereed to as scriptPubKey. Locking script is a broader term and technically scriptPubKey scripts $ \subseteq $ locking scripts.}. In order to spend a valid unlocking script must be provided in the input to the spending transaction that solves the locking script\footnote{scriptSig, witness $\subseteq $ locking scripts.}. Validation is performed by executing the unlocking script and locking script sequentially as seen in figure \ref{fig:simple:script}. 
+Transactions utilize a forth-like polish-notation stack based execution scripting language\cite{antonopoulos:mastering:bitcoin}. Each transaction output consist of a locking script\footnote{Also refereed to as scriptPubKey. Locking script is a broader term and technically scriptPubKey scripts $ \subseteq $ locking scripts.}. In order to spend a valid unlocking script must be provided in the input to the spending transaction that solves the locking script\footnote{scriptSig, witness $\subseteq $ unlocking scripts.}. Validation is performed by executing the unlocking script and locking script sequentially as seen in figure \ref{fig:simple:script}. 
 
 \begin{figure}[!hbt]
 	
