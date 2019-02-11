@@ -12,8 +12,6 @@ the program needs the following dependencies:
 pip install networkx pylightning
 '''
 
-from networkx.classes.function import neighbors
-
 import logging
 
 from lightning.lightning import LightningRpc
@@ -313,7 +311,7 @@ class Autopilot:
     def __calculate_proposed_channel_capacities(self,pdf, candidates, balance = 1000000,):
         minimal_channel_balance = 200000 # lnd uses 20k satoshi which seems reasonble
 
-        self.__rpc_interface.connect() for c in candidates
+        #self.__rpc_interface.connect() for c in candidates
 
         min_probability = min(pdf.values())
         needed_total_balance = math.ceil(minimal_channel_balance / min_probability)
