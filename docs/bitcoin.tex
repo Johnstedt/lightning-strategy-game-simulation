@@ -146,12 +146,45 @@ Converting to a P2SH transaction does two things:
 	
 \end{itemize}
 
-P2SH also allows the script to be used as an address(see BIP013\cite{bip:0013:p2shaddr}). By simplt sending to the script address could fund any type of complex transaction with no added complexity to the sender.
+P2SH also allows the script to be used as an address(see BIP013\cite{bip:0013:p2shaddr}). By simply sending to the script address could fund any type of complex transaction with no added complexity to the sender.
+
+The scripts can be made quite advanced enabling many layers on top of it, transactions is sometimes be referenced to as 'smart contracts'\footnote{First formally defined by Nick Szabo in 1994\cite{szabo:smart:contracts}}.
+
+\begin{figure}[hbt!]
+	
+	\begin{lstlisting}	
+<@\texttt{\textcolor{black}{IF }}@>
+  <@\texttt{\textcolor{black}{IF }}@>
+    <@\texttt{\textcolor{black}{2 }}@>
+  <@\texttt{\textcolor{black}{ELSE }}@>
+    <@\texttt{\textcolor{black}{<30 days> CHECKSEQUENCEVERIFY DROP}}@>
+    <@\texttt{\textcolor{black}{<Pubkey D> CHECKSIGVERIFY}}@>
+    <@\texttt{\textcolor{black}{1}}@>
+  <@\texttt{\textcolor{black}{ENDIF }}@>
+  <@\texttt{\textcolor{black}{<Pk A><Pk B><Pk C> 3 CHECKMULTISIG}}@>
+<@\texttt{\textcolor{black}{ELSE }}@>
+  <@\texttt{\textcolor{black}{<90 days> CHECKSEQUENCEVERIFY DROP }}@>
+  <@\texttt{\textcolor{black}{<Pubkey D> CHECKSIG }}@>
+<@\texttt{\textcolor{black}{ENDIF}}@>
+
+	\end{lstlisting}
+	
+	\caption{\textit{ A more complex multisig locking script involving timelocks.
+	}}
+	\label{fig:aantop:multi}
+\end{figure}
+
+One example of a more advanced script is this multisignature locking script with timelock by Antonopoulos seen in figure \ref{fig:aantop:multi}\cite{antonopoulos:bitcoin:scripting}. The script consists of three clauses, the clause executed is left to the unlocking script since the condition to \texttt{IF} is the top item on the stack, not the following item. The output could be spent by either clause being triggered:
+\begin{itemize}
+	\item 2 out 3 of the A, B, C signatures.
+	\item 30 days passed, D signature and 1 out of A, B, C signatures.
+	\item 90 days passed and D signature.
+\end{itemize} 
 
 The Lightning Network utilize many complex transactions and more on this topic in section \ref{sec:lightning:network}.
 
 \subsection{Network}
 
-The Bitcoin network consists of nodes complying with the consensus protocol. In the beginning only the reference implementation was used but now there are multiple independent implementations\cite{repository:bitcoin}\cite{repository:btcd}\cite{repository:neutrino}.
+The Bitcoin network consists of nodes complying with the consensus protocol. In the beginning only the reference implementation was used but now there are multiple independent implementations\cite{repository:bitcoin}\cite{repository:btcd}\cite{repository:neutrino}. To participate in the consensus protocol, the nodes relay transactions and valid blocks. If the node is a mining node it also tries to find a new block hashing the previous block on the longest chain. If two valid blocks with the same height is received, the node usually work on the first received until the next block is found breaking the tie. 
 
 
