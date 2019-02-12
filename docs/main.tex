@@ -137,7 +137,39 @@
     \setcounter{section}{0}
 
     \twocolumn
-    \input{contents}
+	\section{Problem Description}
+	\addcontentsline{toc}{section}{Poblem Description}
+	\label{sec:problem}
+	\input{problem}
+	
+	\clearpage
+	
+	\input{macroeconomics}
+	
+	\clearpage
+	\input{bitcoin}
+	\clearpage
+	
+	\label{sec:scaling}
+	\input{scaling}
+	\clearpage
+	\section{Lightning Network}
+	\label{sec:lightning:network}
+	\input{lightning}
+	\clearpage
+	\label{sec:evaluation}
+	\input{evaluation}
+	\clearpage
+	\section{Results}
+	\clearpage
+	\section{Discussion}
+	\label{sec:discussion}
+	%   \input{discussion}
+	\clearpage
+	\section{Acknowledgments}
+	\label{sec:acknowledgments}
+	%   \input{acknowledgments}
+
 
     \onecolumn
     \newpage
