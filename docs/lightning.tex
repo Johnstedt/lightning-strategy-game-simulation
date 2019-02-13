@@ -1,11 +1,31 @@
 \section{Lightning Network}
 \label{sec:lightning:network}
 
-The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. 
+The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a user-activated-soft-fork in mid 2017\cite{bip:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts can be valid for a single locking script. 
 
-\subsection{Micro-payment channels}
+The network protocol have been defined\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes\cite{repository:lnd}\cite{repository:eclair}\cite{repository:clightning}\cite{repository:lit}.
+
+\subsection{Payment channels}
+
+The Lightning network consists of many payment channels between both routing and non-routing nodes.
+A payment channels is a essentially a transaction containing funds locked up on the bitcoin network. It requires signatures from both parties to be able to spend the transaction and cease the channel.
+
+Initially each party have a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
 
 \subsubsection{Funding Transaction}
+
+A payment channel is funded by a funding transaction defined in the lightning paper as such\cite{poon:dryja:lightning:network}:
+\begin{enumerate}
+	\item  Create the parent (Funding Transaction)
+	\item  Create the children (Commitment Transactions and all spends from the commitment transactions)
+	\item  Sign the children
+	\item  Exchange the signatures for the children
+	\item  Sign the parent
+	\item  Exchange the signatures for the parent
+	\item  Broadcast the parent on the blockchain
+\end{enumerate}
+
+It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output.}. By exchanging the spending transaction first either party could broadcast it to receive the initial funds.
 
 \subsection{Multihop payments}
 
