@@ -1,4 +1,4 @@
-\documentclass[a4paper, twocolumn, oneside]{article}
+\documentclass[a4paper, twocolumn, oneside]{book}
 %twoside if print,
 \setlength{\columnsep}{.03\textwidth}
 
@@ -31,26 +31,54 @@
 \usepackage{csquotes}
 \usepackage[T1]{fontenc}
 
+\usepackage{titlesec}
+%\titleformat
+%{\chapter} % command
+%[display] % shape
+%{\bfseries\Large\itshape} % format
+%{Story No. \ \thechapter} % label
+%{0.5ex} % sep
+%{
+%	\rule{\textwidth}{1pt}
+%	\vspace{1ex}
+%	\centering
+%} % before-code
+%[
+%\vspace{-0.5ex}%
+%\rule{\textwidth}{0.3pt}
+%] % after-code
+
+%\titleformat{\chapter}[display]{\normalfont\huge\bfseries}{\chaptertitlename~\thechapter}{20pt}{\normalfont}
+%\titleformat{command}[shape]{format}{label}{sep}{before-code}[after-code]
+%\titlespacing*{\chapter}{0pt}{50pt}{40pt}
+%\titlespacing*{name=\chapter,numberless}{0pt}{50pt}{40pt}
+\titleformat{\chapter}
+	{\normalfont\LARGE\bfseries}{{Chapter \thechapter~|\ }}{0pt}{}{}
+\titlespacing*{\chapter}{0pt}{20pt}{20pt}
+
+\captionsetup{margin=20pt,font=small,labelfont=bf, format=plain}
+
 \def\mytitle{Routing Fee Estimation in Lightning Network}
 
 % Routing Fee Estimation in Bidirectional payment channel networks
 % Non Eploitable pricing of liqid channels in the lightning network
+% Emergance of routing policies in channel networks
 
 \title{\mytitle}
 \def\theauthor{John-John Markstedt}
 \author{John-John Markstedt}
-%\supervisor{Oskar Janson}
-%\examiner{Henrik Bj\"{o}rklund}
-%\semester{VT17}
-%\course{5DV097}
-%\def\umu{Ume\r{a} University}
-%\def\journal{
-%    MSc Computing Science and Engineering, \umu{} 2017}
+\supervisor{Oskar Janson}
+\examiner{Henrik Bj\"{o}rklund}
+\semester{VT17}
+\course{5DV097}
+\def\umu{Ume\r{a} University}
+\def\journal{
+    MSc Computing Science and Engineering, \umu{} 2017}
 
-%\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
-%\newcommand{\csp}{\mathcal{C}}
-%\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
+\newcommand{\csp}{\mathcal{C}}
+\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
  \newcommand{\red}[1]{\colorbox{red!40}{#1}}
 %\newcommand{\red}[1]{{\setlength{\fboxsep}{1pt}\colorbox{blue!27}{#1}}}
 \newcommand{\bm}[1]{\begin{bmatrix} #1 \end{bmatrix}}
@@ -59,7 +87,7 @@
 \newcommand{\mvec}[1]{{#1}}
 \newcommand{\minx}[1]{\, \stackrel[#1]{}{\min}}
 \newcommand{\eq}[1]{\begin{equation} #1 \end{equation}}
-% \newcommand{\um}{$\upmu$m}
+ \newcommand{\um}{$\upmu$m}
 
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\RMS}{RMS}
@@ -76,14 +104,16 @@
     \fancyfoot{}
     \fancyfoot[L]{\footnotesize{John-John Markstedt}}
     \fancyfoot[C]{\thepage}
-    \fancyfoot[R]{\footnotesize{\today}}
+    \fancyfoot[R]{\footnotesize{\today}}  
 
 \begin{document}
+
     \onecolumn
 	\pagenumbering{arabic}
   
  	\setcounter{secnumdepth}{5}
 	\begin{titlepage}
+
   	\thispagestyle{empty}
   	\begin{large}
   		\begin{tabular}{@{}p{\textwidth}@{}}
@@ -101,8 +131,10 @@
   		\vspace{10mm}
   		\LARGE{ Routing Fee Estimation in the Lightning Network } \\
   		\vspace{2mm}
-
+	
+		\begin{footnotesize}
 		\input{abstract}
+		\end{footnotesize}
 
   		\vspace{10mm}
   		\begin{large}
@@ -128,17 +160,17 @@
 
     \newpage
 
-    \setcounter{secnumdepth}{2}
-    \setcounter{tocdepth}{2}
+    \setcounter{secnumdepth}{3}
+    \setcounter{tocdepth}{3}
     \tableofcontents
     \thispagestyle{empty}
     \newpage
     \setcounter{page}{1}
-    \setcounter{section}{0}
+%    \setcounter{section}{0}
 
     \twocolumn
-	\section{Problem Description}
-	\addcontentsline{toc}{section}{Poblem Description}
+	\chapter{Problem Description}
+	\addcontentsline{toc}{chapter}{Problem Description}
 	\label{sec:problem}
 	\input{problem}
 	
@@ -166,7 +198,6 @@
 	\section{Acknowledgments}
 	\label{sec:acknowledgments}
 	%   \input{acknowledgments}
-
 
     \onecolumn
     \newpage

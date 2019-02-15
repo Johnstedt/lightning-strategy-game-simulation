@@ -1,14 +1,11 @@
-
-\section{Systems of Trust}
+\chapter{Systems of Trust}
 \addcontentsline{toc}{section}{Macroeconomics}
 \label{sec:macroeconomics}
-
-
 
 Bitcoin was not created in a vacuum and to understand the design of Bitcoin and by extension the Lightning Network one would
 benefit from understanding money and systems of trust. Nakamoto encoded the string "the times 03/jan/2009 chancellor on brink of second bailout for banks"\cite{repository:bitcoin:sourceforge}\cite{bitcoin:genesis:coinbase} in the coinbase transaction of the genesis block as an alleged comment on the current banking system as well as a time stamp. He later cemented this view with multiple forum posts while he was still active\cite{nakamoto:post:deflation}\cite{nakamoto:govern:print}.
 
-\subsection{Origin of money}
+\section{Origin of money}
 
 On the fringes of our specie barter became the first medium in which trade became viable, removing the risk from otherwise delayed reciprocity. It is possible for trade to be mutually beneficial as Nick Szabo so elegantly puts it:
 
@@ -21,7 +18,7 @@ On the fringes of our specie barter became the first medium in which trade becam
 Barter is by itself quite limited, consider a System \textbf{S}
 consisting of \textbf{n} commodities, the amount of possible exchanges between commodities in \textbf{S} is \textbf{n x n}. When \textbf{n} eventually increases, the exchange pairs explodes exponentially. This makes it difficult to assess fair pricing and decreases the coincidence of a trade\footnote{The coincidence of finding another party who is looking to exchange the same commodity pair you are but in reverse order.}. The economist Carl Menger described it as inevitable for money to evolve from a sufficient volume of commodity barter\cite{menger:origins:money}. If the same System \textbf{S} is considered with money - the possible exchange pairs would be reduced to only \textbf{n} pairs. 
 
-\subsubsection{Characteristics of money}
+\subsection{Characteristics of money}
 	\label{sec:characteristics:money}
 
 Out of these commodities money emerged and history has provided many peculiar forms of money. The Rai stones of Yap islands, The Wampum shells in North America\footnote{The Wampum shells were actually legal tender as recently as 1710 in North Carolina and long into the 1600s in New England.}\cite{szabo:shelling:out} and Aggry beads in Africa to name a few. Although many different types of commodities have acted as money during certain time in history there are some characteristics that seem favorable and recur. The Federal Reserve Bank of Saint Louis lists them as\cite{fed:function:money}\footnote{Note that only the characteristics are from the Federal Reserve, the descriptions are not.}:
@@ -44,7 +41,7 @@ Many of the previous mentioned monies have expressed many of these characteristi
 
 Rare metals have held these attributes since the beginning of history and in many ways still hold them today. Gold especially stands out with it's very low stock-to-flow ratio.
 
-\subsection{Bearer promissory notes}
+\section{Bearer promissory notes}
 
 Although gold emerged as the commodity best suited as money
 it still had two major problems:
@@ -60,6 +57,7 @@ instead of the underlying gold. This solved both the above problems, notes are e
 could be minted in very small amounts. 
 
 \begin{figure}[!htb]
+
 	\centering
 	\includegraphics[width=7cm]{PrivateBankNoteStockholmEnskildaBank1876.JPG}
 	\caption{\textit{The private bank 'Stockholms Enskilda Bank'(SEB) issued bearer
@@ -84,13 +82,14 @@ By the late 19th century almost all major currencies was under the gold standard
 		Germany & Mark & 1875-1914 & 39 \\
 		Italy & Lira & 1883-1914 & 31 \\   
 	\end{tabular}
+
 	\caption{\textit{ Major European nations periods under the gold standard
 			as composed by Ferdinand Lips\cite{lips:gold:wars} from 1975 Pickís Currency Yearbook data.
 	}}
 	\label{tab:gold:standard}
 \end{table}
 
-\subsubsection{Bank runs}
+\subsection{Bank runs}
 
 The introduction of the promissory note solved the two previously mentioned problems but also 
 introduced trust.\footnote{Note that this a much wider problem than for only promissory notes. This trust model is what makes banks in the first place.} 
@@ -107,7 +106,7 @@ Overall most larger institutions stayed solvent and bank runs is more an excepti
 
 \onecolumn
 
-\subsection{Elasticity of money}
+\section{Elasticity of money}
 
 It all came crashing down with the outbreak of the first world war. Nations central banks began to issue more notes than gold in reserve to fund the war effort. It effectively ended the gold standard and countries not affected by the war followed shortly after.
 
@@ -129,7 +128,7 @@ The dollar was re-pegged multiple times between 1968-1971 as part of the Nixon c
 
 \twocolumn
 
-\begin{table}[!htb]
+\begin{table*}[!htb]
 	\begin{tabular}{llllll}
 		Nation & Currency & Period & Highest monthly Inf. & Avg. daily Inf. & Type of index\\
 		Hungary & Pengő & Aug. 1945 - Jul. 1946 & $ 4.19 × 10^{16}\% $ & 207\% & Consumer \\
@@ -140,19 +139,20 @@ The dollar was re-pegged multiple times between 1968-1971 as part of the Nixon c
 		Venezuela(§) & Bolívar & Jan. 2018 - ongoing & - & 4.1\% & - \\ 
 
 	\end{tabular}
+	\captionsetup{width=11cm}
 	\caption{\textit{ Hyperinflation of selected fiat currencies. From the Hanke-Krus Hyperinflation Table \cite{hanke:krus:hyperinflation:table}. §The Venezuela numbers are only a projection by the International Monetary Fund
 			and the dates and rate will most likely change with more accurate data\cite{hanke:hyperinflation} and when the inflationary period is over.
 	}}
 	\label{tab:inflation}
 \end{table}
 
-\subsubsection{Hyperinflation}
+\subsection{Hyperinflation}
 
 The major currencies seen in figure \ref{fig:gold:price:major:currency} is very far from worst in their ability to hold value. Fiat currencies are highly dependent on it's authority and their willingness to increase the money supply and history supplies us with some catastrophes as seen in table \ref{tab:inflation}.
 
 During the last 250 years hyperinflation\footnote{There is no official definition of what constitutes hyper inflation but a rule of thumb seem to be over 50\% annual inflation.} have occured at least 54 times\cite{hanke:krus:hyperinflation:table}\cite{hanke:hyperinflation}. Many countries going through multiple inflationary periods, e.g. China 43-45, 47-49 and Georgia 92, 93-94. Hyperinflation devastates all savings and effectually letting savings subsidize the newly printed currency. The inflation narrows the time horizon of trade, since capital will go worthless in a short while, making it very difficult to formalize any long term investment or running a normal economy. 
 
-\subsection{Trust}
+\section{Trust}
 
 The economic system built upon fiat currencies are based on the trust in the issuing body not to increase the money supply excessively. It's almost been common knowledge that value is lost in currencies, moving money away from currency and bonds into stock and real estate. Modern currencies have been decoupled from the underlying reasons of its nascence( see section \ref{sec:characteristics:money}) leading up to the failures of 08 coinciding with Nakamoto's publication completing full circle.
 

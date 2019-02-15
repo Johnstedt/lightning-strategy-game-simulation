@@ -226,7 +226,7 @@
 \renewcommand{\section}{%
  \@startsection%
   {section}%
-  {1}%                          % Level
+  {2}%                          % Level
   {0pt}%                        % Indentation
   {-2\baselineskip}%            % Distance before the header (ignore
                                 % the `-` sign. It indicatas that the
@@ -240,7 +240,7 @@
 \renewcommand{\subsection}{%
  \@startsection%
   {subsection}%
-  {2}%
+  {3}%
   {0pt}%
   {\baselineskip}%
   {0.25\baselineskip}%
@@ -281,8 +281,8 @@
 
 % Let tables have a continuous numbering and not reset by chapters
 \if@article\else
-  \@removefromreset{table}{chapter}
-  \@removefromreset{figure}{chapter}
+  %\@removefromreset{table}{chapter}
+  %\@removefromreset{figure}{chapter}
 \fi
 \renewcommand\thetable{\mbox{\@arabic\c@table}}
 \renewcommand\thefigure{\mbox{\@arabic\c@figure}}

@@ -1,18 +1,18 @@
-\section{Lightning Network}
+\chapter{The Lightning Network}
 \label{sec:lightning:network}
 
 The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a user-activated-soft-fork in mid 2017\cite{bip:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts can be valid for a single locking script. 
 
 The network protocol have been defined\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes\cite{repository:lnd}\cite{repository:eclair}\cite{repository:clightning}\cite{repository:lit}.
 
-\subsection{Payment channels}
+\section{Payment channels}
 
 The Lightning network consists of many payment channels between both routing and non-routing nodes.
 A payment channels is a essentially a transaction containing funds locked up on the bitcoin network. It requires signatures from both parties to be able to spend the transaction and cease the channel.
 
 Initially each party have a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
 
-\subsubsection{Funding Transaction}
+\subsection{Funding Transaction}
 
 A payment channel is funded by a funding transaction defined in the lightning paper as such\cite{poon:dryja:lightning:network}:
 \begin{enumerate}
@@ -27,13 +27,13 @@ A payment channel is funded by a funding transaction defined in the lightning pa
 
 It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output.}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
 
-\subsubsection{Commitment transaction}
+\subsection{Commitment transaction}
 
 In order for a channel to be useful the creation of a new commitment transaction\footnote{It may be easier to think of this type of transaction as a smart contract, as in this context it's the same thing.}, updating the balance, would need to invalidate the previous one. The previous transaction is after all still a valid bitcoin transaction. This creates a problem since each party would benefit from different commitment transactions being broadcast to the network.
 
 The solution is to construct the commitment transaction similar to that of a fidelity bond where one party would be penalized if violating the agreement. In this case violation is broadcasting any but the latest commitment transactions. To be able to ascribe blame to the violating party the commitment transactions for the same channel state must be unique as otherwise one would not know which party broadcasted the transaction to the network. Only uniqueness is however not enough since there is no way to enforce the penalty for violation. 
 
-The enforcement is possible if revocation is built into the commitment transaction, where the other party could revoke a faulty broadcast. This is possible with the addition of relative block maturity introduced with BIP68\cite{bip:0068:sequence:lock:time}. The commitment transaction has two output paths, one is the other party's funds spendable immediately. The other output has two
+The enforcement is possible if revocation is built into the commitment transaction, where the other party could revoke a faulty broadcast. This is possible with the addition of relative block maturity introduced with BIP68\cite{bip:0068:sequence:lock:time}(see section \ref{sec:rlt}). The commitment transaction has two output paths, one is the other party's funds spendable immediately. The other output has two
 redeemable paths. Either:
 
 \begin{enumerate}
@@ -43,11 +43,15 @@ redeemable paths. Either:
 
 Remember that the commitment transactions is reversed for the other party. This type of output which enable revocation is called a Revocable Sequence Maturity Contract(RSMC).
 
-New ct created -> how invalidate works  does time lock need explaining?
+\subsection{Relative lock time}
+\label{sec:rlt}
+
+As previously mentioned the RSMC relies on relative block 
+
+\subsection{Revocation of old commitment transaction}
+
+In order to update the channel balance a new pair of commitment transactions is made and atomically allow the other party to redeem the revocation path in the previous commitment transaction.
 
 
-
-
-
-\subsection{Multihop payments}
+\section{Multihop payments}
 
