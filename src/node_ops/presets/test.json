@@ -1,0 +1,27 @@
+{
+   "routing_nodes": [
+       {
+           "name": "matthew",
+           "some_attr": "",
+            "attachment_policy": "barabasi_albert"
+       },
+       {
+           "name": "random",
+           "some_attr": "",
+           "attachment_policy": "random"
+       }
+   ],
+    "environment": {
+        "payments": "all-to-all",
+        "weighted_payment": false,
+        "initial_nodes": 1000,
+        "nodes_distribution": {
+            "matthew": 0.5,
+            "random": 0.5
+        },
+        "payments_per_step": 1000,
+        "bankruptcy": 1,
+        "new_nodes_per_step": 1,
+        "new_nodes_policy": "mirror"
+    }
+}

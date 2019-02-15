@@ -14,7 +14,7 @@ class LightningOperator:
 
 		print(type(self.rpc_interface.getinfo()))
 
-		self.rpc_interface.connect("03b6384db3982ba0f87bec1155633de02296b650b08290d8c9e811da3a07bcf595@83.8.67.65:9735")
+		self.rpc_interface.connect("03236a685d30096b26692dce0cf0fa7c8528bdf61dbf5363a3ef6d5c92733a3016@50.116.3.223:9734")
 
 		print(self.rpc_interface.listpeers())
 
