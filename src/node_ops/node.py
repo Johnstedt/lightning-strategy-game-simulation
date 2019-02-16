@@ -21,8 +21,7 @@ class NodeOperator:
 
 		lightning.populate_graph(g)
 
-		print(g.edges[0])
-		print(g.nodes[0])
+		print(g.edg['02a78ed15da84d0ecdcefff5905bd7287ff587b7abd9a46cf0a04d31c3336a9b4e'])
 
 		plot.plot_graph(g)
 

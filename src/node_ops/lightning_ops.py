@@ -37,7 +37,7 @@ class LightningOperator:
 		print("Number of nodes found: {}".format(len(nodes)))
 
 		for node in nodes:
-			graph.add_node(node["nodeid"], **node)
+			graph.add_node(node["nodeid"], object=node)
 
 		"""
 		Grab the channels
@@ -56,6 +56,7 @@ class LightningOperator:
 			return False
 
 		for channel in channels:
+			print(channel)
 			graph.add_edge(channel["source"], channel["destination"], **channel)
 
 		return True
