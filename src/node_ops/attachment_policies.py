@@ -9,7 +9,6 @@ class AttachmentPolicies:
 		self.__barabasi_nodes = []
 
 	def attach(self, g, n, m):
-		print(n)
 
 		self.switch(n['attachment_policy'])(g, n, m)
 

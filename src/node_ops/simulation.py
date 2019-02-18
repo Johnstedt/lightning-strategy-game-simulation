@@ -27,7 +27,9 @@ def create_node(settings):
 		'addresses': [{'port': 9735, 'address': '73.33.112.94', 'type': 'ipv4'}],
 
 		# Simulation attributes
-		'attachment_policy': settings['attachment_policy']
+		'attachment_policy': settings['attachment_policy'],
+
+		'profits': 0
 	}
 
 
@@ -52,6 +54,8 @@ def create_channel():
 class SimulationOperator:
 
 	__g = None
+	__routing_table = None
+	__env = None
 
 	def __init__(self):
 
@@ -71,34 +75,88 @@ class SimulationOperator:
 				print(sys.argv[i+1])
 
 	def simulate(self, sim_file):
-		env = json.loads(open(sim_file, "r").read())
-		print(json.dumps(env, indent=2))
+		self.__env = json.loads(open(sim_file, "r").read())
+		print(json.dumps(self.__env, indent=2))
 
-		self.build_environment(env)
-		self.generate_all_shortest_paths()
+		self.build_environment()
+		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g)
 
-	def build_environment(self, env):
+		self.print_alive_nodes()
 
-		for n in range(0, env['environment']['initial_nodes']):
-			settings = numpy.random.choice(env['routing_nodes'], p=[i['initial_distribution'] for i in env['routing_nodes']])
+		for i in range(self.__env['environment']['time_steps']):
+			print("ITERATION ", i)
+			for j in range(self.__env['environment']['payments_per_step']):
+				self.route_payments_all_to_all()
+
+			self.check_for_bancrupcy(i)
+		self.print_profit_table()
+
+		self.print_alive_nodes()
+
+	def build_environment(self):
+
+		for n in range(0, self.__env['environment']['initial_nodes']):
+			settings = numpy.random.choice(self.__env['routing_nodes'], p=[i['initial_distribution'] for i in self.__env['routing_nodes']])
 			node = create_node(settings)
 			self.__attachment.attach(self.__g, node, 5)
 
 		return True
 
-	def generate_all_shortest_paths(self, cutoff=10):
+	def route_payments_all_to_all(self):
 
-		if cutoff < 1:
-			cutoff = 10
+		source = 0
+		dest = 0
+		while source == dest:
+			source = random.sample(self.__g.nodes, 1)[0]
+			dest = random.sample(self.__g.nodes, 1)[0]
 
-		print(len(self.__g.edges))
-		print(len(self.__g.nodes))
+		routers = nx.reconstruct_path(source, dest, self.__routing_table)
+		routers.remove(source)
+		routers.remove(dest)
+		for n in routers:
+			self.__g.nodes[n]['profits'] += 1
 
-		all_pair_shortest_paths = nx.all_pairs_shortest_path(self.__g, cutoff=cutoff)
-		print(all_pair_shortest_paths)
-		for item in all_pair_shortest_paths:
+	def print_alive_nodes(self):
+		albert = 0
+		random = 0
+		for n in self.__g.nodes:
+			if self.__g.nodes[n]['attachment_policy'] == "barabasi_albert":
+				albert += 1
+			else:
+				random += 1
+		print("Barabasi nodes: ", albert, " Random nodes: ", random)
 
-			print(item[1])
+	def check_for_bancrupcy(self, steps):
+		changed = False
+		remove = []
+		for node in self.__g.nodes:
+
+			if self.__g.nodes[node]['profits'] - steps <= 0:
+				print(self.__g.nodes[node]['nodeid'], " Went bankrupt with method: ", self.__g.nodes[node]['attachment_policy'])
+				remove.append(node)
+				changed = True
+		if changed:
+			for n in remove:
+				self.__g.remove_node(n)
+
+			self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g)
+
+	def print_profit_table(self):
+		list2 = []
+		for n in self.__g.nodes:
+			list2.append(self.__g.nodes[n])
+
+		list2 = sorted(list2, key=lambda k: k['profits'])
+		cum_albert = 0
+		cum_random = 0
+		for n in list2:
+			print(n['attachment_policy'], " ", n['profits'])
+			if n['attachment_policy'] == "barabasi_albert":
+				cum_albert += n['profits']
+			else:
+				cum_random += n['profits']
+
+		print("BARABASI TOTAL: ", cum_albert, " RANDOM TOTAL: ", cum_random)
 
 
 if __name__ == "__main__":

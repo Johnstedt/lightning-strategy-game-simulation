@@ -29,6 +29,8 @@ class NodeOperator:
 		ba2 = nx.barabasi_albert_graph(40000, 5)
 		ba3 = nx.barabasi_albert_graph(200000, 5)
 
+		ergy = nx.erdos_renyi_graph(2000, 0.002)
+
 		plot.plot_degree_distribution([ba3, ba2, ba, g], [2.9, 1.9])
 
 
