@@ -1,6 +1,7 @@
 % Macroeconomy
 
-@misc{repository:bitcoin:sourceforge,
+@misc{
+	repository:bitcoin:sourceforge,
 	author = {},
 	title = {Original bitcoin repository with the genisis block function},
 	year = 2009-,
@@ -9,7 +10,8 @@
 	note = {The source forge repostiory was later moved to github.},
 }
 
-@misc{bitcoin:genesis:coinbase,
+@misc{
+	bitcoin:genesis:coinbase,
 	author = {},
 	year = 2009,
 	title = {The coinbase transaction of the genesis block.},
@@ -45,6 +47,14 @@
 	publisher = {},
 	year = {2002},
 	howpublished = {\url{https://nakamotoinstitute.org/shelling-out/}}
+}
+@misc{
+	szabo:unenumerated,
+	author = {Szabo, Nick},   
+	title = {Unenumerated},
+	publisher = {},
+	year = {},
+	howpublished = {\url{http://unenumerated.blogspot.com/}}
 }
 
 @article{
@@ -306,6 +316,26 @@ TOR, reverse govern-print mention
 	note = {\\(Accessed on 2019-02-06)}
 }
 
+@misc{
+	nakamoto:commit:1,
+	author = {Nakamoto, Satoshi},
+	title = {fix openssl linkage problems,},
+	howpublished = {
+		\url{https://github.com/bitcoin/bitcoin/commit/a30b56ebe76ffff9f9cc8a6667186179413c6349}
+	},
+	note = {\\(Accessed on 2019-02-19)}
+}
+
+@misc{
+	nakamoto:commit:2,
+	author = {Nakamoto, Satoshi},
+	title = {only accept transactions sent by IP address if -allowreceivebyip is s…},
+	howpublished = {
+	\url{https://github.com/bitcoin/bitcoin/commit/172f006020965ae8763a0610845c051ed1e3b522}
+	},
+	note = {\\(Accessed on 2019-02-19)}
+}
+
 @misc{repository:bitcoin,
 	author = {},
 	title = {Bitcoin Reference Implementation},
@@ -438,6 +468,25 @@ TOR, reverse govern-print mention
 	\url{https://github.com/bitcoin/bips}},
 	note = {},
 }
+
+% Increase block size bips
+
+@misc{bip:0100:dynamic:block:size,
+	author = { Garzik, Jeff and
+	Harding, Tom and
+	Valberg Johannsson, Dagur},
+	title = "BIP 0100 Dynamic maximum block size by miner vote"
+	year = "2015",
+	month = "august",
+	day = "10",
+	howpublished = {
+		\url{https://github.com/jgarzik/bip100/blob/master/bip-0100.mediawiki}},
+	note = {\\(Accessed on 2019-02-18)},
+}
+
+
+
+
 
 
 % Scaling

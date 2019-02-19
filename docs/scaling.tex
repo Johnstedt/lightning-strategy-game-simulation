@@ -1,8 +1,34 @@
 \chapter{Scaling bitcoin}
 
-There is no secret that the bitcoin blockchain will not be able to scale on its own. When Nakamoto first published the whitepaper on the cryptographic mailing list his first response was in fact that such a solution won't scale very well\cite{donald:scale}.
+There is no secret that the bitcoin blockchain will not be able to scale on its own. When Nakamoto first published the whitepaper on the cryptographic mailing list his first response was in fact that such a solution won't scale very well\cite{donald:scale}. 
 
-\section{Increasing block size}
+Andreas Antonopoulos has drawn similarities between the scaling of bitcoin with the scaling of the internet:
+
+\begin{displayquote}
+	"Bitcoin is failing to scale. If we’re really lucky, bitcoin will continue to fail to scale gracefully for 25 years, just like the internet."\cite{antonopoulos:the:internet:of:money}
+\end{displayquote}
+
+which in many ways are spot on as Usenet used a \textit{Store-and-forward} method for content to reach every server in the network. \textit{Store-and-forward} does not scale very well and is somewhat similar to the base Bitcoin protocol. The internet moved away from \textit{Store-and-forward} to more direct routing and Bitcoin is too, allowing transactions to happen off-chain.
+
+In this chapter the various scaling alternatives will be discussed.
+
+\section{Block Size limit}
+
+In 2010 Nakamoto reduced the block size limit from 32 to 1 Megabyte as part of two commits. The first commit introduces the new \texttt{BLOCK\_SIZE\_LIMIT} constant\cite{nakamoto:commit:1} and the other commit enforcing the blocks to be under the limit\cite{nakamoto:commit:2}. Nakamoto did not give any explanation as to the reason of this limit. As there was only a few transactions per block at this time a limit reduced the worst case scenario for a DoS attacker filling up the blocks with dummy transactions. 
+
+All transactions is validated by all nodes, imposing a cost on the network in CPU time, bandwidth and disk space. With a limit the cost of operating a node would be kept low allowing more peers to be able to participate in the network. 
+
+Math example, compare visa 
+
+\section{Increasing block size limit}
+
+There has been many proposals to increase the block size. Including a handful of BIPs:
+
+\begin{itemize}
+	
+	\item BIP 100 allows the miner to vote on the block limit by encoding a proposed value in the coinbase unlocking script. A 75\% supermajority may increase the block size limit every 2016 blocks. Each period change is limited to only increase by 5\% from the previous period.\cite{bip:0100:dynamic:block:size}
+	
+\end{itemize}
 
 \section{Removing decentralization}
 
