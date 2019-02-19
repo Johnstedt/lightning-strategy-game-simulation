@@ -1,20 +1,20 @@
 \chapter{The Bitcoin Network}
 	\label{sec:bitcoin}
 
-Bitcoin is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in Oktober 2008\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of nodes and the system's native currency. The network and protocol is usually refereed with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While it's convention to not capitalize currencies in the English language, it's not been widely followed in mainstream or semi-mainstream outlets. Also the plural form of currencies is equivalent to the singular. The convention will be followed in this report.}
+Bitcoin is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in Oktober 2008\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of nodes and the system's native currency. The network and protocol is usually refereed to with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While it's convention to not capitalize currencies in the English language, it's not been widely followed in mainstream or semi-mainstream outlets. Also the plural form of currencies is equivalent to the singular. The convention will be followed in this report.}
 
 \section{Digital Signatures}
 
-Part of the solution is provided by one way asymmetric encryption utilizing the \texttt{secp256k1} elliptic curve. Asymmetric encryption or public-key encryption essentially boils down to the ability to derive a public key from a private key without the ability to derive the private key from the public key and the ability to prove ownership of a private key through signatures without disclosing the private key. Ownership of bitcoin is proved by signing a previous transaction output payable to the public key derived bitcoin address\footnote{A bitcoin address is derived from the public key by hashing the public key with both \texttt{SHA256} and \texttt{RIPEMD160}}. 
+Part of the solution is provided by one way asymmetric encryption utilizing the \texttt{secp256k1} elliptic curve. Asymmetric encryption or public-key encryption allows the generation of key pair with the ability to derive a public key from a private key without the ability to derive the private key from the public key and the ability to prove ownership of the private key through signatures without disclosing the private key. Ownership and expenditure of bitcoin is proved by signing a previous transaction output payable to the public key derived bitcoin address\footnote{A bitcoin address is derived from the public key by hashing the public key with both \texttt{SHA256} and \texttt{RIPEMD160}} with the accompanying private key. 
 
 \begin{figure}[!htb]
-	\hspace*{-2cm} 
+
 	\centering
-	\includegraphics[width=8cm]{transaction.png}
+	\includegraphics[width=6cm]{transaction.png}
 	\caption{\textit{A simplified illustration of two transactions. 
 	}}
-	\label{fig:merkle:tree}
-	\hspace*{2mm} 	
+	\label{fig:two:tx}
+
 \end{figure}
 
 Bitcoin is essentially a long ledger of inputs and outputs. Note that the whole output must be spent in the same transaction and usually there is an output leading back to an address the spender controls with the 'change'. The sum of all the inputs and the sum of all the outputs usually does not line up, the differential is the implicit miners fee the miner receives if the transaction is included in a block. 
@@ -26,55 +26,63 @@ While digital signatures are able prove ownership of bitcoin. There is nothing t
 The \textit{Proof-of-work} algoithm is directly tied into the bitcoin transaction history data structure composite of a chain of blocks as seen in figure \ref{fig:blockchain}.
 
 \begin{figure}[!htb]
-	\hspace*{-2cm} 
+	\hspace*{-0.4cm} 
 	\centering
 	\includegraphics[width=10cm]{blockchain.png}
-	\caption{\textit{The blockchain. 
+	\caption{\textit{Three blocks linked by the hash of the previous block's header. Only the content in the header is immutable without redoing the \textit{Proof-of-work}
 	}}
 	\label{fig:blockchain}
 	\hspace{2mm} 
 \end{figure}
 
+IN UNI
 The work in the algorithm is to find a sufficiently small hash of the previous block's header. A hash is valid if it's smaller than a number imposted by a difficulty target. There is no way to reverse engineer a sufficient hash and the algorithm repeatedly hashes the block header, changing the nonce, until a hash is found. The consensus is reached by regarding the longest chain of work to be valid. The blocks are in a sense chained through these hashed headers and each additional block adds cumulative work on the blocks below reducing the chance of ever being reverted.
 
 The blocks are chained through the hash of the previous block's header. A block is only valid if the hash is lower than an number imposed by the difficulty target. The hash is deterministic but for all intents and purposes it is random and to find a valid hash one simply hashes the header until a valid hash is found. This process is known as \textbf{mining}. The difficulty target adjusts every 2015th\footnote{This is off by one bug, 2016 blocks is two weeks} block\cite{repository:bitcoin} and forces the average time for a block to be mined to always be ten minutes. This sort of design is known as \textit{Proof-of-Work} and bitcoin differentiate from previous implementations with the difficulty adjustment\cite{back:hashcash}\footnote{Bitcoin uses the dubble \texttt{SHA256} hash, it is essentially the same as hashcash in the cost function being non-interactive, publicly auditable, trapdoor-free and unbounded probabilistic cost\cite{back:hashcash}.}.
+END UNI
+BEGIN PREV
+The blocks are chained through the hash of the previous block's header. A block is only valid if the hash is less than an number imposed by the difficulty target. There is no known way to reverse engineer a valid hash and to find a valid hash one has to repeatably hash the header, changing the nonce, until a sufficient hash is found. When a hash is found it can be verified by all other nodes who only need to hash it once for verification. This process is known as \textit{Proof-of-Work} generally and \textit{mining} specifically for bitcoin drawing from the similarities between the physical labor required to mint gold coins. The difficulty target adjusts every 2015th\footnote{This is a off by one bug, 2016 blocks is two weeks} block\cite{repository:bitcoin} and forces the average time for a block to be mined to always be around ten minutes. Bitcoin is not the first attempt at creating a currency based on \textit{Proof-of-Work} and differentiate from previous implementations with the difficulty adjustment\cite{back:hashcash}\footnote{Bitcoin uses the double \texttt{SHA256} hash, it is inspired by hashcash and is very similar to hashcash in the cost function is non-interactive, publicly auditable, trapdoor-free and have an unbounded probabilistic cost\cite{back:hashcash}.}.
+
+The double-spending problem is solved with a simple consensus rule stating that all nodes agree that the longest chain of work is the valid chain and a shared transaction history. The more blocks chained after the block with a transaction, the less the chance of that transaction ever being reverted. Even if blocks are found simultaneously creating a tie, the next block will break the tie and consensus forms again.
+END PREV
 
 \subsection{Merkle Tree}
 
 \begin{figure}[!htb]
 	
 	\centering
-	\includegraphics[width=8cm]{merkle.png}
-	\caption{\textit{A merkle tree. 
+	\includegraphics[width=7cm]{merkle.png}
+	\caption{\textit{A merkle tree resulting from a four transactions A, B, C, D.
 	}}
 	\label{fig:merkle:tree}
 	
 \end{figure}
 
-The content in the block header is effectively unchangeable since a change would make the chain of hash invalid. The transactions are not in the header but are still immutable by the use of a Merkle tree(see fig \ref{fig:merkle:tree}). A Merkle tree is a tree in which the parent is the hash of its two children. The root hash of the tree is included in the header and if any transaction were to change that would cause the root hash to change rendering each transaction immutable by implication. Bitcoin uses the dubble \texttt{SHA256} as the merkle tree hash function.
+The content in the block header is practically immutable since a change would make the hash invalid. The transactions are not in the header but are still immutable by the use of a Merkle tree(see fig \ref{fig:merkle:tree}). A Merkle tree is a binary tree in which the parent is the hash of its two children. The root hash of the tree is included in the header and if any transaction were to change that would cause the root hash to change rendering each transaction immutable by implication. Bitcoin uses the double \texttt{SHA256} as the merkle tree hash function.
 
 \subsection{Incentive}
 
-The miners are incentivized by receiving the transaction fees from the transactions included in its block as well as a subsidy. The subsidy is on the form a coinbase transacion which has only outputs, this is how new bitcoin is minted. Every fourth year the subsidy halves and by 2140 will be zero. The miner must follow the consensus rules and mined blocks not following the rules will not be propagated through the network causing the miner to loose out on the block reward. A miner controlling more than 50\% of the hashing power could technically double-spend transactions by mining blocks on an own chain without publishing them and spending on the other chain and then publish the own longer chain. A huge problem with such an attack is that the confidence of the network would decrease causing the value of the 'stolen' bitcoin to be close the worthless and still owning a lot of specialized hashing hardware worthless without the network. In a sense such an attack would cause mutual destruction for both the network and the attacker. 
+The miners are incentivized by receiving the transaction fees from the transactions included in its block as well as a subsidy. The subsidy is on the form a coinbase transacion which has only outputs, this is how new bitcoin is minted. Every fourth year the subsidy halves and by 2140 will be zero. The miner must follow the consensus rules and mined blocks not following the rules will not be propagated through the network causing the miner to loose out on the block reward. A miner controlling more than 50\% of the hashing power could technically double-spend transactions by mining blocks on an own chain without publishing them and spending on the other chain and then publish the own longer chain. A huge problem with such an attack is that the confidence of the network would decrease causing the value of the 'stolen' bitcoin to be close the worthless and still owning a lot of specialized hardware, only capable of running the \texttt{SHA256} hashing algorithm, that is worthless without the network. In a sense such an attack would cause mutual destruction for both the network and the attacker. 
 
 \section{Script}
+\label{sec:script}
 
-Transactions utilize a forth-like polish-notation stack based execution scripting language\cite{antonopoulos:mastering:bitcoin}. Each transaction output consist of a locking script\footnote{Also refereed to as scriptPubKey. Locking script is a broader term and technically scriptPubKey scripts $ \subseteq $ locking scripts.}. In order to spend a valid unlocking script must be provided in the input to the spending transaction that solves the locking script\footnote{scriptSig, witness $\subseteq $ unlocking scripts.}. Validation is performed by executing the unlocking script and locking script sequentially as seen in figure \ref{fig:simple:script}. 
+Transactions utilize a forth-like polish-notation stack based execution scripting language\cite{antonopoulos:mastering:bitcoin}. Each transaction output consist of a locking script\footnote{Also refereed to as scriptPubKey. Locking script is a broader term and technically scriptPubKey scripts $ \subseteq $ locking scripts.}. In order to spend an output a valid unlocking script must be provided in the input to the spending transaction that solves the locking script\footnote{scriptSig, witness $\subseteq $ unlocking scripts.}. Validation is performed by executing the unlocking script and locking script sequentially as seen in figure \ref{fig:simple:script}. 
 
 \begin{figure}[!hbt]
-	
+		\centering
 	\begin{lstlisting}
- <@\texttt{\textcolor{red}{OP\_1}}@>   <@\texttt{\textcolor{green}{OP\_2 OP\_ADD OP\_3 OP\_EQUAL}}@>
-<@\texttt{\textcolor{red}{unlock}}@>           <@\texttt{\textcolor{green}{lock}}@>
+ <@\texttt{\textcolor{black}{OP\_1}}@>   <@\texttt{\textcolor{black}{OP\_2 OP\_ADD OP\_3 OP\_EQUAL}}@>
+<@\texttt{\textcolor{black}{unlock}}@>           <@\texttt{\textcolor{black}{lock}}@>
 	\end{lstlisting}
 	
 	\caption{\textit{ A simple predicate. Evaluated from left to right (1 2 +) -> 3 and
-			(3 3 =) -> true. This lock script can obviously be solved by anyone and is thus not used.
+			(3 3 =) -> true. This lock script can obviously be solved by anyone and should not be used with real bitcoin.
 	}}
 	\label{fig:simple:script}
 \end{figure}
 
-The two scripts essentially forms a predicate. If the predicate is true the transaction is true, Nakamoto considered naming the language predicate but went with script to be more inclusive to a broader audience\cite{nakamoto:predicate}.
+The two scripts added together forms a predicate. If the predicate is true the transaction is true, Nakamoto considered naming the language predicate but went with script to be more inclusive to a broader audience\cite{nakamoto:predicate}.
 
 \subsection{Pay to Public Key Hash}
 
@@ -83,13 +91,13 @@ the private key to the public key to spend the output.
 
 
 \begin{figure}[!hbt]
-	
+		\centering
 	\begin{lstlisting}
-<@\texttt{\textcolor{red}{<Sig><Pub\_Key>}}@>   
-   <@\texttt{\textcolor{red}{unlock}}@>
+<@\texttt{\textcolor{black}{<Sig><Pub\_Key>}}@>   
+   <@\texttt{\textcolor{black}{unlock}}@>
    
-<@\texttt{\textcolor{green}{OP\_DUP OP\_HASH160 <Pub\_Key\_Hash> OP\_EQUALVERIFY OP\_CHECKSIG}}@>
-   <@\texttt{\textcolor{green}{lock}}@>
+<@\texttt{\textcolor{black}{OP\_DUP OP\_HASH160 <Pub\_Key\_Hash> OP\_EQUALVERIFY OP\_CHECKSIG}}@>
+   <@\texttt{\textcolor{black}{lock}}@>
 	\end{lstlisting}
 	
 	\caption{\textit{ The P2PKH locking and unlocking scripts.
@@ -97,26 +105,23 @@ the private key to the public key to spend the output.
 	\label{fig:P2PKH}
 \end{figure}
 
-The P2PKH pushed the signature produced by the private key and the public key to the stack. The public key get duplicated and one of them get hashed. The \texttt{OP\_HASH160} is a double hash and first hashes the key with \texttt{SHA256} and then \texttt{RIPEMD160}. This is done to hide the public key until expenditure, which is useful if, for example, the ECDSA would break and private keys could be reversed. The combination of these two hashes makes it way harder to break. In the early days of the network this obfuscation technique wasn't used, for example the first transaction between Nakamoto and Finney didn't\cite{nakamoto:finney:tx}.
-The \texttt{OP\_EQUALVERIFY} pops the two public key hashes and terminates the script with false if they are unequal.
-The \texttt{OP\_CHECKSIG} verifies that the signature is indeed a match with the public key. 
-% In the scripting language uses guard clauses than OP\_EQUALVERIFY, OP\_CHECKSIG should this be mentioned?
+The P2PKH pushed the signature produced by the private key and the public key to the stack. The public key gets duplicated and one of them get hashed. The \texttt{OP\_HASH160} is a double hash and first hashes the key with \texttt{SHA256} and then \texttt{RIPEMD160}. This is done to hide the public key until expenditure, which is useful if, for example, the ECDSA would break and private keys could be reversed. The combination of these two hashes makes it much harder to break. In the early days of the network this obfuscation technique wasn't used, for example the first transaction between Nakamoto and Finney did not hide the public key\cite{nakamoto:finney:tx}.The \texttt{OP\_EQUALVERIFY} pops the two public key hashes and terminates the script with false if they are non equal. The \texttt{OP\_CHECKSIG} verifies that the signature is indeed a match with the public key and returns true. 
 
 \subsection{Pay to Script Hash}
 
 The Pay-to-Script-Hash or P2SH is a more flexible transaction than the P2PKH and was introduced with BIP016\cite{bip:0016:p2sh}. It allows the locking script to only be the hash of the redeemable script. If a cumbersome script with many public keys is considered as seen in figure \ref{fig:cumbersome:script}:
 
 \begin{figure}
-	
+	\centering
 	\begin{lstlisting}
-<@\texttt{\textcolor{red}{0 <Sig A> <Sig B>}}@>   
-   <@\texttt{\textcolor{red}{unlock}}@>
+<@\texttt{\textcolor{black}{0 <Sig A> <Sig B>}}@>   
+   <@\texttt{\textcolor{black}{unlock}}@>
 	
-<@\texttt{\textcolor{green}{2 <Pk\_A><Pk\_B><Pk\_C> 3 OP\_CHECKMULTISIG}}@>
-   <@\texttt{\textcolor{green}{lock}}@>
+<@\texttt{\textcolor{black}{2 <Pk\_A><Pk\_B><Pk\_C> 3 OP\_CHECKMULTISIG}}@>
+   <@\texttt{\textcolor{black}{lock}}@>
 	\end{lstlisting}
 	
-	\caption{\textit{ Showing a multisig transaction which require to signatures out of three to be spent. Note the \texttt{0} in the unlock script, it's there due to a bug with \texttt{OP\_CHECKMULTISIG} which pops an extra item from the stack. If not for the \texttt{0} it would try to pop an empty stack. The dummy value must be a \texttt{0} with BIP 147 compliant node implementations\cite{bip:0147:dummy:zero}.
+	\caption{\textit{ Showing a multisig transaction which require to two signatures out of three to be spent. Note the \texttt{0} in the unlock script, it's there due to a bug with \texttt{OP\_CHECKMULTISIG} which pops an extra item from the stack. If not for the \texttt{0} it would try to pop an empty stack. The dummy value must be a \texttt{0} with BIP 147 compliant node implementations\cite{bip:0147:dummy:zero}.
 	}}
 	\label{fig:cumbersome:script}
 \end{figure} 
@@ -126,11 +131,11 @@ This multisig transaction(in figure \ref{fig:cumbersome:script}) could be rewrit
 \begin{figure}[hbt!]
 	
 	\begin{lstlisting}
-<@\texttt{\textcolor{red}{0 <Sig A> <Sig B> <redeem script> }}@>   
-   <@\texttt{\textcolor{red}{unlock}}@>
+<@\texttt{\textcolor{black}{0 <Sig A> <Sig B> <redeem script> }}@>   
+   <@\texttt{\textcolor{black}{unlock}}@>
 	
-<@\texttt{\textcolor{green}{OP\_HASH160 <redeem script hash> OP\_CHECKVERIFY}}@>
-   <@\texttt{\textcolor{green}{lock}}@>
+<@\texttt{\textcolor{black}{OP\_HASH160 <redeem script hash> OP\_CHECKVERIFY}}@>
+   <@\texttt{\textcolor{black}{lock}}@>
 	\end{lstlisting}
 	
 	\caption{\textit{ The P2SH transaction which is essentially equivalent to the multisig in figure \ref{fig:cumbersome:script}
@@ -148,9 +153,9 @@ Converting to a P2SH transaction does two things:
 	
 \end{itemize}
 
-P2SH also allows the script to be used as an address(see BIP013\cite{bip:0013:p2shaddr}). By simply sending to the script address could fund any type of complex transaction with no added complexity to the sender.
+P2SH also allows the script to be used as an address(see BIP013\cite{bip:0013:p2shaddr}). By simply sending to the script address could fund any type of complex transaction with no added complexity for the sender.
 
-The scripts can be made quite advanced enabling many layers on top of it, transactions is sometimes be referenced to as 'smart contracts'\footnote{First formally defined by Nick Szabo in 1994\cite{szabo:smart:contracts}}.
+The scripts can be made quite advanced enabling many layers on top of it, transactions is sometimes referred to as 'smart contracts'\footnote{First formally defined by Nick Szabo in 1994\cite{szabo:smart:contracts}}.
 
 \begin{figure}[hbt!]
 	
@@ -183,7 +188,7 @@ One example of a more advanced script is this multisignature locking script with
 	\item 90 days passed and D signature.
 \end{itemize} 
 
-The Lightning Network utilize many complex transactions and more on this topic in section \ref{sec:lightning:network}.
+The Lightning Network utilize many complex transactions and more will be seen in chapter \ref{sec:lightning:network}.
 
 \section{Network}
 

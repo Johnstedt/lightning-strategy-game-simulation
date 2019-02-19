@@ -33,25 +33,36 @@ In order for a channel to be useful the creation of a new commitment transaction
 
 The solution is to construct the commitment transaction similar to that of a fidelity bond where one party would be penalized if violating the agreement. In this case violation is broadcasting any but the latest commitment transactions. To be able to ascribe blame to the violating party the commitment transactions for the same channel state must be unique as otherwise one would not know which party broadcasted the transaction to the network. Only uniqueness is however not enough since there is no way to enforce the penalty for violation. 
 
-The enforcement is possible if revocation is built into the commitment transaction, where the other party could revoke a faulty broadcast. This is possible with the addition of relative block maturity introduced with BIP68\cite{bip:0068:sequence:lock:time}(see section \ref{sec:rlt}). The commitment transaction has two output paths, one is the other party's funds spendable immediately. The other output has two
-redeemable paths. Either:
+The enforcement is possible if revocation is built into the commitment transaction, where the other party could revoke a faulty broadcast. This is possible with the addition of relative block maturity introduced with BIP68\cite{bip:0068:sequence:lock:time}(see section \ref{sec:rlt}). The commitment transaction has two output paths, one is the other party's funds spendable immediately. The other output has two redeemable paths. Either:
 
 \begin{enumerate}
-	\item The broadcasting party can spend the funds after a defined relative block time has passed. Essentially leaving time window for dispute for the violated party to enforce the penalty.
+	\item The broadcasting party can spend the funds after a defined relative block time has passed. Essentially leaving time window for dispute for the violated party to enforce the penalty(Revocable delivery).
 	\item The non broadcasting party can refute that the commitment transaction is not last signed spending spending the output as penalty.
 \end{enumerate}
 
 Remember that the commitment transactions is reversed for the other party. This type of output which enable revocation is called a Revocable Sequence Maturity Contract(RSMC).
 
+\begin{figure}[!htb]
+	
+	\centering
+	\includegraphics[width=4cm]{RSMC.png}
+	\caption{\textit{Commitment transactions. 
+	}}
+	\label{fig:merkle:tree}
+	
+\end{figure}
+
+
 \subsection{Relative lock time}
 \label{sec:rlt}
 
-As previously mentioned the RSMC relies on relative block 
+The RSMC uses a construction known as a relative time lock and uses the \texttt{OP\_CHECKSEQUENCEVERIFY} code in the bitcoin scripting language(section \ref{sec:script}). The relative lock time will only become true after the defined time since the parent transaction were included in a block has passed. To avoid the block miners to become oracles on time, the median time of the eleven last blocks are used as the lock time(BIP113\cite{bip:0113:median:time:passed}). The \texttt{OP\_CHECKSEQUENCEVERIFY} was activated by BIP112\cite{bip:0112:sequence:lock:time:soft:fork}. The block time is therefor approximately an hour behind real time.
 
 \subsection{Revocation of old commitment transaction}
 
-In order to update the channel balance a new pair of commitment transactions is made and atomically allow the other party to redeem the revocation path in the previous commitment transaction.
+In order to update the channel balance a new pair of commitment transactions. The previous commitment transactions is invalidated by signing a Breach Remedy Transaction(BRT) spending from one own previous commitment transaction and handing it over. The other party does the same. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
 
+It is necessary for each party to monitor the blockchain for old commitment transactions and to broadcast the Breach Remedy Transaction in case it happens. If the Breach Remedy Transaction is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and the incorrect channel balance is settled and valid on the blockchain.
 
 \section{Multihop payments}
 
