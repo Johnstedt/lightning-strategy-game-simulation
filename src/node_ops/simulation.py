@@ -29,27 +29,11 @@ def create_node(settings):
 		# Simulation attributes
 		'attachment_policy': settings['attachment_policy'],
 
-		'profits': 0
+		'profits': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+		'total_profits': 0,
+		"base_fee": random.randint(500, 1501),
+		"fee_per_millionth": random.randint(500, 1501)
 	}
-
-
-def create_channel():
-	return {
-		'base_fee_millisatoshi': 1000,
-		'satoshis': 200000,
-		'destination': '0270685ca81a8e4d4d01beec5781f4cc924684072ae52c507f8ebe9daf0caaab7b',
-		'short_channel_id': '1457217x64x0',
-		'public': True,
-		'last_update': 1550232803,
-		'source': '02e5f5706e2d152a6acc67c646a83bb1c947b8ea98ad1f123272113612641add2a',
-		'delay': 144,
-		'message_flags': 1,
-		'channel_flags': 1,
-		'fee_per_millionth': 1,
-		'flags': 257,
-		'active': True
-	}
-
 
 class SimulationOperator:
 
@@ -63,7 +47,7 @@ class SimulationOperator:
 			print("SUPPLY ARGS PLZ")
 			exit(0)
 
-		self.__g = nx.Graph()
+		self.__g = nx.DiGraph()
 		self.__attachment = AttachmentPolicies()
 
 		for i in range(1, len(sys.argv)):
@@ -83,15 +67,20 @@ class SimulationOperator:
 
 		self.print_alive_nodes()
 
-		for i in range(self.__env['environment']['time_steps']):
+		"""for i in range(self.__env['environment']['time_steps']):
 			print("ITERATION ", i)
+			self.reset_day(i)
 			for j in range(self.__env['environment']['payments_per_step']):
-				self.route_payments_all_to_all()
+				self.route_payments_all_to_all(i)
 
-			self.check_for_bancrupcy(i)
+			self.network_probability_node_creation()
+			self.check_for_bankruptcy()
+
 		self.print_profit_table()
 
-		self.print_alive_nodes()
+		self.print_alive_nodes()"""
+
+		self.betweeness_centrality()
 
 	def build_environment(self):
 
@@ -102,7 +91,7 @@ class SimulationOperator:
 
 		return True
 
-	def route_payments_all_to_all(self):
+	def route_payments_all_to_all(self, day):
 
 		source = 0
 		dest = 0
@@ -114,7 +103,64 @@ class SimulationOperator:
 		routers.remove(source)
 		routers.remove(dest)
 		for n in routers:
-			self.__g.nodes[n]['profits'] += 1
+			self.__g.nodes[n]['profits'][day % 10] += (self.__g.nodes[n]["base_fee"] / 1000)  # TODO: MOVE TO CHANNEL
+			self.__g.nodes[n]['total_profits'] += (self.__g.nodes[n]["base_fee"] / 1000)
+
+	def network_probability_node_creation(self):
+		albert = 0
+		randoms = 0
+		for n in self.__g.nodes:
+			if self.__g.nodes[n]['attachment_policy'] == "barabasi_albert":
+				albert += 1
+			else:
+				randoms += 1
+
+		settings = numpy.random.choice([{"attachment_policy": "barabasi_albert"}, {"attachment_policy": "random"}], p=[albert/len(self.__g.nodes), randoms/len(self.__g.nodes)])
+		node = create_node(settings)
+		self.__attachment.attach(self.__g, node, 5)
+
+	def reset_day(self, day):
+		for n in self.__g.nodes:
+			self.__g.nodes[n]['profits'][day % 10] = 0
+
+	def check_for_bankruptcy(self):
+		changed = False
+		remove = []
+
+		for node in self.__g.nodes:
+
+			if sum(self.__g.nodes[node]['profits']) < 10:
+				print(self.__g.nodes[node]['nodeid'], " Went bankrupt with method: ", self.__g.nodes[node]['attachment_policy'])
+				remove.append(node)
+				changed = True
+		if changed:
+			for n in remove:
+				self.__attachment.remove_all_barabasi(n)
+				self.__g.remove_node(n)
+
+		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g, weight="base_fee_millisatoshi")
+
+	def betweeness_centrality(self):
+		l = sorted(nx.betweenness_centrality(self.__g, normalized=False).items())
+		print(json.dumps(l, indent=2))
+		l2 = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
+		print(json.dumps(l2, indent=2))
+		last_edge = l2[len(l2)-1]
+
+		print(last_edge)
+		print(last_edge[0][0])
+
+		print(self.__g.get_edge_data(last_edge[0][0], last_edge[0][1]))
+
+		self.price_function(last_edge)
+
+	def price_function(self, last_edge):
+		edge_data = self.__g.get_edge_data(last_edge[0][0], last_edge[0][1])
+		for fee in range(500, 1500, 10):
+			#edge_data["base_fee_millisatoshi"] = fee
+			#self.__g.add_edge(last_edge[0][0], last_edge[0][1], **edge_data)
+			all_pair = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
+			print([edge[1] for edge in all_pair if edge[0][0] == last_edge[0][0] and edge[0][1] == last_edge[0][1]])
 
 	def print_alive_nodes(self):
 		albert = 0
@@ -126,35 +172,20 @@ class SimulationOperator:
 				random += 1
 		print("Barabasi nodes: ", albert, " Random nodes: ", random)
 
-	def check_for_bancrupcy(self, steps):
-		changed = False
-		remove = []
-		for node in self.__g.nodes:
-
-			if self.__g.nodes[node]['profits'] - steps <= 0:
-				print(self.__g.nodes[node]['nodeid'], " Went bankrupt with method: ", self.__g.nodes[node]['attachment_policy'])
-				remove.append(node)
-				changed = True
-		if changed:
-			for n in remove:
-				self.__g.remove_node(n)
-
-			self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g)
-
 	def print_profit_table(self):
 		list2 = []
 		for n in self.__g.nodes:
 			list2.append(self.__g.nodes[n])
 
-		list2 = sorted(list2, key=lambda k: k['profits'])
+		list2 = sorted(list2, key=lambda k: k['total_profits'])
 		cum_albert = 0
 		cum_random = 0
 		for n in list2:
-			print(n['attachment_policy'], " ", n['profits'])
+			print(n['attachment_policy'], " ", n['total_profits'])
 			if n['attachment_policy'] == "barabasi_albert":
-				cum_albert += n['profits']
+				cum_albert += n['total_profits']
 			else:
-				cum_random += n['profits']
+				cum_random += n['total_profits']
 
 		print("BARABASI TOTAL: ", cum_albert, " RANDOM TOTAL: ", cum_random)
 

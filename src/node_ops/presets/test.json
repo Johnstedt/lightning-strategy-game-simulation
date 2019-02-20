@@ -4,13 +4,17 @@
            "name": "matthew",
            "some_attr": "",
            "attachment_policy": "barabasi_albert",
-           "initial_distribution": 0.5
+           "initial_distribution": 0.5,
+           "base_fee": 1000,
+           "fee_per_millionth": 1
        },
        {
            "name": "random",
            "some_attr": "",
            "attachment_policy": "random",
-           "initial_distribution": 0.5
+           "initial_distribution": 0.5,
+           "base_fee": 1000,
+           "fee_per_millionth": 1
        }
    ],
     "environment": {
@@ -21,6 +25,6 @@
         "bankruptcy": 1,
         "new_nodes_per_step": 1,
         "new_nodes_policy": "mirror",
-        "time_steps": 100
+        "time_steps": 50
     }
 }
