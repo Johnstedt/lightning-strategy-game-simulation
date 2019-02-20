@@ -16,7 +16,9 @@ In this chapter the various scaling alternatives will be discussed.
 
 In 2010 Nakamoto reduced the block size limit from 32 to 1 Megabyte as part of two commits. The first commit introduces the new \texttt{BLOCK\_SIZE\_LIMIT} constant\cite{nakamoto:commit:1} and the other commit enforcing the blocks to be under the limit\cite{nakamoto:commit:2}. Nakamoto did not give any explanation as to the reason of this limit. As there was only a few transactions per block at this time a limit reduced the worst case scenario for a DoS attacker filling up the blocks with dummy transactions. 
 
-All transactions is validated by all nodes, imposing a cost on the network in CPU time, bandwidth and disk space. With a limit the cost of operating a node would be kept low allowing more peers to be able to participate in the network. 
+Increasing the amount of transactions would also increase the imposing cost for the ecosystem by forms of bandwidth, processing, storage and the speed by which the blocks can propagate through the network. With a limit the cost of operating a node would be kept low allowing more peers to be able to participate in the network. 
+
+% would come at an increased cost for the ecosystem (bandwidth, processing, and storage for relay nodes, as well as an impact on propagation speed of blocks on the network
 
 Math example, compare visa 
 
@@ -26,9 +28,17 @@ There has been many proposals to increase the block size. Including a handful of
 
 \begin{itemize}
 	
-	\item BIP 100 allows the miner to vote on the block limit by encoding a proposed value in the coinbase unlocking script. A 75\% supermajority may increase the block size limit every 2016 blocks. Each period change is limited to only increase by 5\% from the previous period.\cite{bip:0100:dynamic:block:size}
+	\item \textbf{BIP 100} allows the miner to vote on the block limit by encoding a proposed value in the coinbase unlocking script. A 75\% supermajority may increase the block size limit every 2016 blocks. Each period change is limited to only increase by 5\% from the previous period.\cite{bip:0100:dynamic:block:size}
 	
+	\item \textbf{BIP 101} proposes an immediate increase to 8 megabyte blocks and continue to double every second year. In the two year periods the size would increase at a linear pace based on the block timestamp.\cite{bip:0101:increase:block:size}
+	
+	\item \textbf{BIP 102} is a simple one time increase to 2 megabytes. The BIP would be triggered if 95\% of the latest blocks signaled support for the upgrade.\cite{bip:0102:increase:2mb}
+	
+	\item \textbf{BIP 103} aims to increase the block size in accordance with the technology. In practice however it increases the block size with 4.4\% every ~97 day, 17.7\% annually. \cite{bip:0103:increase:with:technology}
 \end{itemize}
+
+Most of these BIPs are implemented as a hard forks. Older nodes would regard the bigger blocks as being over the limit and thus invalid.
+If poorly executed, without a great majority upgrading the software in time, the network would be forked into two networks with 
 
 \section{Removing decentralization}
 

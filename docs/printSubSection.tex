@@ -23,8 +23,20 @@
 \usepackage{pgfplots}
 \usepackage{svg}
 
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{escapeinside={<@}{@>}}
+
 \usepackage[utf8x]{inputenc}
+\usepackage{csquotes}
 \usepackage[T1]{fontenc}
+
+\usepackage{titlesec}
+\titleformat{\chapter}
+{\normalfont\LARGE\bfseries}{{Chapter \thechapter~|\ }}{0pt}{}{}
+\titlespacing*{\chapter}{0pt}{20pt}{20pt}
+
+
 
 \def\mytitle{Routing Fee Estimation in Lightning Network}
 
@@ -111,7 +123,7 @@
     \setcounter{section}{0}
 
     \twocolumn
-    \input{macroeconomics}
+    \input{bitcoin}
 
     \onecolumn
     \newpage
