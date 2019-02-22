@@ -9,6 +9,7 @@ import numpy
 import random
 
 from attachment_policies import AttachmentPolicies
+import plot
 
 
 def create_node(settings):
@@ -31,9 +32,10 @@ def create_node(settings):
 
 		'profits': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 		'total_profits': 0,
-		"base_fee": random.randint(500, 1501),
+		"base_fee": random.randint(10, 1501),
 		"fee_per_millionth": random.randint(500, 1501)
 	}
+
 
 class SimulationOperator:
 
@@ -63,7 +65,9 @@ class SimulationOperator:
 		print(json.dumps(self.__env, indent=2))
 
 		self.build_environment()
-		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g)
+		print("hello")
+		#self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g)
+		print("routing table")
 
 		self.print_alive_nodes()
 
@@ -141,13 +145,14 @@ class SimulationOperator:
 		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g, weight="base_fee_millisatoshi")
 
 	def betweeness_centrality(self):
-		l = sorted(nx.betweenness_centrality(self.__g, normalized=False).items())
-		print(json.dumps(l, indent=2))
+		#l = sorted(nx.betweenness_centrality(self.__g, normalized=False).items())
+
 		l2 = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
-		print(json.dumps(l2, indent=2))
+
 		last_edge = l2[len(l2)-1]
 
 		print(last_edge)
+
 		print(last_edge[0][0])
 
 		print(self.__g.get_edge_data(last_edge[0][0], last_edge[0][1]))
@@ -156,11 +161,21 @@ class SimulationOperator:
 
 	def price_function(self, last_edge):
 		edge_data = self.__g.get_edge_data(last_edge[0][0], last_edge[0][1])
-		for fee in range(500, 1500, 10):
-			#edge_data["base_fee_millisatoshi"] = fee
-			#self.__g.add_edge(last_edge[0][0], last_edge[0][1], **edge_data)
+		plot_list = []
+
+		fee_range = range(10, 1500, 1)
+
+		for fee in fee_range:
+			edge_data["base_fee_millisatoshi"] = fee
+			self.__g.add_edge(last_edge[0][0], last_edge[0][1], **edge_data)
 			all_pair = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
-			print([edge[1] for edge in all_pair if edge[0][0] == last_edge[0][0] and edge[0][1] == last_edge[0][1]])
+			bc = [edge[1] for edge in all_pair if edge[0][0] == last_edge[0][0] and edge[0][1] == last_edge[0][1]][0]
+			if bc == 0:
+				break
+			plot_list.append(fee*bc)
+			print(fee, " ", bc, " ", fee * bc)
+
+		plot.plot_fee_curve(range(10, 10+len(plot_list)), plot_list)
 
 	def print_alive_nodes(self):
 		albert = 0

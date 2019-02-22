@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy
 
+import edges as e
+
+
 def plot_graph(g, num=''):
 
 	pos = nx.spring_layout(g)
@@ -53,5 +56,76 @@ def plot_degree_distribution(graphs, reference):
 	return True
 
 
+def plot_fee_curve(fee, profits):
+
+	plt.plot(fee, profits, 'b')
+	plt.savefig("plots/fee_curve")
+
+
 def p(k, y):
 	return k**(-y)
+
+
+def plot_explainable_ln():
+
+	g = nx.DiGraph()
+	g.add_node(1)
+	g.add_node(2)
+	g.add_node(3)
+	g.add_node(4)
+	g.add_node(5)
+	g.add_edge(1, 2, weight=5)
+	g.add_edge(2, 1, weight=2)
+
+	#pos = nx.spring_layout(g)
+	#nx.draw_networkx_nodes(g, pos, cmap=plt.get_cmap('jet'), node_size=90)
+	#nx.draw_networkx_edges(g, pos, edge_color="black")
+
+	ba = nx.barabasi_albert_graph(25, 3)
+
+	pos = nx.circular_layout(g)
+	labels = nx.get_edge_attributes(g, 'weight')
+	nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
+
+	#nx.draw_networkx_edges(g, pos)
+	nx.draw_circular(g)
+	plt.savefig('plots/circular.png')
+	nx.draw_random(g)
+	plt.savefig('plots/random.png')
+	nx.draw_spectral(g)
+	plt.savefig('plots/spectral.png')
+	plt.clf()
+	nx.write_gexf(g, "plots/test.gexf")
+
+	G = nx.path_graph(3)
+	bb = nx.betweenness_centrality(G, normalized=False)
+	nx.set_node_attributes(G, bb, name='betweenness')
+	bb = nx.betweenness_centrality(ba, normalized=False)
+	nx.set_node_attributes(ba, bb, name='betweenness')
+	nx.write_gexf(ba, "plots/barabasi_centrality.gexf")
+
+
+
+def save_graph(graph,file_name):
+	#initialze Figure
+	plt.figure(num=None, figsize=(20, 20), dpi=80)
+	plt.axis('off')
+	fig = plt.figure(1)
+	pos = nx.spring_layout(graph)
+	nx.draw_networkx_nodes(graph,pos)
+	nx.draw_networkx_edges(graph,pos)
+	nx.draw_networkx_labels(graph,pos)
+
+	cut = 1.00
+	xmax = cut * max(xx for xx, yy in pos.values())
+	ymax = cut * max(yy for xx, yy in pos.values())
+	plt.xlim(0, xmax)
+	plt.ylim(0, ymax)
+
+	plt.savefig(file_name,bbox_inches="tight")
+	pylab.close()
+	del fig
+
+
+if __name__ == "__main__":
+	plot_explainable_ln()
