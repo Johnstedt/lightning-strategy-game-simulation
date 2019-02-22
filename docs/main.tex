@@ -39,11 +39,22 @@
 
 \captionsetup{margin=20pt,font=small,labelfont=bf, format=plain}
 
+\def\bitcoin{%
+	\leavevmode
+	\vtop{\offinterlineskip %\bfseries
+		\setbox0=\hbox{B}%
+		\setbox2=\hbox to\wd0{\hfil\hskip-.03em
+			\vrule height .3ex width .15ex\hskip .08em
+			\vrule height .3ex width .15ex\hfil}
+		\vbox{\copy2\box0}\box2}}
+
 \def\mytitle{Routing Fee Estimation in Lightning Network}
 
 % Routing Fee Estimation in Bidirectional payment channel networks
 % Non Eploitable pricing of liqid channels in the lightning network
 % Emergance of routing policies in channel networks
+
+
 
 \title{\mytitle}
 \def\theauthor{John-John Markstedt}

@@ -10,7 +10,7 @@ The network protocol have been defined\cite{repository:lightning:rfc} with four 
 The Lightning network consists of many payment channels between both routing and non-routing nodes.
 A payment channels is a essentially a transaction containing funds locked up on the bitcoin network. It requires signatures from both parties to be able to spend the transaction and cease the channel.
 
-Initially each party have a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
+Initially each party have a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the initial split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
 
 \subsection{Funding Transaction}
 
@@ -29,9 +29,9 @@ It is critical that the signatures of the spending transaction is exchanged befo
 
 \subsection{Commitment transaction}
 
-In order for a channel to be useful the creation of a new commitment transaction\footnote{It may be easier to think of this type of transaction as a smart contract, as in this context it's the same thing.}, updating the balance, would need to invalidate the previous one. The previous transaction is after all still a valid bitcoin transaction. This creates a problem since each party would benefit from different commitment transactions being broadcast to the network.
+In order for a channel to be useful the creation of a new commitment transaction\footnote{It may be easier to think of this type of transaction outputs as smart contracts, as in this context it's the same thing.}, updating the balance, would need to invalidate the previous one. The previous transaction is after all still a valid bitcoin transaction. This creates a problem since each party would benefit from different commitment transactions being broadcast to the network.
 
-The solution is to construct the commitment transaction similar to that of a fidelity bond where one party would be penalized if violating the agreement. In this case violation is broadcasting any but the latest commitment transactions. To be able to ascribe blame to the violating party the commitment transactions for the same channel state must be unique as otherwise one would not know which party broadcasted the transaction to the network. Only uniqueness is however not enough since there is no way to enforce the penalty for violation. 
+The solution is to construct the commitment transaction similar to that of a fidelity bond where one party would be penalized if violating the agreement. In this case violation is broadcasting any but the latest commitment transactions. To be able to ascribe blame to the violating party the commitment transactions for the same channel state must be unique as otherwise one would not know which party broadcast the transaction to the network. Only uniqueness is however not enough since there is no way to enforce the penalty for violation.
 
 The enforcement is possible if revocation is built into the commitment transaction, where the other party could revoke a faulty broadcast. This became possible with the addition of relative block maturity introduced with BIP68(see section \ref{sec:rlt}). The commitment transaction has two output paths, one is the other party's funds spendable immediately. The other output has two redeemable paths. Either:
 
@@ -52,12 +52,46 @@ Remember that the commitment transactions is reversed for the other party. This 
 	
 \end{figure}
 
-
 \subsection{Revocation of old commitment transaction}
 
-In order to update the channel balance a new pair of commitment transactions. The previous commitment transactions is invalidated by signing a Breach Remedy Transaction(BRT) spending from one own previous commitment transaction and handing it over. The other party does the same. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
+In order to update the channel balance a new pair of commitment transactions. The previous commitment transactions is invalidated by both signing a Breach Remedy Transaction(BRT) spending from their own previous commitment transactions RSMC output and handing it over. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
 
-It is necessary for each party to monitor the blockchain for old commitment transactions and to broadcast the Breach Remedy Transaction in case it happens. If the Breach Remedy Transaction is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and the incorrect channel balance is settled and valid on the blockchain.
+It is necessary for each party to monitor the blockchain for old commitment transactions and to broadcast the Breach Remedy Transaction in case it happens. If the Breach Remedy Transaction is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and may be spent, settling the incorrect channel balance is settled and valid on the blockchain.
+
+\subsection{Alice and Bob opens a channel}
+
+Alice and Bob wants to open a channel. They agree on funding the channel with \textbf{0.5\bitcoin} each. They construct a funding transaction $F$ which require both Alice and Bobs signatures to be spent. Alice constructs a $CT_{A1}$ with two outputs $RSMC_{A1}$ and $SO_{B1}$ and similarly Bob constructs $CT_{B1}$ with outputs $RSMC_{B1}$ and $SO_{A1}$. Alice signs $CT_{B1}$ and Bob signs $CT_{A1}$\footnote{A note on notation - The lowered A,B indicates whether the output is spendable by Alice or Bob. The number denote the channel state the output corresponds to. SO stands for Spendable Output.}. Alice and Bob exchange signatures for $F$ and either of them broadcast $F$.
+
+Alice wants to buy a cookie from Bob for \textbf{0.2\bitcoin} and Bob agrees to sell. They each constructs new commitment transactions $CT_{A2}$, $CT_{B2}$, each with new $RSMC_{A2}$, $RSMC_{B2}$ and $SO_{B2}$, $SO_{A2}$ that reflects the new balance \textbf{0.7\bitcoin} to Bob and \textbf{0.3\bitcoin} to Alice without signing them. Before Bob can hand Alice the cookie the old $CT_{A1}$, $CT_{B1}$ is invalidated by Alice signing a $BRT_{B1}$ spending from $RSMC_{A1}$. Although Bob has nothing to gain by broadcasting $CT_{B1}$ as he would net \textbf{0.2\bitcoin} less - Bob signs $BRT_{A1}$ spending from $RSMC_{B1}$. Alice signs $CT_{B2}$ and Bob signs $CT_{A2}$. The channel balance is updated
+
+As long as the channel is open Alice and Bob may settle any imbalances between them with a new commitment transaction.  
+
+\subsection{Contracts and implementation}
+
+Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree. Each key in the tree can derive it's children and no child can derive it's parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key. So each party only needs to store the latest disclosed key as the other keys can be derived from it.
+
+\newpage
+\begin{figure}[hbt!]
+	\centering
+	\begin{lstlisting}[
+		basicstyle=\small, %or \small or \footnotesize etc.
+	]
+<@\texttt{\textcolor{black}{OP\_IF}}@>
+  <@\texttt{\textcolor{black}{<time> OP\_CHECKSEQUENCEVERIFY OP\_DROP}}@>
+  <@\texttt{\textcolor{black}{OP\_HASH160 <A pk> OP\_EQUALVERIFY OP\_CHECKSIG}}@>
+<@\texttt{\textcolor{black}{OP\_ELSE}}@>
+  <@\texttt{\textcolor{black}{2 <A r pk><B r pk> 2 OP\_CHECKMULTISIGVERIFY}}@>
+<@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ The Revocable Sequence Maturity Contract.
+	}}
+	\label{fig:RSMC}
+\end{figure}
+
+If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to the her revocation public key to Bob for Bob to be able to revoke a violation. 
+
+
 
 \section{Multihop payments}
 
