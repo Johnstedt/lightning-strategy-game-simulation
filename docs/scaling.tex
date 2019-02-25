@@ -41,11 +41,22 @@ Most of these BIPs are implemented as a hard forks. Older nodes would regard the
 If poorly executed, without a great majority upgrading the software in time, the network would be forked into two networks with diverging transaction histories. 
 
 % need better name for community worker
-\subsection{Contienous }
+\subsection{Contentious Hard Forks}
 
-No proposal to increase the block size has yet received enough support to be activated. This has caused some controversy among community members and multiple have attempted to increase the limit by force.
+No proposal to increase the block size has yet received enough support to be activated. This has caused some controversy among community members and multiple have attempted to increase the limit by force. 
 
-The bitcoin cash saga
+One of the earliest attempts to increase the block size was when node Bitcoin XT implemented BIP 101 mentioned above. It failed to reach the miner consensus it required to activate. The BIP 101 was then removed and replaced by a 2 megabyte block limit which forked bitcoin into a new network known as bitcoin classic. Mike Hearn, co-creator of Bitcoin XT along with Gavin Andersen, has made his intention clear arguing that the block size must increase for bitcoin to reach any adoption beyond a fringe niche\cite{hearn:classic}. 
+
+\begin{figure}[!htb]
+	\hspace*{-0.7cm} 
+	\centering
+	\includegraphics[width=8cm]{Bitcoin_XT_Nodes.png}
+	\caption{\textit{Historic Bitcoin XT node count. As of 2019-02-25 only 3 nodes is still active. Data retrieved from coin.dance.}}
+	\label{fig:equilibrium}
+	\hspace*{2mm} 	
+\end{figure}
+
+\subsection{The bitcoin cash saga}
 
 \begin{itemize}
 	\item SegWit2x

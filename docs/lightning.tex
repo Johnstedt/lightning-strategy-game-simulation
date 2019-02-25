@@ -43,13 +43,13 @@ The enforcement is possible if revocation is built into the commitment transacti
 Remember that the commitment transactions is reversed for the other party. This type of output which enable revocation is called a Revocable Sequence Maturity Contract(RSMC).
 
 \begin{figure}[!htb]
-	
+			\hspace*{-0.8cm} 
 	\centering
-	\includegraphics[width=4cm]{RSMC.png}
+	\includegraphics[width=8.5cm]{RSMC.png}
 	\caption{\textit{Commitment transactions. 
 	}}
 	\label{fig:merkle:tree}
-	
+			\hspace*{2mm} 
 \end{figure}
 
 \subsection{Revocation of old commitment transaction}
@@ -62,15 +62,27 @@ It is necessary for each party to monitor the blockchain for old commitment tran
 
 Alice and Bob wants to open a channel. They agree on funding the channel with \textbf{0.5\bitcoin} each. They construct a funding transaction $F$ which require both Alice and Bobs signatures to be spent. Alice constructs a $CT_{A1}$ with two outputs $RSMC_{A1}$ and $SO_{B1}$ and similarly Bob constructs $CT_{B1}$ with outputs $RSMC_{B1}$ and $SO_{A1}$. Alice signs $CT_{B1}$ and Bob signs $CT_{A1}$\footnote{A note on notation - The lowered A,B indicates whether the output is spendable by Alice or Bob. The number denote the channel state the output corresponds to. SO stands for Spendable Output.}. Alice and Bob exchange signatures for $F$ and either of them broadcast $F$.
 
-Alice wants to buy a cookie from Bob for \textbf{0.2\bitcoin} and Bob agrees to sell. They each constructs new commitment transactions $CT_{A2}$, $CT_{B2}$, each with new $RSMC_{A2}$, $RSMC_{B2}$ and $SO_{B2}$, $SO_{A2}$ that reflects the new balance \textbf{0.7\bitcoin} to Bob and \textbf{0.3\bitcoin} to Alice without signing them. Before Bob can hand Alice the cookie the old $CT_{A1}$, $CT_{B1}$ is invalidated by Alice signing a $BRT_{B1}$ spending from $RSMC_{A1}$. Although Bob has nothing to gain by broadcasting $CT_{B1}$ as he would net \textbf{0.2\bitcoin} less - Bob signs $BRT_{A1}$ spending from $RSMC_{B1}$. Alice signs $CT_{B2}$ and Bob signs $CT_{A2}$. The channel balance is updated
+Alice wants to buy a cookie from Bob for \textbf{0.2\bitcoin} and Bob agrees to sell. They each constructs new commitment transactions $CT_{A2}$, $CT_{B2}$, each with new $RSMC_{A2}$, $RSMC_{B2}$ and $SO_{B2}$, $SO_{A2}$ that reflects the new balance \textbf{0.7\bitcoin} to Bob and \textbf{0.3\bitcoin} to Alice without signing them. Before Bob can hand Alice the cookie the old $CT_{A1}$, $CT_{B1}$ is invalidated by Alice signing a $BRT_{B1}$ spending from $RSMC_{A1}$. Although Bob has nothing to gain by broadcasting $CT_{B1}$ as he would net \textbf{0.2\bitcoin} less - Bob signs $BRT_{A1}$ spending from $RSMC_{B1}$. Alice signs $CT_{B2}$ and Bob signs $CT_{A2}$. The channel balance is updated.
 
-As long as the channel is open Alice and Bob may settle any imbalances between them with a new commitment transaction.  
+If Alice tries to undo the cookie purchase by broadcasting $CT_{A1}$ giving \textbf{0.5\bitcoin} each. Bob simply broadcasts the $BRT_{B1}$ spending from Alice's share of the $CT_{A1}$ and Bob receives \textbf{1\bitcoin} and Alice \textbf{0\bitcoin}. 
+
+
+As long as the channel is open Alice and Bob may settle any imbalances between them with a new commitment transaction. 
+
+\begin{figure}[!htb]
+		\hspace*{-1.2cm} 
+	\centering
+	\includegraphics[width=9cm]{RSMC_flow.png}
+	\caption{\textit{Showing the channel balance state between Alice and Bob after the second Commitment transaction has been made. 
+	}}
+	\label{fig:merkle:tree}
+		\hspace*{2mm} 
+\end{figure}
 
 \subsection{Contracts and implementation}
 
-Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree. Each key in the tree can derive it's children and no child can derive it's parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key. So each party only needs to store the latest disclosed key as the other keys can be derived from it.
+Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree. Each key in the tree can derive its children and no child can derive its parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key may be used. So each party only needs to store the latest disclosed key as the other child keys can be derived from it.
 
-\newpage
 \begin{figure}[hbt!]
 	\centering
 	\begin{lstlisting}[
@@ -84,14 +96,40 @@ Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used t
 <@\texttt{\textcolor{black}{OP\_ENDIF}}@>
 	\end{lstlisting}
 	
-	\caption{\textit{ The Revocable Sequence Maturity Contract.
+	\caption{\textit{ A Revocable Sequence Maturity Contract.
 	}}
 	\label{fig:RSMC}
 \end{figure}
 
-If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to the her revocation public key to Bob for Bob to be able to revoke a violation. 
+If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to her revocation public key to Bob for Bob to be able to revoke a viola67tion. 
 
+\subsection{Closing channels}
 
+It's possible to close a channel by broadcasting the either of the latest $CT$s. However the broadcasting needs to wait the designated time period, losing out on the time value of money. Instead both parties can agree to construct a new Exercise Settlement Transaction $ES$ with direct spendable outputs instead of a $RSMC$ output. Signing $ES$ would close the channel and allowing both parities immediate access to the funds.
 
 \section{Multihop payments}
+
+By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel transact. Such a multihop payment would need the same trustless properties for the routing middle nodes as the direct channel parties shown above.
+
+\subsection{Hashed Timelock Contract}
+
+\begin{figure}[hbt!]
+	\centering
+	\begin{lstlisting}[
+	basicstyle=\small, %or \small or \footnotesize etc.
+	]
+<@\texttt{\textcolor{black}{OP\_IF}}@>
+  <@\texttt{\textcolor{black}{OP\_HASH160 <$H_R$> OP\_EQUALVERIFY}}@>
+  <@\texttt{\textcolor{black}{2 <A $PK_2$><B $PK_2$> OP\_CHECKMULTISIGVERIFY}}@>
+<@\texttt{\textcolor{black}{OP\_ELSE}}@>
+  <@\texttt{\textcolor{black}{2 <A $PK_1$><B $PK_1$> 2 OP\_CHECKMULTISIGVERIFY}}@>
+<@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ A Hashed Timelock Contract.
+	}}
+	\label{fig:RSMC}
+\end{figure}
+ 
+
 
