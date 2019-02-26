@@ -14,7 +14,7 @@ With the eventual growth of the Lightning Network a fee market for channel liqui
 \begin{figure}[!htb]
 	\hspace*{-0.7cm} 
 	\centering
-	\includegraphics[width=11cm]{equilibrium_sized.png}
+	\includegraphics[width=11cm]{images/equilibrium_sized.png}
 	\caption{ 
 		}
 		\label{fig:equilibrium}
@@ -30,6 +30,15 @@ The cost of procuring a shortest path between s and d might be unequal for two d
 Betweenness centrality
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
+
+Steps to find the maximizing the fee profit for outgoing channel $C$ assuming pairs have a uniform probability of conducting a payment.
+
+\begin{enumerate}
+	\item Calculate the shortest path from all-to-all vertices without going through $C$ with either Floyd-Warshall or Johnson. 
+	\item Calculate shortest path from $C$ source to all explicitly going through $C$ with Dijkstra.
+	\item Compare difference between all-to-all cost with all-to-$V$-to-all, producing a cumulative summation over the difference.
+	\item Maximizing fee * cumulative difference.
+\end{enumerate} 
 
 \section{Topology}
 
@@ -74,12 +83,13 @@ coraeugcrg ecuogcroeug e auoe craoecucgcr aoecug ceoeau
 
 \newpage
 \onecolumn
+
 \begin{figure}[!htb]
 	\hspace*{-0.7cm} 
 	\centering
-	\includegraphics[width=12cm]{testnet_force.png}
+	\includegraphics[width=12cm]{graphs/testnet_force.png}
 	\vspace*{-0.4cm} 
-	\includegraphics[width=13.6cm]{mainnet_force3.png}
+	\includegraphics[width=13.6cm]{graphs/mainnet_force3.png}
 	\caption{\textit{
 		Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi\cite{repository:gephi}.}}
 	\label{fig:equilibrium}

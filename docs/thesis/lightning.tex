@@ -45,7 +45,7 @@ Remember that the commitment transactions is reversed for the other party. This 
 \begin{figure}[!htb]
 			\hspace*{-0.8cm} 
 	\centering
-	\includegraphics[width=8.5cm]{RSMC.png}
+	\includegraphics[width=8.5cm]{images/RSMC.png}
 	\caption{\textit{Commitment transactions. 
 	}}
 	\label{fig:merkle:tree}
@@ -72,7 +72,7 @@ As long as the channel is open Alice and Bob may settle any imbalances between t
 \begin{figure}[!htb]
 		\hspace*{-1.2cm} 
 	\centering
-	\includegraphics[width=9cm]{RSMC_flow.png}
+	\includegraphics[width=9cm]{images/RSMC_flow.png}
 	\caption{\textit{Showing the channel balance state between Alice and Bob after the second Commitment transaction has been made. 
 	}}
 	\label{fig:merkle:tree}
@@ -107,12 +107,17 @@ If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RS
 
 It's possible to close a channel by broadcasting the either of the latest $CT$s. However the broadcasting needs to wait the designated time period, losing out on the time value of money. Instead both parties can agree to construct a new Exercise Settlement Transaction $ES$ with direct spendable outputs instead of a $RSMC$ output. Signing $ES$ would close the channel and allowing both parities immediate access to the funds.
 
-\section{Multihop payments}
+\section{Network spanning payments}
 
 By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel transact. Such a multihop payment would need the same trustless properties for the routing middle nodes as the direct channel parties shown above.
 
 \subsection{Hashed Timelock Contract}
 
+Extra output in ct
+
+produce of hash image R
+
+Create new CT, exchanging BRT as before, settle HTLC sending keys.
 \begin{figure}[hbt!]
 	\centering
 	\begin{lstlisting}[
@@ -132,4 +137,19 @@ By combining channels into a network, a payment could potentially ripple through
 \end{figure}
  
 
+\subsection{Multi-hop payments} 
+
+\begin{figure}[!htb]
+
+	\centering
+	\includegraphics[width=7.5cm]{images/multihop.png}
+
+	\caption{\textit{
+			Shows a multihop payment from Alice to Dave across three channels $C_{AB}$, $C_{BC}$, $C_{CD}$. It's critical that the $HTLC$s is constructed in the correct order and with decreasing timesteps $TL_{1}$ > $TL_{2}$ > $TL_{3}$.
+		}}
+	\label{fig:equilibrium}
+
+\end{figure}
+
+After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn can then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks was improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob at a loss.
 
