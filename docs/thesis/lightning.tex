@@ -80,7 +80,7 @@ As long as the channel is open Alice and Bob may settle any imbalances between t
 \end{figure}
 
 \subsection{Contracts and implementation}
-
+\label{sec:hdw}
 Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree. Each key in the tree can derive its children and no child can derive its parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key may be used. So each party only needs to store the latest disclosed key as the other child keys can be derived from it.
 
 \begin{figure}[hbt!]
@@ -101,23 +101,20 @@ Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used t
 	\label{fig:RSMC}
 \end{figure}
 
-If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to her revocation public key to Bob for Bob to be able to revoke a viola67tion. 
+If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to her revocation public key to Bob for Bob to be able to revoke a violation. 
 
 \subsection{Closing channels}
 
 It's possible to close a channel by broadcasting the either of the latest $CT$s. However the broadcasting needs to wait the designated time period, losing out on the time value of money. Instead both parties can agree to construct a new Exercise Settlement Transaction $ES$ with direct spendable outputs instead of a $RSMC$ output. Signing $ES$ would close the channel and allowing both parities immediate access to the funds.
 
-\section{Network spanning payments}
+\section{Network wide payments}
 
-By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel transact. Such a multihop payment would need the same trustless properties for the routing middle nodes as the direct channel parties shown above.
+By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle nodes as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(HTLC) for each of the channels in the route.
 
 \subsection{Hashed Timelock Contract}
 
-Extra output in ct
+A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a hash in a designated time limit. 
 
-produce of hash image R
-
-Create new CT, exchanging BRT as before, settle HTLC sending keys.
 \begin{figure}[hbt!]
 	\centering
 	\begin{lstlisting}[
@@ -125,19 +122,111 @@ Create new CT, exchanging BRT as before, settle HTLC sending keys.
 	]
 <@\texttt{\textcolor{black}{OP\_IF}}@>
   <@\texttt{\textcolor{black}{OP\_HASH160 <$H_R$> OP\_EQUALVERIFY}}@>
-  <@\texttt{\textcolor{black}{2 <A $PK_2$><B $PK_2$> OP\_CHECKMULTISIGVERIFY}}@>
+  <@\texttt{\textcolor{black}{2 <A $PK_2$><B $PK_2$> OP\_CHECKMULTISIGVERIFY}}@>  
 <@\texttt{\textcolor{black}{OP\_ELSE}}@>
+  <@\texttt{\textcolor{black}{<time> OP\_CHECKSEQUENCEVERIFY OP\_DROP}}@>
   <@\texttt{\textcolor{black}{2 <A $PK_1$><B $PK_1$> 2 OP\_CHECKMULTISIGVERIFY}}@>
 <@\texttt{\textcolor{black}{OP\_ENDIF}}@>
 	\end{lstlisting}
 	
-	\caption{\textit{ A Hashed Timelock Contract.
+	\caption{\textit{ A Hashed Timelock Contract. It's not yet viable for payments in this state.
 	}}
-	\label{fig:RSMC}
+	\label{fig:HTLC}
 \end{figure}
- 
 
-\subsection{Multi-hop payments} 
+A $HTLC$ can be seen in figure \ref{fig:HTLC} and contains two validation paths. 
+
+\begin{enumerate}
+	\item If Bob have the knowledge of R that produces $H_{R}$ he can validate the first path. (Execution)
+	\item If Bob fails to prove knowledge of preimage R, Alice may validate the second path after a designated time. (Timeout)
+\end{enumerate}
+
+\subsection{Revocation of HTLCs}
+
+$HTLC$s have a similar problem as with direct payment channels, if an old $CT$ is broadcast both validation paths may be valid. In the same manner as before, the $HTLC$ is made revocable by the construction of two different contracts for each party $HTLC_{A1}$ and $HTLC_{B1}$. So here again the possibility to ascribe blame exists. Adding revocable paths to $HTLC_{A1}$ and $HTCL_{B1}$ is necessary\footnote{It's necessary to include this path as an uncooperative party may never broadcast the execution/timeout transaction in which revocation is possible.} but not enough since the execution path is also valid. A period for dispute must still be had as the disclosure may be correct but may be from an old commitment transaction. The same is true for the timeout path as Bob may not have knowledge of $R$ in an old commitment transaction.   
+
+Instead the timeout / execution path to oneself is spent into new transactions with a dispute period and ability for the other party to revoke an incorrect broadcast. 
+
+\begin{figure}[hbt!]
+
+	\centering
+
+	\begin{lstlisting}[
+	basicstyle=\small, %or \small or \footnotesize etc.
+	linewidth=10cm
+	]
+<@\texttt{\textcolor{black}{OP\_DUP OP\_HASH160 <$H_{RPK}$> OP\_EQUAL}}@>
+<@\texttt{\textcolor{black}{OP\_IF}}@>
+  <@\texttt{\textcolor{black}{OP\_CHECKSIG}}@>
+<@\texttt{\textcolor{black}{OP\_ELSE}}@>
+  <@\texttt{\textcolor{black}{<$PK_{B}$> OP\_SWAP OP\_SIZE 32 OP\_EQUAL}}@>
+  <@\texttt{\textcolor{black}{OP\_NOTIF}}@>
+    <@\texttt{\textcolor{black}{OP\_DROP 2 OP\_SWAP <$PK_{A}$> 2 OP\_CHECKMULTISIG}}@>  
+  <@\texttt{\textcolor{black}{OP\_ELSE}}@> 
+    <@\texttt{\textcolor{black}{OP\_HASH160 <$R_{preimage}$> OP\_EQUALVERIFY}}@> 
+  <@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+<@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ The $HTLC_{A1}$ as offered by Alice
+	}}
+	\label{fig:alice:HTLC}
+\end{figure}
+
+The $HTLC_{A1}$ seen in figure \ref{fig:alice:HTLC} can only be broadcast by Alice and contains three validation paths:
+
+\begin{enumerate}
+	\item Bob can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
+	\item The output is spent by a pre-signed transaction to a new transaction with a dispute period.
+	\item Bob can disclose knowledge of R and spend the output.
+\end{enumerate}
+
+The order of the two last clauses is reversed for Bob's $HTLC_{B1}$ as if Bob can prove knowledge of $R$ the output is spent to a new transaction $SF$ for disputation.
+The $HTLC_{B1}$ thus contain:
+
+\begin{enumerate}
+	\item Alice can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
+	\item Bob can prove knowledge of $R$ the output is spent to a new transaction $SF$.
+	\item After the designated time Alice can spend the output.
+\end{enumerate}
+
+The new transactions both the second clauses spends to is constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $HTLC_{B1}$ in figure \ref{fig:timeout:tx}.
+
+\begin{figure}[hbt!]
+	
+	\centering
+	
+	\begin{lstlisting}[
+	basicstyle=\small, %or \small or \footnotesize etc.
+	linewidth=10cm
+	]
+<@\texttt{\textcolor{black}{OP\_IF}}@>
+  <@\texttt{\textcolor{black}{<$PK_{RA}$>}}@>
+<@\texttt{\textcolor{black}{OP\_ELSE}}@>
+  <@\texttt{\textcolor{black}{<time> OP\_CHECKSEQUENCEVERIFY OP\_DROP }}@>
+  <@\texttt{\textcolor{black}{<$PK_{B}$>}}@>
+<@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+<@\texttt{\textcolor{black}{OP\_CHECKSIG}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ Showing the transaction $HTLC_{B}$ spends to, the keys are reversed for $HTLC_{A}$.
+	}}
+	\label{fig:timeout:tx}
+\end{figure}
+
+A $HTLC$ is terminated off-chain by creating a new commitment transaction, without $HTLC$ outputs, reflecting new the balance state as both parties knows what would transpire if the transaction were broadcast. In the creation of the new $CT$ both parties disclose the both the private keys corresponding to the two revocation outputs as a penalty if and old $CT$ were broadcast. Hence most transactions will be kept off chain and only held in case of an uncooperative party.
+
+In this manner Hashed Timelock Contracts may be used without the need for either of the channel parties to trust one another.
+
+Note that key generation and disclosure may be used for $HTLC$ in the same manner previously disused in section \ref{sec:hdw}.
+
+FULL PAGE IMAGE OF CONTRACTS STATE HERE
+
+\section{Multi-hop payments} 
+
+Alice pays Carol Finds a route with Gosip
+
+PAIRING MULTIPLE CHANNALES 
 
 \begin{figure}[!htb]
 
@@ -151,5 +240,7 @@ Create new CT, exchanging BRT as before, settle HTLC sending keys.
 
 \end{figure}
 
-After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn can then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks was improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob at a loss.
+After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn may then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks was improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob paying Carol but without getting payed by Alice. [RFC source of actual time step here?]
+
+\subsection{Routing fee}
 

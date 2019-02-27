@@ -31,6 +31,9 @@
 \usepackage{csquotes}
 \usepackage[T1]{fontenc}
 
+% for placeholder text
+\usepackage{lipsum} % to generate Lorem Ipsum
+
 \usepackage{titlesec}
 
 \titleformat{\chapter}
@@ -100,55 +103,58 @@
 
 \begin{document}
 
-    \onecolumn
-	\pagenumbering{arabic}
+	\onecolumn
+	\pagenumbering{roman}
   
  	\setcounter{secnumdepth}{5}
+
 	\begin{titlepage}
 
-  	\thispagestyle{empty}
-  	\begin{large}
-  		\begin{tabular}{@{}p{\textwidth}@{}}
-  			\textbf{UMEÅ UNIVERSITY \hfill \today} \\
-  			\textbf{Department of Computing Science} \\
-  			
-  		\end{tabular}
-  	\end{large}
-  	\vspace{25mm}
-  	\begin{center}
-  		
-  		\includegraphics[width=3.0cm]{umu-logo} \\
-
-  		\huge{\textbf{\course}}\\
-  		\vspace{10mm}
-%  		\LARGE{ Routing Fee Estimation in the Lightning Network } \\
-  		\LARGE{ Emergent Routing Policies in the Lightning Network } \\
-  		\vspace{2mm}
+	  	\thispagestyle{empty}
+	  	\begin{large}
+	  		\begin{tabular}{@{}p{\textwidth}@{}}
+	  			\textbf{UMEÅ UNIVERSITY \hfill \today} \\
+	  			\textbf{Department of Computing Science} \\
+	  			
+	  		\end{tabular}
+	  	\end{large}
+	  	\vspace{25mm}
+	  	\begin{center}
+	  		
+	  		\includegraphics[width=3.0cm]{umu-logo} \\
 	
-		\begin{footnotesize}
-		\input{abstract}
-		\end{footnotesize}
-
-  		\vspace{10mm}
-  		\begin{large}
-  			\begin{tabular}{ll}
-  				\textbf{Name} & John-John Markstedt \\
-  				\textbf{Cinnober Supervisor} & Oskar Janson\\
-  				\textbf{University Supervisor} & Jerry Eriksson\\
-  				\textbf{Examinator} & Henrik Björklund\\
-  			\end{tabular}
-  			\vfill
-  			\vfill			
-  		\end{large}
-  		
-  	\end{center}
-  \end{titlepage}
+	  		\huge{\textbf{\course}}\\
+	  		\vspace{10mm}
+			%\LARGE{ Routing Fee Estimation in the Lightning Network } \\
+	  		\LARGE{ Emergent Routing Policies in the Lightning Network } \\
+	  		\vspace{2mm}
+		
+			\begin{footnotesize}
+			\input{abstract}
+			\end{footnotesize}
+	
+	  		\vspace{10mm}
+	  		\begin{large}
+	  			\begin{tabular}{ll}
+	  				\textbf{Name} & John-John Markstedt \\
+	  				\textbf{Cinnober Supervisor} & Oskar Janson\\
+	  				\textbf{University Supervisor} & Jerry Eriksson\\
+	  				\textbf{Examinator} & Henrik Björklund\\
+	  			\end{tabular}
+	  			\vfill
+	  			\vfill			
+	  		\end{large}
+	  		
+	  	\end{center}
+    \end{titlepage}
   
-%    \input{abstract}
-  %  \vspace{-.1cm}
- %   \paragraph{Keywords}
-  %  pre-calibration, weighting, IP distribution, simulation, calibration object
-
+	\begin{footnotesize}
+		\label{sec:acknowledgments}
+		\addcontentsline{toc}{chapter}{Acknowledgement}
+		\input{acknowledgments}
+	\end{footnotesize}
+	\clearpage
+  
     \vspace{-.4cm}
 
     \newpage
@@ -156,14 +162,14 @@
     \setcounter{secnumdepth}{3}
     \setcounter{tocdepth}{3}
     \tableofcontents
-    \thispagestyle{empty}
-    \newpage
-    \setcounter{page}{1}
-%    \setcounter{section}{0}
 
+    \newpage
+    
+    \setcounter{page}{1}
+	\pagenumbering{arabic}
+	
     \twocolumn
-	\chapter{Problem Description}
-	\addcontentsline{toc}{chapter}{Problem Description}
+
 	\label{sec:problem}
 	\input{problem}
 	
@@ -182,14 +188,12 @@
 	\label{sec:evaluation}
 	\input{evaluation}
 	\clearpage
-	\section{Results}
+	\label{sec:results}
+	\input{results}
 	\clearpage
 	\label{sec:discussion}
     \input{discussion}
 	\clearpage
-	\section{Acknowledgments}
-	\label{sec:acknowledgments}
-	%   \input{acknowledgments}
 
     \onecolumn
     \newpage
