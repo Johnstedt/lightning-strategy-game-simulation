@@ -1,0 +1,158 @@
+#!/bin/bash
+
+# Remote bitcoind RPC client through SSH tunnel
+#
+# found this great resource https://gist.github.com/EnigmaCurry/bdd9fd28d7a73fe52eb4/revisions
+#
+# If you have a remote bitcoind you'd like to query it's RPC interface
+# from, this script will help you maintain the SSH tunnel to do so.
+#
+# Set REMOTE_HOST to the user@server your remote bitcoind is running on
+# Set LOCAL_FORWARD_PORT to the port you want to run the tunnel on
+# Set the RPC_PASSWORD to the rpc password bitcoind is set to use.
+# Install bitcoind locally, so that you can use it's query interface.
+#
+# The first run will setup the SSH tunnel, and leave it running. 
+# Subsequent runs will be fast.
+
+# Set port for mainnet
+
+REMOTE_HOST=jj@willingdon.johnstedt.se
+LOCAL_FORWARD_PORT=8332
+RPC_PASSWORD=admin
+
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ] 
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:8332 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ] 
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Set port for testnet
+
+LOCAL_FORWARD_PORT=18332
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:18332 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Set port for ZMQ mainnet
+
+LOCAL_FORWARD_PORT=28332
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:28332 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Set port for ZMQ mainnet
+
+LOCAL_FORWARD_PORT=28333
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:28333 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Set port for ZMQ mainnet
+
+LOCAL_FORWARD_PORT=47536
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:47536 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+# Lightning
+
+LOCAL_FORWARD_PORT=9735
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:9735 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
+
+
+LOCAL_FORWARD_PORT=14224
+# Check if the tunnel is already open:
+port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+if [ $port_open -lt 1 ]
+then
+  echo "Creating port forward..."
+  ssh -N $REMOTE_HOST -L $LOCAL_FORWARD_PORT:localhost:14224 &
+  sleep 5
+
+  # Check if the tunnel was created successfully:
+  port_open=$(netstat -lnt | grep 127.0.0.1:$LOCAL_FORWARD_PORT | wc -l)
+  if [ $port_open -lt 1 ]
+  then
+    echo "Could not create port forward"
+    exit 1
+  fi
+fi
