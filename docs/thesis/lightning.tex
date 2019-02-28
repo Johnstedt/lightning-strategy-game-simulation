@@ -220,13 +220,30 @@ In this manner Hashed Timelock Contracts may be used without the need for either
 
 Note that key generation and disclosure may be used for $HTLC$ in the same manner previously disused in section \ref{sec:hdw}.
 
-FULL PAGE IMAGE OF CONTRACTS STATE HERE
+\newpage
+\onecolumn
+
+\begin{figure}[!htb]
+
+	\centering
+	\includegraphics[width=15cm]{images/flow_htlc.png}
+
+	\caption{\textit{
+			Shows the state of transactions after Alice and Bob have agreed to a new Commitment Transaction $CT_{A3}$, $CT_{B3}$. 
+			The transactions to the left side can be broadcast by Alice and the ones to the right by Bob. With the signing of the new $CT$s
+			Bob and Alice disclose keys for $BRT_{AH1}$, $BRT_{AH2}$, $BRT_{BH1}$, $BRT_{AH2}$ as penalty if an old commitment transaction is broadcast.
+		}}
+\end{figure}
+\newpage
+\twocolumn
 
 \section{Multi-hop payments} 
 
-Alice pays Carol Finds a route with Gosip
+With properly funded channels and Hashed Timelock Contracts in place network wide payments utilizing multiple channels is possible.
+The network uses a Gossip protocol\footnote{as per BOLT\#7 routing-gossip in Lightning RFC\cite{repository:lightning:rfc}} were
+public channels are broadcast. Each node may then find a path through multiple channels and construct a chain of $HTLC$s with decreasing time locks.
 
-PAIRING MULTIPLE CHANNALES 
+Alice wants to pay David but have no direct path to Carol. She finds a route via Bob and Carol to David as seen in figure \ref{fig:multihop}.
 
 \begin{figure}[!htb]
 
@@ -236,11 +253,13 @@ PAIRING MULTIPLE CHANNALES
 	\caption{\textit{
 			Shows a multihop payment from Alice to Dave across three channels $C_{AB}$, $C_{BC}$, $C_{CD}$. It's critical that the $HTLC$s is constructed in the correct order and with decreasing timesteps $TL_{1}$ > $TL_{2}$ > $TL_{3}$.
 		}}
-	\label{fig:equilibrium}
+	\label{fig:multihop}
 
 \end{figure}
 
+Alice and David agree on size of the payment and David constructs R and shares $H_{R}$ with Alice. Alice then uses $H_{R}$ to construct a $HTLC_{1}$.
 After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn may then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks was improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob paying Carol but without getting payed by Alice. [RFC source of actual time step here?]
 
 \subsection{Routing fee}
 
+\section{Notes on the protocol}
