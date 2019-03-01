@@ -25,7 +25,7 @@ A payment channel is funded by a funding transaction defined in the lightning pa
 	\item  Broadcast the parent on the blockchain
 \end{enumerate}
 
-It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output.}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
+It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
 
 \subsection{Commitment transaction}
 
@@ -260,6 +260,10 @@ Alice wants to pay David but have no direct path to Carol. She finds a route via
 Alice and David agree on size of the payment and David constructs R and shares $H_{R}$ with Alice. Alice then uses $H_{R}$ to construct a $HTLC_{1}$.
 After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn may then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks was improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob paying Carol but without getting payed by Alice. [RFC source of actual time step here?]
 
-\subsection{Routing fee}
+\section{Routing fee}
 
-\section{Notes on the protocol}
+The routing nodes receives a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in millisatoshi (\textbf{mS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
+
+\[ F_{P} = F_{B} + (AF * F_{R} / 1000000) \]
+
+This fee structured is problematic as it doesn't discriminate for channel balance. As this fee structure is very integral to this thesis a proposal to change the protocol regarding this fee structure is made. The proposal is explained in the following chapter and the full proposal is appended in Appendix A. 
