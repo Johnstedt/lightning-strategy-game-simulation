@@ -5,7 +5,7 @@ def create_channel(node, destination):
 
 	return {
 		'base_fee_millisatoshi': node['base_fee'],
-		'satoshis': 200000,
+		'satoshis': 5000,
 		'destination': destination,
 		'short_channel_id': '1457217x64x0',
 		'public': True,
