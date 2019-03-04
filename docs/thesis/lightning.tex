@@ -1,7 +1,7 @@
 \chapter{The Lightning Network}
 \label{sec:lightning:network}
 
-The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a user-activated-soft-fork in mid 2017\cite{bip:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts can be valid for a single locking script. 
+The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a \textit{user-activated-soft-fork} in mid 2017\cite{bip:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts may be valid for a single locking script. 
 
 The network protocol have been defined\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes\cite{repository:lnd}\cite{repository:eclair}\cite{repository:clightning}\cite{repository:lit}.
 
@@ -14,7 +14,8 @@ Initially each party have a signed transaction splitting the funds to their orig
 
 \subsection{Funding Transaction}
 
-A payment channel is funded by a funding transaction defined in the lightning paper as such\cite{poon:dryja:lightning:network}:
+A payment channel is funded by a funding transaction defined in the lightning paper by following steps\cite{poon:dryja:lightning:network}:
+
 \begin{enumerate}
 	\item  Create the parent (Funding Transaction)
 	\item  Create the children (Commitment Transactions and all spends from the commitment transactions)
@@ -27,7 +28,7 @@ A payment channel is funded by a funding transaction defined in the lightning pa
 
 It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
 
-\subsection{Commitment transaction}
+\subsection{Commitment Transaction}
 
 In order for a channel to be useful the creation of a new commitment transaction\footnote{It may be easier to think of this type of transaction outputs as smart contracts, as in this context it's the same thing.}, updating the balance, would need to invalidate the previous one. The previous transaction is after all still a valid bitcoin transaction. This creates a problem since each party would benefit from different commitment transactions being broadcast to the network.
 
@@ -54,7 +55,7 @@ Remember that the commitment transactions is reversed for the other party. This 
 
 \subsection{Revocation of old commitment transaction}
 
-In order to update the channel balance a new pair of commitment transactions. The previous commitment transactions is invalidated by both signing a Breach Remedy Transaction(BRT) spending from their own previous commitment transactions RSMC output and handing it over. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
+In order to update the channel balance a new pair of commitment transactions is created. The previous commitment transactions is invalidated by both signing a Breach Remedy Transaction(BRT) spending from their own previous commitment transactions RSMC output and handing it over to the other party. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
 
 It is necessary for each party to monitor the blockchain for old commitment transactions and to broadcast the Breach Remedy Transaction in case it happens. If the Breach Remedy Transaction is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and may be spent, settling the incorrect channel balance is settled and valid on the blockchain.
 
@@ -81,7 +82,7 @@ As long as the channel is open Alice and Bob may settle any imbalances between t
 
 \subsection{Contracts and implementation}
 \label{sec:hdw}
-Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree. Each key in the tree can derive its children and no child can derive its parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key may be used. So each party only needs to store the latest disclosed key as the other child keys can be derived from it.
+Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree structure. Each key in the tree can derive its children and no child can derive its parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key may be used. So each party only needs to store the latest disclosed key as the other child keys can be derived from it.
 
 \begin{figure}[hbt!]
 	\centering
@@ -105,15 +106,15 @@ If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RS
 
 \subsection{Closing channels}
 
-It's possible to close a channel by broadcasting the either of the latest $CT$s. However the broadcasting needs to wait the designated time period, losing out on the time value of money. Instead both parties can agree to construct a new Exercise Settlement Transaction $ES$ with direct spendable outputs instead of a $RSMC$ output. Signing $ES$ would close the channel and allowing both parities immediate access to the funds.
+It's possible to close a channel by broadcasting either of the latest $CT$s. However the broadcasting needs to wait the designated time period, losing out on the time value of money. Instead both parties may agree to construct a new Exercise Settlement Transaction $ES$ with direct spendable outputs instead of a $RSMC$ output. Signing the $ES$ would close the channel and allowing both parities immediate access to the funds.
 
 \section{Network wide payments}
 
-By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle nodes as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(HTLC) for each of the channels in the route.
+By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel to transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle nodes as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(HTLC) for each of the channels in the route.
 
 \subsection{Hashed Timelock Contract}
 
-A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a hash in a designated time limit. 
+A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a hash in a designated time period. 
 
 \begin{figure}[hbt!]
 	\centering
@@ -138,7 +139,7 @@ A $HTLC$ can be seen in figure \ref{fig:HTLC} and contains two validation paths.
 
 \begin{enumerate}
 	\item If Bob have the knowledge of R that produces $H_{R}$ he can validate the first path. (Execution)
-	\item If Bob fails to prove knowledge of preimage R, Alice may validate the second path after a designated time. (Timeout)
+	\item If Bob fails to prove knowledge of preimage R, Alice may validate the second path after the designated time period has passed. (Timeout)
 \end{enumerate}
 
 \subsection{Revocation of HTLCs}
@@ -177,20 +178,48 @@ The $HTLC_{A1}$ seen in figure \ref{fig:alice:HTLC} can only be broadcast by Ali
 
 \begin{enumerate}
 	\item Bob can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
-	\item The output is spent by a pre-signed transaction to a new transaction with a dispute period.
+	\item The output is spent by a pre-signed transaction to a new transaction $ST$ with a dispute period.
 	\item Bob can disclose knowledge of R and spend the output.
 \end{enumerate}
 
-The order of the two last clauses is reversed for Bob's $HTLC_{B1}$ as if Bob can prove knowledge of $R$ the output is spent to a new transaction $SF$ for disputation.
-The $HTLC_{B1}$ thus contain:
+The order of the two last clauses is reversed for Bob's $HTLC_{B1}$ as if Bob can prove knowledge of $R$ the output is spent to a new transaction $ST$ for disputation.
+\newpage
+\begin{figure}[hbt!]
+	
+	\centering
+	
+	\begin{lstlisting}[
+	basicstyle=\small, %or \small or \footnotesize etc.
+	linewidth=10cm
+	]
+<@\texttt{\textcolor{black}{OP\_DUP OP\_HASH160 <$H_{RPK}$> OP\_EQUAL}}@>
+<@\texttt{\textcolor{black}{OP\_IF}}@>
+  <@\texttt{\textcolor{black}{OP\_CHECKSIG}}@>
+<@\texttt{\textcolor{black}{OP\_ELSE}}@>
+  <@\texttt{\textcolor{black}{<$PK_{B}$> OP\_SWAP OP\_SIZE 32 OP\_EQUAL}}@>
+  <@\texttt{\textcolor{black}{OP\_IF}}@>
+    <@\texttt{\textcolor{black}{OP\_HASH160 <$R_{preimage}$> OP\_EQUALVERIFY}}@> 
+    <@\texttt{\textcolor{black}{OP\_DROP 2 OP\_SWAP <$PK_{A}$> 2 OP\_CHECKMULTISIG}}@>  
+  <@\texttt{\textcolor{black}{OP\_ELSE}}@> 
+    <@\texttt{\textcolor{black}{OP\_DROP <time> OP\_CHECKLOCKTIMEVERIFY OP\_DROP}}@> 	
+  <@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+<@\texttt{\textcolor{black}{OP\_ENDIF}}@>
+	\end{lstlisting}
+	
+	\caption{\textit{ The $HTLC_{B1}$ as offered by Bob
+	}}
+	\label{fig:bob:HTLC}
+\end{figure}
+
+The $HTLC_{B1}$ seen in figure \ref{fig:bob:HTLC} thus contain:
 
 \begin{enumerate}
 	\item Alice can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
-	\item Bob can prove knowledge of $R$ the output is spent to a new transaction $SF$.
+	\item Bob can prove knowledge of $R$ the output is spent to a new transaction $ST$ with a dispute period.
 	\item After the designated time Alice can spend the output.
 \end{enumerate}
 
-The new transactions both the second clauses spends to is constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $HTLC_{B1}$ in figure \ref{fig:timeout:tx}.
+The new transactions by which both the second clauses spends to is constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $HTLC_{B1}$ in figure \ref{fig:timeout:tx}.
 
 \begin{figure}[hbt!]
 	
@@ -262,7 +291,7 @@ After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $
 
 \section{Routing fee}
 
-The routing nodes receives a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in millisatoshi (\textbf{mS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
+The routing nodes receives a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in microsatoshi (\textbf{μS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
 
 \[ F_{P} = F_{B} + (AF * F_{R} / 1000000) \]
 
