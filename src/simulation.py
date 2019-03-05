@@ -14,57 +14,13 @@ from heapq import heappush, heappop
 from itertools import count
 
 
-def dijkstra_multisource(G, source, target=None, weight=None):
-	"""Uses Dijkstra's algorithm to find shortest weighted paths
+def dijkstra_liquid_path(G, source, target, liquidity, weight=None):
+	"""Uses Dijkstra's algorithm to find shortest weighted paths.
 
-	THIS METHOD IS MODIFIED TO HANDLE LIQUIDITY CONSTRAINS
-
-	Parameters
-	----------
-	G : NetworkX graph
-
-	source : non-empty iterable of nodes
-		Starting nodes for paths. If this is just an iterable containing
-		a single node, then all paths computed by this function will
-		start from that node. If there are two or more nodes in this
-		iterable, the computed paths may begin from any one of the start
-		nodes.
-
-	weight: function
-		Function with (u, v, data) input that returns that edges weight
-
-	pred: dict of lists, optional(default=None)
-		dict to store a list of predecessors keyed by that node
-		If None, predecessors are not stored.
-
-	paths: dict, optional (default=None)
-		dict to store the path list from source to each node, keyed by node.
-		If None, paths are not stored.
-
-	target : node label, optional
-		Ending node for path. Search is halted when target is found.
-
-	cutoff : integer or float, optional
-		Depth to stop the search. Only return paths with length <= cutoff.
-
-	Returns
-	-------
-	distance : dictionary
-		A mapping from node to shortest distance to that node from one
-		of the source nodes.
-
-	Raises
-	------
-	NodeNotFound
-		If any of `sources` is not in `G`.
-
-	Notes
-	-----
-	The optional predecessor and path dictionaries can be accessed by
-	the caller through the original pred and paths objects passed
-	as arguments. No need to explicitly return pred or paths.
-
+	THIS METHOD IS MODIFIED TO HANDLE LIQUIDITY CONSTRAINS.
+	Stolen from networkx.
 	"""
+
 	weight = _weight_function(G, weight)
 	cutoff = None
 	pred = None
@@ -86,6 +42,7 @@ def dijkstra_multisource(G, source, target=None, weight=None):
 			raise nx.NodeNotFound("Source {} not in G".format(source))
 		seen[source] = 0
 		push(fringe, (0, next(c), source))
+
 	while fringe:
 		(d, _, v) = pop(fringe)
 		if v in dist:
@@ -96,7 +53,13 @@ def dijkstra_multisource(G, source, target=None, weight=None):
 		for u, e in G_succ[v].items():
 			cost = weight(v, u, e)
 			if cost is None:
+				print("THIS IS NEVER REACHED RIGHT?")
 				continue
+
+			print(G.get_edge_data(v, u)['base_fee_millisatoshi'])
+			if G.get_edge_data(v, u)['base_fee_millisatoshi'] < liquidity:
+				continue
+
 			vu_dist = dist[v] + cost
 			if cutoff is not None:
 				if vu_dist > cutoff:
@@ -118,7 +81,14 @@ def dijkstra_multisource(G, source, target=None, weight=None):
 
 	# The optional predecessor and path dictionaries can be accessed
 	# by the caller via the pred and paths objects passed as arguments.
-	(length, path) = dist
+
+	try:
+		val = (dist[target], paths[target])
+	except KeyError:
+		raise nx.NetworkXNoPath("No path to {}.".format(target))
+
+	(length, path) = val
+
 	return path
 
 
@@ -257,7 +227,7 @@ class SimulationOperator:
 
 		if not self.is_path_liquid(routers, 1000):  # If shortest path isn't liquid, create another one.
 			print("NOT LIQUID")
-			routers = self.create_liquid_route(source, dest)
+			routers = self.create_liquid_route(source, dest, 1000)
 
 		self.offset_liquidity(routers, 1000)
 		routers.remove(source)
@@ -288,11 +258,16 @@ class SimulationOperator:
 
 		return True
 
-	def create_liquid_route(self, source, target):
+	def create_liquid_route(self, source, target, liquidity):
 		#nodes = nx.dijkstra_path(self.__g, source, target, weight="base_fee_millisatoshi")
-		nodes = dijkstra_multisource(self.__g, source, target, weight="base_fee_millisatoshi")
-		print(nodes)
-		return True
+		try:
+			nodes = dijkstra_liquid_path(self.__g, source, target, liquidity, weight="base_fee_millisatoshi")
+			print("path")
+			print(nodes)
+		except nx.exception.NetworkXNoPath:
+			print("HAHA CAUGHT YEE")
+			exit(90)
+		return nodes
 
 	def network_probability_node_creation(self):
 		albert = 0

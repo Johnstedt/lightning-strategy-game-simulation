@@ -2,8 +2,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
+import scipy.integrate as integrate
 
 from matplotlib.patches import Polygon
+
 
 def plot_fee_scheme():
 
@@ -12,15 +14,18 @@ def plot_fee_scheme():
 	colors = ['r--', 'b--', 'y--']
 	colors_b = ['ro', 'bo', 'yo']
 
-	plt.plot(k, k**2, "r-")
-	plt.plot(k, k**2, "b-")
+	#plt.plot(k, k**2, "r-")
+	#plt.plot(k, k**2, "b-")
 
-	a, b = 2, 9  # integral limits
-	x = np.linspace(0, 10)
+	a, b = 5500000, 9000000  # integral limits
+	x = np.linspace(0, 10000000)
 	y = func(x)
+	y_a = alice(x)
 
 	fig, ax = plt.subplots()
-	plt.plot(x, y, 'r', linewidth=2)
+	fig.subplots_adjust(left=0.2)
+	plt.plot(x, y, 'b', linewidth=2, label='Bob Fee Curve')
+	plt.plot(x, y_a, 'r', linewidth=2, label='Alice Fee Curve')
 	plt.ylim(ymin=0)
 
 	# Make the shaded region
@@ -30,24 +35,48 @@ def plot_fee_scheme():
 	poly = Polygon(verts, facecolor='0.9', edgecolor='0.5')
 	ax.add_patch(poly)
 
-	plt.text(0.5 * (a + b), 30, r"$\int_a^b f(x)\mathrm{d}x$",
-			 horizontalalignment='center', fontsize=20)
+	b4, b3 = 1000000, 4500000
+	# Make the shaded region
+	a_ix = np.linspace(b4, b3)
+	a_iy = func(a_ix)
+	a_verts = [(b4, 0)] + list(zip(a_ix, a_iy)) + [(b3, 0)]
+	a_poly = Polygon(a_verts, facecolor='0.9', edgecolor='0.5')
+	ax.add_patch(a_poly)
 
-	plt.figtext(0.9, 0.05, '$x$')
-	plt.figtext(0.1, 0.9, '$y$')
+
+	#plt.text(0.5 * (a + b), 30, r"$\int_a^b f(x)\mathrm{d}x$",
+	#		 horizontalalignment='center', fontsize=20)
+
+	#plt.figtext(0.9, 0.05, '$x$')
+	#plt.figtext(0.1, 0.9, '$y$')
 
 	ax.spines['right'].set_visible(False)
 	ax.spines['top'].set_visible(False)
 	ax.xaxis.set_ticks_position('bottom')
 
-	ax.set_xticks((a, b))
-	ax.set_xticklabels(('$a$', '$b$'))
-	ax.set_yticks([])
+	ax.set_xticks((a, b, b3, b4, 2500000, 7500000, 10000000))
+	ax.set_xticklabels(('$B_2$', '$B_1$', '$B_3$', '$B_4$', "2.5M", "7.5M", "10M"))
+	#ax.set_yticks([])
+
+	ax.set_xlabel("$Satoshis$")
+	ax.set_ylabel("$\dfrac{F_P}{S}$ μS")
+	ax.legend()
+
+	result = integrate.quad(lambda x: func(x), a, b)
+	print(result)
+
+	result = integrate.quad(lambda x: func(x), b4, b3)
+	print(result)
 
 	plt.savefig("plots/fee_scheme.png")
 
+
 def func(x):
-	return (x - 3) * (x - 5) * (x - 7) + 85
+	return (10000000 - x)**2 - ((10000000 - x)**1.99999999997) - ((10000000 - x)*0.000002)
+
+
+def alice(x):
+	return (x**2) - (x**1.99999999997) - (x*0.000002)
 
 
 if __name__ == "__main__":
