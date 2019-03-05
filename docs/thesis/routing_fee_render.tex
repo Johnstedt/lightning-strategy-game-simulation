@@ -1,4 +1,6 @@
-\documentclass[a4paper, oneside]{article}
+\documentclass[a4paper, twocolumn, oneside]{book}
+%twoside if print,
+\setlength{\columnsep}{.03\textwidth}
 
 \usepackage{UmUThesis}
 %\usepackage{subcaption}
@@ -23,6 +25,7 @@
 
 \usepackage{xcolor}
 \usepackage{listings}
+\lstset{escapeinside={<@}{@>}}
 
 \usepackage[utf8x]{inputenc}
 \usepackage{csquotes}
@@ -31,8 +34,95 @@
 % for placeholder text
 \usepackage{lipsum} % to generate Lorem Ipsum
 
-\begin{document}
+\usepackage{titlesec}
 
-\input{routing_fee}
+\titleformat{\chapter}
+{\normalfont\LARGE\bfseries}{{Chapter \thechapter~|\ }}{0pt}{}{}
+\titlespacing*{\chapter}{0pt}{20pt}{20pt}
+
+\captionsetup{margin=20pt,font=small,labelfont=bf, format=plain}
+
+\def\bitcoin{%
+	\leavevmode
+	\vtop{\offinterlineskip %\bfseries
+		\setbox0=\hbox{B}%
+		\setbox2=\hbox to\wd0{\hfil\hskip-.03em
+			\vrule height .3ex width .15ex\hskip .08em
+			\vrule height .3ex width .15ex\hfil}
+		\vbox{\copy2\box0}\box2}}
+
+%\def\mytitle{Routing Fee Estimation in Lightning Network}
+\def\mytitle{Routing Fee protocol proposal}
+
+% Routing Fee Estimation in Bidirectional payment channel networks
+% Non Eploitable pricing of liqid channels in the lightning network
+% Emergance of routing policies in channel networks
+
+\title{\mytitle}
+\def\theauthor{John-John Markstedt}
+\author{John-John Markstedt}
+\supervisor{Oskar Janson}
+\examiner{Henrik Bj\"{o}rklund}
+\semester{VT17}
+\course{5DV097}
+\def\umu{Ume\r{a} University}
+\def\journal{
+	MSc Computing Science and Engineering, \umu{} 2017}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newcommand{\csp}{\mathcal{C}}
+\newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
+\newcommand{\red}[1]{\colorbox{red!40}{#1}}
+%\newcommand{\red}[1]{{\setlength{\fboxsep}{1pt}\colorbox{blue!27}{#1}}}
+\newcommand{\bm}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix} #1 \end{pmatrix}}
+\newcommand{\logto}{\Rightarrow}
+\newcommand{\mvec}[1]{{#1}}
+\newcommand{\minx}[1]{\, \stackrel[#1]{}{\min}}
+\newcommand{\eq}[1]{\begin{equation} #1 \end{equation}}
+\newcommand{\um}{$\upmu$m}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\RMS}{RMS}
+
+\makeatother
+
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{\sc\footnotesize{\mytitle}}
+\fancyhead[R]{\nouppercase{\sc\footnotesize\leftmark}}
+\fancyfoot{}
+\fancyfoot[L]{\footnotesize{John-John Markstedt}}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{\footnotesize{\today}}  
+
+\begin{document}
+	
+	\onecolumn
+	\pagenumbering{roman}
+	
+	\setcounter{secnumdepth}{5}
+	
+	
+	\vspace{-.4cm}
+	
+	\newpage
+	
+	
+	
+	\newpage
+	
+	\setcounter{page}{1}
+	\pagenumbering{arabic}
+	
+
+	
+	\label{chapter:problem}
+	\input{routing_fee}
+	
 
 \end{document}

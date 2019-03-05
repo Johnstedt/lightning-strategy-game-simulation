@@ -36,8 +36,10 @@
 
 \usepackage{titlesec}
 
+\usepackage[toc,page]{appendix}
+
 \titleformat{\chapter}
-	{\normalfont\LARGE\bfseries}{{Chapter \thechapter~|\ }}{0pt}{}{}
+	{\normalfont\LARGE\bfseries}{{\chaptertitlename~\thechapter~|\ }}{0pt}{}{}
 \titlespacing*{\chapter}{0pt}{20pt}{20pt}
 
 \captionsetup{margin=20pt,font=small,labelfont=bf, format=plain}
@@ -210,5 +212,9 @@
     \addcontentsline{toc}{section}{References}
     \bibliographystyle{plain}
     \bibliography{references.bib}
+
+    \begin{appendices}
+    \input{routing_fee}
+	\end{appendices}
     %\input{appendices}
 \end{document}
