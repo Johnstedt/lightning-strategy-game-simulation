@@ -6,6 +6,7 @@ With the eventual growth of the Lightning Network a fee market for channel liqui
 
 \section{Lightning network as a graph}
 
+The Lightning Network may be modeled as a directional Graph $G$ with vertices representing nodes and edges representing channels. As each channel may have different fees and liquidity it's useful to represent each channel with two edges. 
 
 
 
@@ -29,31 +30,76 @@ Suppose the average fee price is set at $F_{1}$ with demand $F_{1}D_{1}$ and sup
 		\hspace*{2mm} 	
 \end{figure}
 
-
-
 The cost of procuring a shortest path between s and d might be unequal for two different routing nodes dependent on already existing paths and set policies.
 
-\section{Pricing function}
+\section{Optimal fee pricing}
 
-Betweenness centrality
+To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter. It would be useful to have a more rigid definition of how many shortest paths pass through a vertex. Freeman did so with the introduction of a measurement named \textit{Betweenness Centrality}\cite{freeman:betweenness:centrality} and defined it as
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
-Steps to find the maximizing the fee profit for outgoing channel $C$ assuming pairs have a uniform probability of conducting a payment.
+Where $\sigma_{sd}$ are all shortest paths from s to d and v is vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
+
+It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest paths are used are assumed the optimal price is given by
+
+\[ x_{opt} \textrm{ is the optimal price } iff \]
+
+\[ f: X \to \mathbb{Z} \textrm{ and } (\forall x \subseteq X)f(x_{opt}) \geqslant f(x) \textrm{ where }\]
+
+\[ f(x) = x\sum_{s \neq e \neq d}\frac{\sigma_{sd}(e(x))}{\sigma_{sd}} \]
+
+Where $\sigma_{sd}(e(x))$ is 1 if one shortest path exists over edge e when the edge weight is x or 0 if no shortest path exists.
+
+The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for generated graph. 
+
+\begin{figure}[!htb]
+
+	\centering
+	\includegraphics[width=8cm]{images/fee_curve.png}
+	\caption{ Shows the betweenness centrality * fee / fee for an edge in a generated graph with 1000 vertices, 5000 edges, uniform weight distribution over 1-1500 and random attachment policy. It holds intuitively as for low fees, many shortest paths passes but procure small overall profits as the fee is small. The profits increases with the increase in fees until a point where the decrease in paths overtakes the increase in fees.
+	}
+	\label{fig:fee_curve}
+
+\end{figure}
+
+\newpage
+
+Freeman also defined a centrality measurement for whole graphs, it utilizes the betweenness centrality of every vertex and is thus brutal to calculate in practice for larger graphs. 
+
+Efficient algorithms for edge betweenness centrality have been developed\cite{brandes:betweenness:centrality:algorithm}. Although it is possible to run such an algorithm for each potential fee price to find the optima it would be very slow.
+Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
 \begin{enumerate}
-	\item Calculate the shortest path from all-to-all vertices without going through $C$ with either Floyd-Warshall or Johnson. 
-	\item Calculate shortest path from $C$ source to all explicitly going through $C$ with Dijkstra.
-	\item Compare difference between all-to-all cost with all-to-$V$-to-all, producing a cumulative summation over the difference.
-	\item Maximizing fee * cumulative difference.
+	\item Calculate the shortest path from all-to-all vertices without going through $e$ with either Floyd-Warshall or Johnson\cite{johnson:shortest:path:sparse:network} obtaining table A.
+	\item Calculate shortest path from the source of $e$, $V$-to-all explicitly going through $e$ with Dijkstra obtaining table D where $e$ weight set to 0.
+	\item Retrieve the difference for all pairs between the all-to-all distance with the all-to-$V$-to-all distance, A[s][d] - (A[s][V] + D[d]). Throw away the negative values and produce a cumulative summation over the differences in a table H.
+	\item Select $x_{opt}$ such that \[ \forall x (x H(x)) \leq x_{opt} H(x_{opt}) \]
+%	 producing a cumulative summation over the difference.\\
+%	For all pairs s, d:\\
+%		If $A[s][d] > A[s][i] + S[d]$ \\
+%		then $D[A[s][d] - (A[s][i] + S[d])] += 1$.\\
+	
+	
+		%\[ M_i := \sum_{s \neq d}^{i} A[s][d] > A[s][i] + D[d]  \]
+%	\[ \sum_{s \neq d} 
+%	\begin{cases}
+%		A[s][d] - A[s][i] + D[d],& \text{if } A[s][d] > A[s][i] + D[d]\\
+%		0,              & \text{otherwise}
+%	\end{cases} \]
+
+
 \end{enumerate} 
 
-
-Where the use of Johnson over Floyd-Warshall depends on the sparseness of G as
+Whenever Floyd-Warshall or Johnson should be used depends on the sparseness of G as Floyd-Warshall have a time complexity of
 
 \[ O(V^3) \]
 
-\[ O(V*E*log(V)) \]
+only dependent on vertices whereas Johnson
+
+\[ O(V^2 log(V) + VE ) \]
+
+depends on both edges and vertices. 
+
 \section{Topology}
 
 Network topology

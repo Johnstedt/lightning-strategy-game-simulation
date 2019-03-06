@@ -38,6 +38,8 @@
 
 \usepackage[toc,page]{appendix}
 
+\usepackage{algorithmicx}
+
 \titleformat{\chapter}
 	{\normalfont\LARGE\bfseries}{{\chaptertitlename~\thechapter~|\ }}{0pt}{}{}
 \titlespacing*{\chapter}{0pt}{20pt}{20pt}
@@ -84,6 +86,14 @@
 \newcommand{\minx}[1]{\, \stackrel[#1]{}{\min}}
 \newcommand{\eq}[1]{\begin{equation} #1 \end{equation}}
  \newcommand{\um}{$\upmu$m}
+
+%\newcommand{\murm}{%
+%	\mathchoice
+%	{\hbox{\normalsize\textmu}}
+%	{\hbox{\normalsize\textmu}}
+%	{\hbox{\scriptsize\textmu}}
+%	{\hbox{\tiny\textmu}}%
+%}
 
 \DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\RMS}{RMS}
