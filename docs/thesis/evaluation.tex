@@ -1,14 +1,20 @@
 \chapter{Evaluation}
 
-( DONT MIND THIS CHAPTER AS MOSTLY SOFTWARE FOR THIS PART IS CURRENTLY WRITTEN AND CONTAINS ONLY THE BARE ESSENTAIL THOUGHS)
-
 With the eventual growth of the Lightning Network a fee market for channel liquidity will emerge. How routing nodes 
 
 \section{Lightning network as a graph}
 
 The Lightning Network may be modeled as a directional Graph $G$ with vertices representing nodes and edges representing channels. As each channel may have different fees and liquidity it's useful to represent each channel with two edges. 
 
-
+\begin{figure}[!htb]
+	\hspace*{-0.7cm} 
+	\centering
+	\includegraphics[width=7.5cm]{images/LN_overview.png}
+	\caption{ \textit{A representation of LN as a graph. Each channel is symbolized by two edges.} 
+	}
+	\label{fig:ln:graph}
+	\hspace*{2mm} 	
+\end{figure}
 
 \section{Fee as a competitive equilibrium}
 
@@ -21,7 +27,7 @@ If a demand is running DD' and Supply SS' and
 Suppose the average fee price is set at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{1}$.
 
 \begin{figure}[!htb]
-	\hspace*{-0.7cm} 
+	\hspace*{-0.3cm} 
 	\centering
 	\includegraphics[width=11cm]{images/equilibrium_sized.png}
 	\caption{ 
@@ -32,7 +38,7 @@ Suppose the average fee price is set at $F_{1}$ with demand $F_{1}D_{1}$ and sup
 
 The cost of procuring a shortest path between s and d might be unequal for two different routing nodes dependent on already existing paths and set policies.
 
-\section{Optimal fee pricing}
+\section{Optimal fee price}
 
 To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter. It would be useful to have a more rigid definition of how many shortest paths pass through a vertex. Freeman did so with the introduction of a measurement named \textit{Betweenness Centrality}\cite{freeman:betweenness:centrality} and defined it as
 
@@ -46,11 +52,16 @@ It is possible to determine the optimal fee for an edge if some assumption, of t
 
 \[ f: X \to \mathbb{Z} \textrm{ and } (\forall x \subseteq X)f(x_{opt}) \geqslant f(x) \textrm{ where }\]
 
-\[ f(x) = x\sum_{s \neq e \neq d}\frac{\sigma_{sd}(e(x))}{\sigma_{sd}} \]
+\[ f(x) = x\sum_{s \neq e \neq d}\frac{\sigma_{sd}(e(x))}{\sigma_{sd}} \textrm{ and } \]
 
-Where $\sigma_{sd}(e(x))$ is 1 if one shortest path exists over edge e when the edge weight is x or 0 if no shortest path exists.
+\[ \sigma_{sd}(e(x)) =  \begin{cases}
+		1, & \text{if a shortest path exists} \\
+           & \text{through $e$ with weight x.} \\
+		0, & \text{otherwise}
+	\end{cases} \]
 
-The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for generated graph. 
+The $\sigma_{sd}$ simply represents the total amount of shortest paths between $s$ and $d$.
+The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for a fictitious generated graph. 
 
 \begin{figure}[!htb]
 
@@ -61,8 +72,6 @@ The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for generated 
 	\label{fig:fee_curve}
 
 \end{figure}
-
-\newpage
 
 Freeman also defined a centrality measurement for whole graphs, it utilizes the betweenness centrality of every vertex and is thus brutal to calculate in practice for larger graphs. 
 
@@ -100,7 +109,7 @@ only dependent on vertices whereas Johnson
 
 depends on both edges and vertices. 
 
-\section{Topology}
+\section{Topology and Preferential Attachment}
 
 Network topology
 
