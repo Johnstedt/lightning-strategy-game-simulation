@@ -269,7 +269,7 @@ Note that key generation and disclosure may be used for $HTLC$ in the same manne
 \section{Multi-hop payments} 
 
 With properly funded channels and Hashed Timelock Contracts in place network wide payments utilizing multiple channels is possible.
-The network uses a Gossip protocol\footnote{as per BOLT\#7 routing-gossip in Lightning RFC\cite{repository:lightning:rfc}} were
+The network uses a Gossip protocol\footnote{as per BOLT\#7 routing-gossip in Lightning RFC\cite{repository:lightning:rfc}} where
 public channels are broadcast. Each node may then find a path through multiple channels and construct a chain of $HTLC$s with decreasing time locks.
 
 Alice wants to pay David but have no direct path to Carol. She finds a route via Bob and Carol to David as seen in figure \ref{fig:multihop}.
