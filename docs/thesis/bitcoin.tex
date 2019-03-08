@@ -21,14 +21,14 @@ Bitcoin is essentially a long ledger of inputs and outputs. Note that the whole 
 
 \section{The Double-Spending problem}
 
-While digital signatures are able prove ownership of bitcoin. There is nothing to stop the owner of an amount of bitcoin to sign two different transactions spending the same transaction output and broadcasting them to different parts of the network. This is called the double-spending problem which is a variation of the more general Byzantine's General Problem.
+While digital signatures are able prove ownership of bitcoin, there is nothing to stop the owner of an amount of bitcoin to sign two different transactions spending the same transaction output and broadcasting them to different parts of the network. This is called the double-spending problem which is a variation of the more general Byzantine's General Problem.
 
 %\subsection{Proof-of-Work}
 
 The network reaches a coherent global view over the transaction history by a method known as \textit{Proof-of-work}. The Bitcoin \textit{Proof-of-work} algorithm is very similar to that of hashcash as it uses a hash-based cost function which requires a probabilistic amount of work and the proof of the work fixed cost to verify\cite{back:hashcash}\footnote{It's similar to hashcash in both being hash-based with a cost function that is non-interactive, publicly auditable, trapdoor-free and have an unbounded probabilistic cost\cite{back:hashcash}.
 Bitcoin uses the double \texttt{SHA256} hash function.}.
 
-The \textit{Proof-of-work} algoithm is directly tied into the bitcoin transaction history data structure composite of a chain of blocks as seen in figure \ref{fig:blockchain}.
+The \textit{Proof-of-work} algorithm is directly tied into the bitcoin transaction history data structure composite of a chain of blocks as seen in figure \ref{fig:blockchain}.
 
 \begin{figure}[!htb]
 	\hspace*{-0.4cm} 
@@ -60,7 +60,7 @@ The content in the block header is practically immutable since a change would ma
 
 The miners are incentivized by receiving the transaction fees from the transactions included in mined block as well as a subsidy. The subsidy is on the form of a coinbase transaction which has only outputs, this is how new bitcoin is minted. Every fourth year the subsidy halves and by 2140 will be zero. The miner must follow the consensus rules and mined blocks not following the rules will not be propagated through the network causing the miner to loose out on the block reward.
 
-A miner, or a miner cartel, controlling more than 50\% of the hashing power could technically double-spend transactions by mining blocks on a secret chain \textbf{A}, instead of the public chain \textbf{B}, without broadcasting them to the greater network and simultaneously spending outputs \textbf{OB} on chain \textbf{B}. When the chain \textbf{A} is broadcast and if it contains more work than \textbf{B} the outputs \textbf{OB} would be invalidated and never have transpired per the consensus rules. A huge problem with such an attack is that the confidence in the network would decrease causing the value of the 'stolen' bitcoin outputs \textbf{OA} to be close the worthless. The attacker would still own a lot of specialized hardware, only capable of running the \texttt{SHA256} hashing algorithm, that is worthless without utility outside the network. In a sense such an attack would cause mutual destruction for both the network and the attacker. 
+A miner, or a miner cartel, controlling more than 50\% of the hashing power could technically double-spend transactions by mining blocks on a secret chain \textbf{A}, instead of the public chain \textbf{B}, without broadcasting them to the greater network and simultaneously spending outputs \textbf{OB} on chain \textbf{B}. When the chain \textbf{A} is broadcast and if it contains more work than \textbf{B} the outputs \textbf{OB} would be invalidated and never have transpired per the consensus rules. A huge problem with such an attack is that the confidence in the network would decrease causing the value of the 'stolen' bitcoin outputs \textbf{OA} to be close to worthless. The attacker would still own a lot of specialized hardware, only capable of running the \texttt{SHA256} hashing algorithm, that is worthless without utility outside the network. In a sense such an attack would cause mutual destruction for both the network and the attacker. 
 
 \section{Script}
 \label{sec:script}
@@ -149,13 +149,13 @@ Converting to a P2SH transaction does two things:
 
 	\item It shifts the fee burden from the sender to the recipient. The locking script is shorter, the unlocking script is longer.
 	
-	\item All unspent UTXOs must be kept in the RAM of the node, shifting the burden does reduces the node RAM load. 
+	\item All unspent UTXOs must be kept in the RAM of the node, shifting the burden, thus reducing the node RAM load.
 	
 \end{itemize}
 
 P2SH also allows the script to be used as an address as per BIP013\cite{bip:0013:p2shaddr}. By simply sending to the script address could fund any type of complex transaction with no added complexity to the sender.
 
-Even though script is not Turing complete it allows many quite advanced systems on top of it, transactions or output scripts is sometimes referred to as 'smart contracts'\footnote{First formally defined by Nick Szabo in 1994\cite{szabo:smart:contracts}}.
+Even though script is not Turing complete it allows many quite advanced systems on top of it, transactions or output scripts are sometimes referred to as 'smart contracts'\footnote{First formally defined by Nick Szabo in 1994\cite{szabo:smart:contracts}}.
 
 \begin{figure}[hbt!]
 	
@@ -191,7 +191,7 @@ One example of a more advanced script is this multisignature locking script with
 \subsection{Relative lock time}
 \label{sec:rlt}
 
-The script(figure \ref{fig:aantop:multi}) uses a construction known as a relative time lock and uses the \texttt{OP\_CHECKSEQUENCEVERIFY} opcode in the bitcoin scripting language\cite{bip:0068:sequence:lock:time}. The relative lock time will only become true after the defined time since the parent transaction were included in a block has passed. To avoid the block miners to become oracles of time, the median time of the eleven last blocks are used as the lock time(BIP113\cite{bip:0113:median:time:passed}). The \texttt{OP\_CHECKSEQUENCEVERIFY} was activated by BIP112\cite{bip:0112:sequence:lock:time:soft:fork}. The block time is therefor approximately an hour behind real time.
+The script(figure \ref{fig:aantop:multi}) uses a construction known as a relative time lock and uses the \texttt{OP\_CHECKSEQUENCEVERIFY} opcode in the bitcoin scripting language\cite{bip:0068:sequence:lock:time}. The relative lock time will only become true after the defined time since the parent transaction was included in a block has passed. To avoid the block miners to become oracles of time, the median time of the eleven last blocks are used as the lock time(BIP113\cite{bip:0113:median:time:passed}). The \texttt{OP\_CHECKSEQUENCEVERIFY} was activated by BIP112\cite{bip:0112:sequence:lock:time:soft:fork}. The block time is therefor approximately an hour behind real time.
 
 The Lightning Network utilize many complex transactions and more will be seen in chapter \ref{sec:lightning:network}.
 
@@ -199,9 +199,9 @@ The Lightning Network utilize many complex transactions and more will be seen in
 
 The Bitcoin network consists of nodes complying with the consensus protocol. In the beginning only the reference implementation available but with the growth of popularity others have implemented independent implementations\cite{repository:bitcoin}\cite{repository:btcd}\cite{repository:neutrino}.
 
-The mining component of nodes has mostly been decoupled from ordinary nodes with the advent of ASIC\footnote{Application Specific Integrated Circuit, hardware that are built only to run \texttt{SHA256}}. Mining nodes still do everything as an ordinary node does as it needs the transaction history to construct valid block. Non mining nodes validates and propagates blocks and transactions across the network. It allows some benefits in constructing transactions but mainly allows the operator to validate that the network operates as expected instead of trusting that it does.
+The mining component of nodes has mostly been decoupled from ordinary nodes with the advent of ASIC\footnote{Application Specific Integrated Circuit, hardware that is built only to run \texttt{SHA256}}. Mining nodes still do everything as an ordinary node does as it needs the transaction history to construct valid block. Non mining nodes validates and propagates blocks and transactions across the network. It allows some benefits in constructing transactions but mainly allows the operator to validate that the network operates as expected instead of trusting that it does.
 
-Construction of transactions can be possible without running a node and many bitcoin wallets does not operate as a node.
+Construction of transactions can be possible without running a node and many bitcoin wallets do not operate as a node.
 
  
 
