@@ -9,14 +9,6 @@ from matplotlib.patches import Polygon
 
 def plot_fee_scheme():
 
-	k = np.arange(1, 10000000, 1)
-
-	colors = ['r--', 'b--', 'y--']
-	colors_b = ['ro', 'bo', 'yo']
-
-	#plt.plot(k, k**2, "r-")
-	#plt.plot(k, k**2, "b-")
-
 	a, b = 5500000, 9000000  # integral limits
 	x = np.linspace(0, 10000000)
 	y = func(x)
@@ -43,20 +35,12 @@ def plot_fee_scheme():
 	a_poly = Polygon(a_verts, facecolor='0.9', edgecolor='0.5')
 	ax.add_patch(a_poly)
 
-
-	#plt.text(0.5 * (a + b), 30, r"$\int_a^b f(x)\mathrm{d}x$",
-	#		 horizontalalignment='center', fontsize=20)
-
-	#plt.figtext(0.9, 0.05, '$x$')
-	#plt.figtext(0.1, 0.9, '$y$')
-
 	ax.spines['right'].set_visible(False)
 	ax.spines['top'].set_visible(False)
 	ax.xaxis.set_ticks_position('bottom')
 
 	ax.set_xticks((a, b, b3, b4, 2500000, 7500000, 10000000))
 	ax.set_xticklabels(('$B_2$', '$B_1$', '$B_3$', '$B_4$', "2.5M", "7.5M", "10M"))
-	#ax.set_yticks([])
 
 	ax.set_xlabel("$Satoshis$")
 	ax.set_ylabel("$\dfrac{F_P}{S}$ μS")

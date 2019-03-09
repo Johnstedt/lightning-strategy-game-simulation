@@ -16,7 +16,8 @@ def create_channel(node, destination):
 		'channel_flags': 1,
 		'fee_per_millionth': node['fee_per_millionth'],
 		'flags': 257,
-		'active': True
+		'active': True,
+		'last_10_fees': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 	}
 
 
@@ -75,6 +76,21 @@ class AttachmentPolicies:
 		g.add_edges_from(zip(targets, [n["nodeid"]]*m, channels))
 
 		self.__barabasi_nodes.extend(targets)
+
+		return True
+
+	def manage_channels(self, g):
+		"""
+		Add different strategies here.
+		First only close and open
+		"""
+		# Channel close
+		for e in g.edges:
+			print(e)
+			#exit(1)
+			#if sum(e['last_10_fees']) < 20:
+				#g.remove_edge(e)
+		#		return True
 
 		return True
 

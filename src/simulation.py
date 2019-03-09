@@ -53,11 +53,9 @@ def dijkstra_liquid_path(G, source, target, liquidity, weight=None):
 		for u, e in G_succ[v].items():
 			cost = weight(v, u, e)
 			if cost is None:
-				print("THIS IS NEVER REACHED RIGHT?")
 				continue
 
-			print(G.get_edge_data(v, u)['base_fee_millisatoshi'])
-			if G.get_edge_data(v, u)['base_fee_millisatoshi'] < liquidity:
+			if G.get_edge_data(v, u)['satoshis'] < liquidity:
 				continue
 
 			vu_dist = dist[v] + cost
@@ -66,8 +64,7 @@ def dijkstra_liquid_path(G, source, target, liquidity, weight=None):
 					continue
 			if u in dist:
 				if vu_dist < dist[u]:
-					raise ValueError('Contradictory paths found:',
-									 'negative weights?')
+					raise ValueError('Contradictory paths found: negative weights?')
 			elif u not in seen or vu_dist < seen[u]:
 				seen[u] = vu_dist
 				push(fringe, (vu_dist, next(c), u))
@@ -152,7 +149,7 @@ def create_node(settings):
 
 		'profits': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 		'total_profits': 0,
-		"base_fee": random.randint(100, 1501),
+		"base_fee": random.randint(10, 1501),
 		"fee_per_millionth": random.randint(500, 1501)
 	}
 
@@ -191,19 +188,23 @@ class SimulationOperator:
 
 		self.print_alive_nodes()
 
+		history = {"barabasi_albert": [0] * (self.__env['environment']['time_steps'] + 1), "random": [0] * (self.__env['environment']['time_steps'] + 1) }
+
 		for i in range(self.__env['environment']['time_steps']):
-			print("ITERATION ", i)
+			print("Day: ", i)
+			self.add_survival_history(history, i)
 			self.reset_day(i)
 			for j in range(self.__env['environment']['payments_per_step']):
 				self.route_payments_all_to_all(i)
 
 			self.network_probability_node_creation()
 			self.check_for_bankruptcy()
+			self.__attachment.manage_channels(self.__g)
 
 		self.print_profit_table()
 
 		self.print_alive_nodes()
-
+		plot.plot_survival_history(history, [])
 		#self.betweenness_centrality()
 
 	def build_environment(self):
@@ -214,6 +215,14 @@ class SimulationOperator:
 			self.__attachment.attach(self.__g, node, 5)
 
 		return True
+
+	def add_survival_history(self, history, day):
+
+		for n in self.__g.nodes:
+			if self.__g.nodes[n]['attachment_policy'] == "barabasi_albert":
+				history["barabasi_albert"][day] += 1
+			else:
+				history["random"][day] += 1
 
 	def route_payments_all_to_all(self, day):
 
@@ -226,15 +235,13 @@ class SimulationOperator:
 		routers = nx.reconstruct_path(source, dest, self.__routing_table)
 
 		if not self.is_path_liquid(routers, 1000):  # If shortest path isn't liquid, create another one.
-			print("NOT LIQUID")
 			routers = self.create_liquid_route(source, dest, 1000)
+			if not routers:
+				return
 
-		self.offset_liquidity(routers, 1000)
+		self.offset_liquidity_and_pay(routers, 1000)
 		routers.remove(source)
-		routers.remove(dest)
-		for n in routers:
-			self.__g.nodes[n]['profits'][day % 10] += (self.__g.nodes[n]["base_fee"] / 1000)  # TODO: MOVE TO CHANNEL
-			self.__g.nodes[n]['total_profits'] += (self.__g.nodes[n]["base_fee"] / 1000)
+		self.pay_routers(routers, day)
 
 	def is_path_liquid(self, routers, amount):
 		previous = None
@@ -247,7 +254,7 @@ class SimulationOperator:
 
 		return True
 
-	def offset_liquidity(self, routers, amount):  # TODO: ADD FEE
+	def offset_liquidity_and_pay(self, routers, amount):  # TODO: ADD FEE
 		previous = None
 		for n in routers:
 			if previous is not None:
@@ -256,17 +263,25 @@ class SimulationOperator:
 
 			previous = n
 
+	def pay_routers(self, routers, day):
+		previous = None
+		for n in routers:
+			if previous is not None:
+				self.__g.nodes[previous]['profits'][day % 10] += (self.__g.get_edge_data(previous, n)["base_fee_millisatoshi"])
+				self.__g.get_edge_data(previous, n)["last_10_fees"][day % 10] += \
+					(self.__g.get_edge_data(previous, n)["base_fee_millisatoshi"])
+				self.__g.nodes[previous]['total_profits'] += (self.__g.get_edge_data(previous, n)["base_fee_millisatoshi"])
+
+			previous = n
+
 		return True
 
 	def create_liquid_route(self, source, target, liquidity):
-		#nodes = nx.dijkstra_path(self.__g, source, target, weight="base_fee_millisatoshi")
+
 		try:
 			nodes = dijkstra_liquid_path(self.__g, source, target, liquidity, weight="base_fee_millisatoshi")
-			print("path")
-			print(nodes)
 		except nx.exception.NetworkXNoPath:
-			print("HAHA CAUGHT YEE")
-			exit(90)
+			return False
 		return nodes
 
 	def network_probability_node_creation(self):
@@ -304,13 +319,19 @@ class SimulationOperator:
 		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g, weight="base_fee_millisatoshi")
 
 	def betweenness_centrality(self):
-		#l = sorted(nx.betweenness_centrality(self.__g, normalized=False).items())
 
 		l2 = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
-
+		last_edge = l2[len(l2)-1]
 		self.fast_price_function(last_edge)
 
 	def price_function(self, last_edge):
+		"""
+
+		Naive price function, use fast_price_function instead.
+
+		Calculates the optimal price by iterating over each fee with the betweenness centrality algorithm.
+
+		"""
 		edge_data = self.__g.get_edge_data(last_edge[0][0], last_edge[0][1])
 		plot_list = []
 
