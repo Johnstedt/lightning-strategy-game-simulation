@@ -18,25 +18,25 @@ The Lightning Network may be modeled as a directional Graph $G$ with vertices re
 
 \section{Fee as a competitive equilibrium}
 
-The
-
-The conventional long run demand and supply curve apply to the fee market.
-
-If a demand is running DD' and Supply SS' and
-
-Suppose the average fee price is set at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{1}$.
+It may be useful to view the fee market as existing under normal free market pressures and apply conventional long run demand and supply curve apply to the fee market. 
 
 \begin{figure}[!htb]
 	\hspace*{-0.3cm} 
 	\centering
-	\includegraphics[width=11cm]{images/equilibrium_sized.png}
-	\caption{ 
+	\includegraphics[width=11cm]{images/equilibrium_sized2.png}
+	\caption{ The fee market as viewed according to standard price theory. Both by single pair and in all pairs in aggregate. 
 		}
 		\label{fig:equilibrium}
 		\hspace*{2mm} 	
 \end{figure}
 
-The cost of procuring a shortest path between s and d might be unequal for two different routing nodes dependent on already existing paths and set policies.
+The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used and closing channel between s and d, again driving the fee towards E.
+
+The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing nodes joining if its a profitable venture or leaving if its a unprofitable one.
+
+It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But their's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.  
+
+The cost of procuring a shortest path between s and d might be unequal for two different routing nodes dependent on already existing paths and set policies. How these policies may be set is the in a way the essence of this thesis. 
 
 \section{Optimal fee price}
 
@@ -54,13 +54,21 @@ It is possible to determine the optimal fee for an edge if some assumption, of t
 
 \[ f(x) = x\sum_{s \neq e \neq d}\frac{\sigma_{sd}(e(x))}{\sigma_{sd}} \textrm{ and } \]
 
-\[ \sigma_{sd}(e(x)) =  \begin{cases}
-		1, & \text{if a shortest path exists} \\
-           & \text{through $e$ with weight x.} \\
-		0, & \text{otherwise}
-	\end{cases} \]
+%\[ \sigma_{sd}(e(x)) =  \begin{cases}
+%		n, & \text{if n shortest paths exists} \\
+%          & \text{through $e$ with weight x.} \\
+%		0, & \text{otherwise}
+%	\end{cases} \]
 
-The $\sigma_{sd}$ simply represents the total amount of shortest paths between $s$ and $d$.
+\[ \sigma_{sd}(e(x)) =  \begin{cases}
+ & \text{Is the sum of shortest } \\
+ & \text{paths between $s$ and $d$} \\
+& \text{through $e$ with weight x.} \\
+
+\end{cases} \]
+
+
+The $\sigma_{sd}$ represents the total amount of shortest paths between $s$ and $d$.
 The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for a fictitious generated graph. 
 
 \begin{figure}[!htb]
