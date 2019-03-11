@@ -4,37 +4,39 @@ With the eventual growth of the Lightning Network a fee market for channel liqui
 
 \section{Lightning network as a graph}
 
-The Lightning Network may be modeled as a directional Graph $G$ with vertices representing nodes and edges representing channels. As each channel may have different fees and liquidity it's useful to represent each channel with two edges. 
+The Lightning Network may be modeled as a directional Graph $G$ with vertices representing nodes and edges representing channels. As each channel may have different fees and liquidity in each direction it's useful to represent each channel with two edges. One edge in each direction. 
 
 \begin{figure}[!htb]
 	\hspace*{-0.7cm} 
 	\centering
-	\includegraphics[width=7.5cm]{images/LN_overview.png}
+	\includegraphics[width=7cm]{images/LN_overview.png}
 	\caption{ \textit{A representation of LN as a graph. Each channel is symbolized by two edges.} 
 	}
 	\label{fig:ln:graph}
-	\hspace*{2mm} 	
+	\hspace*{2mm}
 \end{figure}
+
+Modeling the network as a graph allows the use of graph theory. Thus routing, concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. 
 
 \section{Fee as a competitive equilibrium}
 
-It may be useful to view the fee market as existing under normal free market pressures and apply conventional long run demand and supply curve apply to the fee market. 
+It may be useful to view the fee market as existing under normal free market pressures and apply the conventional long run demand and supply curve\cite{boulding:evolutionary:economy} to the fee market. 
 
 \begin{figure}[!htb]
 	\hspace*{-0.3cm} 
 	\centering
 	\includegraphics[width=11cm]{images/equilibrium_sized2.png}
-	\caption{ The fee market as viewed according to standard price theory. Both by single pair and in all pairs in aggregate. 
+	\caption{ The fee market as viewed according to standard price theory. Both by single pair and all pairs in aggregate. 
 		}
 		\label{fig:equilibrium}
 		\hspace*{2mm} 	
 \end{figure}
 
-The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used and closing channel between s and d, again driving the fee towards E.
+The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
 
-The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing nodes joining if its a profitable venture or leaving if its a unprofitable one.
+The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing nodes joining if its a profitable venture or leaving if its a unprofitable one. Here again driving prices towards equilibrium. 
 
-It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But their's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.  
+It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
 The cost of procuring a shortest path between s and d might be unequal for two different routing nodes dependent on already existing paths and set policies. How these policies may be set is the in a way the essence of this thesis. 
 
@@ -87,7 +89,7 @@ Efficient algorithms for edge betweenness centrality have been developed\cite{br
 Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
 \begin{enumerate}
-	\item Calculate the shortest path from all-to-all vertices without going through $e$ with either Floyd-Warshall or Johnson\cite{johnson:shortest:path:sparse:network} obtaining table A.
+	\item Calculate the shortest path from all-to-all vertices without going through $e$ with either Floyd-Warshall\cite{bakhtiar:floyd:warshall} or Johnson\cite{johnson:shortest:path:sparse:network} obtaining table A.
 	\item Calculate shortest path from the source of $e$, $V$-to-all explicitly going through $e$ with Dijkstra obtaining table D where $e$ weight set to 0.
 	\item Retrieve the difference for all pairs between the all-to-all distance with the all-to-$V$-to-all distance, A[s][d] - (A[s][V] + D[d]). Throw away the negative values and produce a cumulative summation over the differences in a table H.
 	\item Select $x_{opt}$ such that \[ \forall x (x H(x)) \leq x_{opt} H(x_{opt}) \]
@@ -119,25 +121,32 @@ depends on both edges and vertices.
 
 \section{Topology and Preferential Attachment}
 
-Network topology
+Setting fee price is only one aspect of a routing node, maybe more importantly is that of opening and closing channels.
+As the protocol now stands\footnote{Is very plausible that that BIP66 may be activated allowing multi-sourced channels\cite{bip:0118:sighash:noinput}} it only allows for single source funding of channels. There is a non negligible cost to opening channels and it would be very beneficial for a node if other nodes opened channels with it instead of the other way around. This is also a prerequisite to earn profit as otherwise the node may only earn back its own funding. 
+
+Therefor the policies determining by which preferences each node takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest path and robustness in case of node failures.
+
+\subsection{Traditional models}
+
+random Ergi
+
+random over time
+
+my random
+
+Scale free
 
 \[ P(k) \propto k^{-\gamma} \]
 
-\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
-
-
-Lightning network consists of nodes playing game
-
-Non routing nodes, cheap as possible and possible as private as possible(?) 
-
 Barabási–Albert model
 
-Does it become scale free
+\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
 
-does any channel opening algorithm perform better than another and essentially force the network into a scale free hub-spoke network instead of a mesh network?
- 
+modified barabasi
 
+btc mainnet testnet degree distribution
 
+The topology of both testnet and mainnet is visualized in Figure \ref{fig:topology}.
 
 \newpage
 \onecolumn
@@ -149,20 +158,25 @@ does any channel opening algorithm perform better than another and essentially f
 	\vspace*{-0.4cm} 
 	\includegraphics[width=13.6cm]{graphs/mainnet_force3.png}
 	\caption{\textit{
-		Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi\cite{repository:gephi}.}}
-	\label{fig:equilibrium}
+			Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi\cite{repository:gephi}.}}
+	\label{fig:topology}
 	\hspace*{2mm} 	
 \end{figure}
 \newpage
 \twocolumn
 
+\section{Routing as a Game}
+
+Lightning network consists of nodes playing game
+
+Non routing nodes, cheap as possible and possible as private as possible(?) 
+
+does any channel opening algorithm perform better than another and essentially force the network into a scale free hub-spoke network instead of a mesh network?
+
+\section{Simulation}
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf
-
-
 
 % https://webusers.imj-prg.fr/~ricardo.perez-marco/publications/articles/antrouting3.pdf
 
 % https://bitfury.com/content/downloads/whitepaper_flare_an_approach_to_routing_in_lightning_network_7_7_2016.pdf
-
-% https://en.wikipedia.org/wiki/Betweenness_centrality
