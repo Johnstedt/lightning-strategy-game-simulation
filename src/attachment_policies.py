@@ -85,8 +85,8 @@ class AttachmentPolicies:
 		First only close and open
 		"""
 		# Channel close
-		for e in g.edges:
-			print(e)
+		#for e in g.edges:
+			#print(e)
 			#exit(1)
 			#if sum(e['last_10_fees']) < 20:
 				#g.remove_edge(e)

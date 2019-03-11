@@ -14,7 +14,7 @@ from heapq import heappush, heappop
 from itertools import count
 
 
-def dijkstra_liquid_path(G, source, target, liquidity, weight=None):
+def dijkstra_liquid_path(G, source, target, liquidity, weight=None):  # TODO Move to own file
 	"""Uses Dijkstra's algorithm to find shortest weighted paths.
 
 	THIS METHOD IS MODIFIED TO HANDLE LIQUIDITY CONSTRAINS.
@@ -130,8 +130,7 @@ def _weight_function(G, weight):
 
 
 def create_node(settings):
-
-	rand_id = '%066x' % random.randrange(16**66)
+	rand_id = '%066x' % random.randrange(16 ** 66)
 
 	return {
 
@@ -154,281 +153,295 @@ def create_node(settings):
 	}
 
 
-class SimulationOperator:
+def if_main():
+	if len(sys.argv) == 1:
+		print("SUPPLY ARGS PLZ")
+		exit(0)
 
-	__g = None
-	__routing_table = None
-	__env = None
+	for i in range(1, len(sys.argv)):
+		if sys.argv[i] == "-preset":
+			print(sys.argv[i + 1])
+			if sys.argv[i + 1] == "test":
+				simulate("presets/test.json")
+		if sys.argv[i] == "-file":
+			print(sys.argv[i + 1])
 
-	def __init__(self):
 
-		if len(sys.argv) == 1:
-			print("SUPPLY ARGS PLZ")
-			exit(0)
+def simulate(sim_file):
+	env = json.loads(open(sim_file, "r").read())
+	print(json.dumps(env, indent=2))
 
-		self.__g = nx.DiGraph()
-		self.__attachment = AttachmentPolicies()
+	g = nx.DiGraph()
+	attachment = AttachmentPolicies()
 
-		for i in range(1, len(sys.argv)):
-			if sys.argv[i] == "-preset":
-				print(sys.argv[i+1])
-				if sys.argv[i+1] == "test":
-					self.simulate("presets/test.json")
-			if sys.argv[i] == "-file":
-				print(sys.argv[i+1])
+	build_environment(env, g, attachment)
 
-	def simulate(self, sim_file):
-		self.__env = json.loads(open(sim_file, "r").read())
-		print(json.dumps(self.__env, indent=2))
+	routing_table, _ = nx.floyd_warshall_predecessor_and_distance(g)
 
-		self.build_environment()
+	print_alive_nodes(g)
 
-		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g)
-		print("routing table")
+	history = {"barabasi_albert": [0] * (env['environment']['time_steps'] + 1),  # TODO make abstract
+				"random": [0] * (env['environment']['time_steps'] + 1)}
 
-		self.print_alive_nodes()
+	for i in range(env['environment']['time_steps']):
+		print("Day: ", i)
+		add_survival_history(g, history, i)
+		reset_day(g, i)
+		for j in range(env['environment']['payments_per_step']):
+			route_payments_all_to_all(g, i, routing_table)   # TODO CHANGE i to day
 
-		history = {"barabasi_albert": [0] * (self.__env['environment']['time_steps'] + 1), "random": [0] * (self.__env['environment']['time_steps'] + 1) }
+		network_probability_node_creation(g, attachment)
+		routing_table = check_for_bankruptcy(g, attachment)
+		attachment.manage_channels(g)
 
-		for i in range(self.__env['environment']['time_steps']):
-			print("Day: ", i)
-			self.add_survival_history(history, i)
-			self.reset_day(i)
-			for j in range(self.__env['environment']['payments_per_step']):
-				self.route_payments_all_to_all(i)
+	print_profit_table(g)
 
-			self.network_probability_node_creation()
-			self.check_for_bankruptcy()
-			self.__attachment.manage_channels(self.__g)
+	print_alive_nodes(g)
+	plot.plot_survival_history(history, [])
+	# betweenness_centrality()
+	return history
 
-		self.print_profit_table()
 
-		self.print_alive_nodes()
-		plot.plot_survival_history(history, [])
-		#self.betweenness_centrality()
-
-	def build_environment(self):
-
-		for n in range(0, self.__env['environment']['initial_nodes']):
-			settings = numpy.random.choice(self.__env['routing_nodes'], p=[i['initial_distribution'] for i in self.__env['routing_nodes']])
-			node = create_node(settings)
-			self.__attachment.attach(self.__g, node, 5)
-
-		return True
-
-	def add_survival_history(self, history, day):
-
-		for n in self.__g.nodes:
-			if self.__g.nodes[n]['attachment_policy'] == "barabasi_albert":
-				history["barabasi_albert"][day] += 1
-			else:
-				history["random"][day] += 1
-
-	def route_payments_all_to_all(self, day):
-
-		source = 0
-		dest = 0
-		while source == dest:
-			source = random.sample(self.__g.nodes, 1)[0]
-			dest = random.sample(self.__g.nodes, 1)[0]
-
-		routers = nx.reconstruct_path(source, dest, self.__routing_table)
-
-		if not self.is_path_liquid(routers, 1000):  # If shortest path isn't liquid, create another one.
-			routers = self.create_liquid_route(source, dest, 1000)
-			if not routers:
-				return
-
-		self.offset_liquidity_and_pay(routers, 1000)
-		routers.remove(source)
-		self.pay_routers(routers, day)
-
-	def is_path_liquid(self, routers, amount):
-		previous = None
-		for n in routers:
-			if previous is not None:
-				if self.__g.get_edge_data(previous, n)["satoshis"] < amount:
-					return False
-
-			previous = n
-
-		return True
-
-	def offset_liquidity_and_pay(self, routers, amount):  # TODO: ADD FEE
-		previous = None
-		for n in routers:
-			if previous is not None:
-				self.__g.get_edge_data(previous, n)["satoshis"] = self.__g.get_edge_data(previous, n)["satoshis"] - amount
-				self.__g.get_edge_data(n, previous)["satoshis"] = self.__g.get_edge_data(n, previous)["satoshis"] + amount
-
-			previous = n
-
-	def pay_routers(self, routers, day):
-		previous = None
-		for n in routers:
-			if previous is not None:
-				self.__g.nodes[previous]['profits'][day % 10] += (self.__g.get_edge_data(previous, n)["base_fee_millisatoshi"])
-				self.__g.get_edge_data(previous, n)["last_10_fees"][day % 10] += \
-					(self.__g.get_edge_data(previous, n)["base_fee_millisatoshi"])
-				self.__g.nodes[previous]['total_profits'] += (self.__g.get_edge_data(previous, n)["base_fee_millisatoshi"])
-
-			previous = n
-
-		return True
-
-	def create_liquid_route(self, source, target, liquidity):
-
-		try:
-			nodes = dijkstra_liquid_path(self.__g, source, target, liquidity, weight="base_fee_millisatoshi")
-		except nx.exception.NetworkXNoPath:
-			return False
-		return nodes
-
-	def network_probability_node_creation(self):
-		albert = 0
-		randoms = 0
-		for n in self.__g.nodes:
-			if self.__g.nodes[n]['attachment_policy'] == "barabasi_albert":
-				albert += 1
-			else:
-				randoms += 1
-
-		settings = numpy.random.choice([{"attachment_policy": "barabasi_albert"}, {"attachment_policy": "random"}], p=[albert/len(self.__g.nodes), randoms/len(self.__g.nodes)])
+def build_environment(env, g, attachment):
+	for n in range(0, env['environment']['initial_nodes']):
+		settings = numpy.random.choice(env['routing_nodes'],   # TODO option for exact start
+										p=[i['initial_distribution'] for i in env['routing_nodes']])
 		node = create_node(settings)
-		self.__attachment.attach(self.__g, node, 5)
+		attachment.attach(g, node, 5)
 
-	def reset_day(self, day):
-		for n in self.__g.nodes:
-			self.__g.nodes[n]['profits'][day % 10] = 0
+	return True
 
-	def check_for_bankruptcy(self):
-		changed = False
-		remove = []
 
-		for node in self.__g.nodes:
-
-			if sum(self.__g.nodes[node]['profits']) < 10:
-				print(self.__g.nodes[node]['nodeid'], " Went bankrupt with method: ", self.__g.nodes[node]['attachment_policy'])
-				remove.append(node)
-				changed = True
-		if changed:
-			for n in remove:
-				self.__attachment.remove_all_barabasi(n)
-				self.__g.remove_node(n)
-
-		self.__routing_table, _ = nx.floyd_warshall_predecessor_and_distance(self.__g, weight="base_fee_millisatoshi")
-
-	def betweenness_centrality(self):
-
-		l2 = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
-		last_edge = l2[len(l2)-1]
-		self.fast_price_function(last_edge)
-
-	def price_function(self, last_edge):
-		"""
-
-		Naive price function, use fast_price_function instead.
-
-		Calculates the optimal price by iterating over each fee with the betweenness centrality algorithm.
-
-		"""
-		edge_data = self.__g.get_edge_data(last_edge[0][0], last_edge[0][1])
-		plot_list = []
-
-		fee_range = range(10, 1500, 1)
-
-		for fee in fee_range:
-			edge_data["base_fee_millisatoshi"] = fee
-			self.__g.add_edge(last_edge[0][0], last_edge[0][1], **edge_data)
-			all_pair = sorted(nx.edge_betweenness_centrality(self.__g, normalized=False, weight="base_fee_millisatoshi").items(), key=lambda x: x[1])
-			bc = [edge[1] for edge in all_pair if edge[0][0] == last_edge[0][0] and edge[0][1] == last_edge[0][1]][0]
-			if bc == 0:
-				break
-			plot_list.append(fee*bc)
-			print(fee, " ", bc, " ", fee * bc)
-
-		plot.plot_fee_curve(range(10, 10+len(plot_list)), plot_list)
-
-	def fast_price_function(self, e, algorithm='johnson'):
-		"""
-
-		Fast function to find the optimal price for a given edge e.
-
-		1. Calculate the shortest path from all-to-all vertices without going through $C$ with either Floyd-Warshall or
-			Johnson. Default is Johnson
-		2. Calculate shortest path from $C$ source to all explicitly going through $C$ with Dijkstra.
-		3. Compare difference between all-to-all cost with all-to-$V$-to-all, producing a cumulative summation over the
-			difference.
-		4. Maximizing fee * cumulative difference.
-
-		Plots the given fee * cumulative difference over fee curve.
-		"""
-
-		e_data = self.__g.get_edge_data(e[0][0], e[0][1])
-
-		# Remove edge e
-		self.__g.remove_edge(e[0][0], e[0][1])
-
-		# Floyd or Johnson
-		if algorithm == 'johnson':
-			all_pair_shortest_path = nx.floyd_warshall(self.__g, weight="base_fee_millisatoshi")
+def add_survival_history(g, history, day):
+	for n in g.nodes:
+		if g.nodes[n]['attachment_policy'] == "barabasi_albert":
+			history["barabasi_albert"][day] += 1
 		else:
-			all_pair_shortest_path = nx.johnson(self.__g, weight="base_fee_millisatoshi")
+			history["random"][day] += 1
 
-		# remove all edges from e source, Add edge e
-		edges = list(self.__g.out_edges(e[0][0]))   # get all edges of source
 
-		for rm in edges:
-			self.__g.remove_edge(rm[0], rm[1])
+def route_payments_all_to_all(g, day, routing_table):
+	source = 0
+	dest = 0
+	while source == dest:
+		source = random.sample(g.nodes, 1)[0]
+		dest = random.sample(g.nodes, 1)[0]
 
-		e_data["base_fee_millisatoshi"] = 0
-		self.__g.add_edge(e[0][0], e[0][1], **e_data)
+	routers = nx.reconstruct_path(source, dest, routing_table)
 
-		# Compute single source dijkstras from e source over e.
-		edge_to_all = nx.single_source_dijkstra_path_length(self.__g, e[0][0], weight="base_fee_millisatoshi")
+	if not is_path_liquid(g, routers, 1000):  # If shortest path isn't liquid, create another one.
+		routers = create_liquid_route(g, source, dest, 1000)
+		if not routers:
+			return
 
-		path_price_difference = []
-		for source in all_pair_shortest_path:
-			for destination in all_pair_shortest_path[source]:
-				# SOURCE TO V TO DESTINATION
-				if source != destination != e[0][0]:
-					diff = (all_pair_shortest_path[source][e[0][0]] + edge_to_all[destination]) - all_pair_shortest_path[source][destination]
-					if diff < 0:  # TODO: WHAT TO DO WITH TIES?
-						path_price_difference.append(-diff)
+	offset_liquidity(g, routers, 1000)
+	routers.remove(source)
+	pay_routers(g, routers, day)
 
-		fee_range = range(1, 1500, 1)
-		plot_list = []
-		for r in fee_range:
-			plot_list.append(len([p for p in path_price_difference if p >= r]) * r)
-		plot.plot_fee_curve(fee_range, plot_list)
 
-	def print_alive_nodes(self):
-		albert = 0
-		random = 0
-		for n in self.__g.nodes:
-			if self.__g.nodes[n]['attachment_policy'] == "barabasi_albert":
-				albert += 1
-			else:
-				random += 1
-		print("Barabasi nodes: ", albert, " Random nodes: ", random)
+def is_path_liquid(g, routers, amount):
+	previous = None
+	for n in routers:
+		if previous is not None:
+			if g.get_edge_data(previous, n)["satoshis"] < amount:
+				return False
 
-	def print_profit_table(self):
-		list2 = []
-		for n in self.__g.nodes:
-			list2.append(self.__g.nodes[n])
+		previous = n
 
-		list2 = sorted(list2, key=lambda k: k['total_profits'])
-		cum_albert = 0
-		cum_random = 0
-		for n in list2:
-			print(n['attachment_policy'], " ", n['total_profits'])
-			if n['attachment_policy'] == "barabasi_albert":
-				cum_albert += n['total_profits']
-			else:
-				cum_random += n['total_profits']
+	return True
 
-		print("BARABASI TOTAL: ", cum_albert, " RANDOM TOTAL: ", cum_random)
+
+def offset_liquidity(g, routers, amount):  # TODO: ADD FEE
+	previous = None
+	for n in routers:
+		if previous is not None:
+			g.get_edge_data(previous, n)["satoshis"] = g.get_edge_data(previous, n)["satoshis"] - amount
+			g.get_edge_data(n, previous)["satoshis"] = g.get_edge_data(n, previous)["satoshis"] + amount
+
+		previous = n
+
+
+def pay_routers(g, routers, day):
+	previous = None
+	for n in routers:
+		if previous is not None:
+			g.nodes[previous]['profits'][day % 10] += (
+				g.get_edge_data(previous, n)["base_fee_millisatoshi"])
+			g.get_edge_data(previous, n)["last_10_fees"][day % 10] += \
+				(g.get_edge_data(previous, n)["base_fee_millisatoshi"])
+			g.nodes[previous]['total_profits'] += (
+				g.get_edge_data(previous, n)["base_fee_millisatoshi"])
+
+		previous = n
+
+	return True
+
+
+def create_liquid_route(g, source, target, liquidity):
+	try:
+		nodes = dijkstra_liquid_path(g, source, target, liquidity, weight="base_fee_millisatoshi")
+	except nx.exception.NetworkXNoPath:
+		return False
+	return nodes
+
+
+def network_probability_node_creation(g, attachment):
+	albert = 0
+	randoms = 0
+	for n in g.nodes:
+		if g.nodes[n]['attachment_policy'] == "barabasi_albert":   # TODO abstract
+			albert += 1
+		else:
+			randoms += 1
+
+	settings = numpy.random.choice([{"attachment_policy": "barabasi_albert"}, {"attachment_policy": "random"}],
+								   p=[albert / len(g.nodes), randoms / len(g.nodes)])
+	node = create_node(settings)
+	attachment.attach(g, node, 5)
+
+
+def reset_day(g, day):
+	for n in g.nodes:
+		g.nodes[n]['profits'][day % 10] = 0
+
+
+def check_for_bankruptcy(g, attachment):
+	changed = False
+	remove = []
+
+	for node in g.nodes:
+
+		if sum(g.nodes[node]['profits']) < 10:
+			print(g.nodes[node]['nodeid'], " Went bankrupt with method: ",
+				g.nodes[node]['attachment_policy'])
+			remove.append(node)
+			changed = True
+	if changed:
+		for n in remove:
+			attachment.remove_all_barabasi(n)
+			g.remove_node(n)
+
+	routing_table, _ = nx.floyd_warshall_predecessor_and_distance(g, weight="base_fee_millisatoshi")
+	return routing_table
+
+
+def betweenness_centrality(g):
+	l2 = sorted(nx.edge_betweenness_centrality(g, normalized=False, weight="base_fee_millisatoshi").items(),
+				key=lambda x: x[1])
+	last_edge = l2[len(l2) - 1]
+	fast_price_function(g, last_edge)
+
+
+def price_function(g, last_edge):
+	"""
+
+	Naive price function, use fast_price_function instead.
+
+	Calculates the optimal price by iterating over each fee with the betweenness centrality algorithm.
+
+	"""
+	edge_data = g.get_edge_data(last_edge[0][0], last_edge[0][1])
+	plot_list = []
+
+	fee_range = range(10, 1500, 1)
+
+	for fee in fee_range:
+		edge_data["base_fee_millisatoshi"] = fee
+		g.add_edge(last_edge[0][0], last_edge[0][1], **edge_data)
+		all_pair = sorted(
+			nx.edge_betweenness_centrality(g, normalized=False, weight="base_fee_millisatoshi").items(),
+			key=lambda x: x[1])
+		bc = [edge[1] for edge in all_pair if edge[0][0] == last_edge[0][0] and edge[0][1] == last_edge[0][1]][0]
+		if bc == 0:
+			break
+		plot_list.append(fee * bc)
+		print(fee, " ", bc, " ", fee * bc)
+
+	plot.plot_fee_curve(range(10, 10 + len(plot_list)), plot_list)
+
+
+def fast_price_function(g, e, algorithm='johnson'):
+	"""
+
+	Fast function to find the optimal price for a given edge e.
+
+	1. Calculate the shortest path from all-to-all vertices without going through $C$ with either Floyd-Warshall or
+		Johnson. Default is Johnson
+	2. Calculate shortest path from $C$ source to all explicitly going through $C$ with Dijkstra.
+	3. Compare difference between all-to-all cost with all-to-$V$-to-all, producing a cumulative summation over the
+		difference.
+	4. Maximizing fee * cumulative difference.
+
+	Plots the given fee * cumulative difference over fee curve.
+	"""
+
+	e_data = g.get_edge_data(e[0][0], e[0][1])
+
+	# Remove edge e
+	g.remove_edge(e[0][0], e[0][1])
+
+	# Floyd or Johnson
+	if algorithm == 'johnson':
+		all_pair_shortest_path = nx.floyd_warshall(g, weight="base_fee_millisatoshi")
+	else:
+		all_pair_shortest_path = nx.johnson(g, weight="base_fee_millisatoshi")
+
+	# remove all edges from e source, Add edge e
+	edges = list(g.out_edges(e[0][0]))  # get all edges of source
+
+	for rm in edges:
+		g.remove_edge(rm[0], rm[1])
+
+	e_data["base_fee_millisatoshi"] = 0
+	g.add_edge(e[0][0], e[0][1], **e_data)
+
+	# Compute single source dijkstras from e source over e.
+	edge_to_all = nx.single_source_dijkstra_path_length(g, e[0][0], weight="base_fee_millisatoshi")
+
+	path_price_difference = []
+	for source in all_pair_shortest_path:
+		for destination in all_pair_shortest_path[source]:
+			# SOURCE TO V TO DESTINATION
+			if source != destination != e[0][0]:
+				diff = (all_pair_shortest_path[source][e[0][0]] + edge_to_all[destination]) - all_pair_shortest_path[source][destination]
+				if diff < 0:  # TODO: WHAT TO DO WITH TIES?
+					path_price_difference.append(-diff)
+
+	fee_range = range(1, 1500, 1)
+	plot_list = []
+	for r in fee_range:
+		plot_list.append(len([p for p in path_price_difference if p >= r]) * r)
+	plot.plot_fee_curve(fee_range, plot_list)
+
+
+def print_alive_nodes(g):
+	albert = 0
+	random = 0
+	for n in g.nodes:
+		if g.nodes[n]['attachment_policy'] == "barabasi_albert":
+			albert += 1
+		else:
+			random += 1
+	print("Barabasi nodes: ", albert, " Random nodes: ", random)
+
+
+def print_profit_table(g):
+	list2 = []
+	for n in g.nodes:
+		list2.append(g.nodes[n])
+
+	list2 = sorted(list2, key=lambda k: k['total_profits'])
+	cum_albert = 0
+	cum_random = 0
+	for n in list2:
+		print(n['attachment_policy'], " ", n['total_profits'])
+		if n['attachment_policy'] == "barabasi_albert":
+			cum_albert += n['total_profits']
+		else:
+			cum_random += n['total_profits']
+
+	print("BARABASI TOTAL: ", cum_albert, " RANDOM TOTAL: ", cum_random)
 
 
 if __name__ == "__main__":
-	SimulationOperator()
+	if_main()
