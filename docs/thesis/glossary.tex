@@ -1,0 +1,27 @@
+
+%from documentation
+%\newacronym[⟨key-val list⟩]{⟨label ⟩}{⟨abbrv ⟩}{⟨long⟩}
+%above is short version of this
+% \newglossaryentry{⟨label ⟩}{type=\acronymtype,
+% name={⟨abbrv ⟩},
+% description={⟨long⟩},
+% text={⟨abbrv ⟩},
+% first={⟨long⟩ (⟨abbrv ⟩)},
+% plural={⟨abbrv ⟩\glspluralsuffix},
+% firstplural={⟨long⟩\glspluralsuffix\space (⟨abbrv ⟩\glspluralsuffix)},
+% ⟨key-val list⟩}
+
+%\newacronym{api}{API}{Application Programming Interface }
+
+%%% The glossary entry the acronym links to   
+\newglossaryentry{apig}{name={API},
+	description={An Application Programming Interface (API) is a particular set
+		of rules and specifications that a software program can follow to access and
+		make use of the services and resources provided by another particular software
+		program that implements that API}}
+
+%%% define the acronym and use the see= option
+\newglossaryentry{api}{type=\acronymtype, name={API}, description={Application
+		Programming Interface}, first={Application
+		Programming Interface (API)\glsadd{apig}}, see=[Glossary:]{apig}}
+

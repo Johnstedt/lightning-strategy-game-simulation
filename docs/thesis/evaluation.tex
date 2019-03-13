@@ -128,11 +128,16 @@ Therefor the policies determining by which preferences each node takes into acco
 
 \subsection{Traditional models}
 
-random Ergi
+Random graphs have been studied extensively, specifically the Erdős–Rényi model\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as a Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
-random over time
+Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the degree distribution compared to that of Erdős–Rényi as it's exponential instead of binomial as seen in figure X.
 
-my random
+
+%pk=(2δ)k(1 + 2δ)k+1
+
+\[p(k) = \dfrac{(2\delta)^k}{1 + 2\delta^{k+1}} \]
+
+A more appropriate random model may be to consider $G_{n,N}$ where each vertex as joining the graph with an unbiased 
 
 Scale free
 
@@ -143,6 +148,8 @@ Barabási–Albert model
 \[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
 
 modified barabasi
+
+lightnign 
 
 btc mainnet testnet degree distribution
 

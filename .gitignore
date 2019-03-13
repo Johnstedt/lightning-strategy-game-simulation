@@ -8,6 +8,14 @@ problem.log
 *.bbl
 *.blg
 *.auxlock
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.ilg
+*.ist
+
 
 .idea
 

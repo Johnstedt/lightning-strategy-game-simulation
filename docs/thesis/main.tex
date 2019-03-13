@@ -40,6 +40,10 @@
 
 \usepackage{algorithmicx}
 
+\usepackage{hyperref}
+\usepackage[acronym, numberedsection=autolabel]{glossaries}
+\makeglossaries
+
 \titleformat{\chapter}
 	{\normalfont\LARGE\bfseries}{{\chaptertitlename~\thechapter~|\ }}{0pt}{}{}
 \titlespacing*{\chapter}{0pt}{20pt}{20pt}
@@ -112,6 +116,8 @@
     \fancyfoot[C]{\thepage}
     \fancyfoot[R]{\footnotesize{\today}}  
 
+\input{glossary}
+
 \begin{document}
 
 	\onecolumn
@@ -182,7 +188,8 @@
 
 	\label{chapter:problem}
 	\input{problem}
-	
+	First use \gls{api}\\
+	subsequent \gls{api}	
 	\clearpage
 
 	\label{chapter:macroeconomics}	
@@ -225,6 +232,10 @@
 
     \begin{appendices}
     \input{routing_fee}
+
+    \printglossary[type=main]
+   
+    \input{mirror}
 	\end{appendices}
-    %\input{appendices}
+
 \end{document}
