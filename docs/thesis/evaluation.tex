@@ -38,7 +38,7 @@ The fee market may also be seen in its aggregate, where the axis represents the 
 
 It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
-The cost of procuring a shortest path between s and d might be unequal for two different routing nodes dependent on already existing paths and set policies. How these policies may be set is the in a way the essence of this thesis. 
+The cost of procuring a shortest path between s and d might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes.
 
 \section{Optimal fee price}
 
@@ -126,23 +126,33 @@ As the protocol now stands\footnote{Is very plausible that that BIP66 may be act
 
 Therefor the policies determining by which preferences each node takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest path and robustness in case of node failures.
 
-\subsection{Traditional models}
+\subsection{Traditional random models}
 
 Random graphs have been studied extensively, specifically the Erdős–Rényi model\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as a Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
-Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the degree distribution compared to that of Erdős–Rényi as it's exponential instead of binomial as seen in figure X.
-
-
-%pk=(2δ)k(1 + 2δ)k+1
+Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the degree distribution compared to that of Erdős–Rényi as it's exponential given as
 
 \[p(k) = \dfrac{(2\delta)^k}{1 + 2\delta^{k+1}} \]
 
-A more appropriate random model may be to consider $G_{n,N}$ where each vertex as joining the graph with an unbiased 
+compared to Erdős–Rényi which is binomial
 
-Scale free
+\[p(k) = {n-1 \choose k} p^k(1-p)^{n-1-k} \]
+
+as follows from definition as ${n-1 \choose k}$ all possible combinations of k edges,  $p^k$ the probability of any combination taking place and $p^k(1-p)^{n-1-k}$ to exclude combinations of larger degree $k$.
+
+A more appropriate random model may be to consider $G_{n,E}$ where each time step t a vertex joins the graph and selects E previous vertices and creates and edges when t < n. The probability of any previous vertex i being selected is thus $p_i = \dfrac{k_i}{\sum_{j}^{}k_j}$ among j vertices.
+
+\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+
+These three random models degree distribution may be seen in figure L.
+
+( L )
+
+%DEGREE of my random \[ p(k) = E \sum_{n/2}^{n} \dfrac{E}{i} \]
 
 \[ P(k) \propto k^{-\gamma} \]
 
+\subsection{Scale free models}
 Barabási–Albert model
 
 \[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
