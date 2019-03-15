@@ -128,32 +128,56 @@ Therefor the policies determining by which preferences each node takes into acco
 
 \subsection{Traditional random models}
 
-Random graphs have been studied extensively, specifically the Erdős–Rényi model\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as a Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
+Random graphs have been studied extensively, specifically the Erdős–Rényi model\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
 Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the degree distribution compared to that of Erdős–Rényi as it's exponential given as
 
-\[p(k) = \dfrac{(2\delta)^k}{1 + 2\delta^{k+1}} \]
-
+\begin{equation}
+	p(k) = \dfrac{(2\delta)^k}{(1 + 2\delta)^{k+1}} 
+	\label{eq:callaway}
+\end{equation}
 compared to Erdős–Rényi which is binomial
 
-\[p(k) = {n-1 \choose k} p^k(1-p)^{n-1-k} \]
+\begin{equation}
+	p(k) = {n-1 \choose k} p^k(1-p)^{n-1-k} 
+	\label{eq:erdos:renyi}
+\end{equation}
 
-as follows from definition as ${n-1 \choose k}$ all possible combinations of k edges,  $p^k$ the probability of any combination taking place and $p^k(1-p)^{n-1-k}$ to exclude combinations of larger degree $k$.
+as follows from definition as ${n-1 \choose k}$ are all possible combinations of k edges,  $p^k$ the probability of any combination taking place and $p^k(1-p)^{n-1-k}$ to exclude combinations of larger degree $k$.
 
-A more appropriate random model may be to consider $G_{n,E}$ where each time step t a vertex joins the graph and selects E previous vertices and creates and edges when t < n. The probability of any previous vertex i being selected is thus $p_i = \dfrac{k_i}{\sum_{j}^{}k_j}$ among j vertices.
+Thus adding a age bias causes the characteristics of the degree distribution to change as seen in Figure L.
 
-\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+\begin{figure}[!htb]
+		\hspace*{-0.5cm} 
+	\centering
+	\includegraphics[width=9cm]{images/random_topology_degree_distribution.png}
+	\caption{Shows the degree distribution for an Erdős–Rényi graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{blue}{|}) compared to the degree distribution for a Callaway et al. graph(\tikzcircle[red, fill=red]{2pt})  with n = 10,000, $\delta$ = 0.8 and its true distribution given by equation\ref{eq:callaway}(\textcolor{red}{|}).
+	}
+	\label{fig:fee_curve}
+		\hspace*{2mm} 
+\end{figure}
 
-These three random models degree distribution may be seen in figure L.
+A more appropriate random model may be to consider $G_{n,E}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices and creates and edges when t < n. The probability of any previous vertex i being selected is thus $p_i = \dfrac{m}{t_i}$. 
+As a node is not part of LN before edges are made, it reasonable to assume a node creates edges as part of joining the network.
 
-( L )
-
-%DEGREE of my random \[ p(k) = E \sum_{n/2}^{n} \dfrac{E}{i} \]
-
-\[ P(k) \propto k^{-\gamma} \]
+%DEGREE of my random 
+\[ p(k) =  n! * (n-k)*\dfrac{m}{k} \]
 
 \subsection{Scale free models}
-Barabási–Albert model
+
+In 1999 Barabási and Albert showed that many networks degree distribution follows a power law and that the distribution was independent from scale, thus scale free\cite{barabasi:albert:emergent:scaling}. Scale free networks follows a degree distribution of
+
+\[ p(k) \propto k^{-\gamma} \]
+
+and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$.
+A model was suggested to generate a scale free graph by having a graph $G_{n, m}$   
+
+preferential attachment, where a vertex prefer to connect to a vertex that already have many connections. 
+
+
+
+
+
 
 \[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
 

@@ -79,6 +79,8 @@
 
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
+\newcommand{\tikzcircle}[2][red,fill=red]{\tikz[baseline=-0.5ex]\draw[#1,radius=#2] (0,0) circle ;}%
+
 \newcommand{\csp}{\mathcal{C}}
 \newcommand{\todo}[1]{\textcolor{red}{ TODO: #1 }}
  \newcommand{\red}[1]{\colorbox{red!40}{#1}}
@@ -212,6 +214,7 @@
 	\clearpage
 	
 	\label{sec:evaluation}
+
 	\input{evaluation}
 	
 	\clearpage
