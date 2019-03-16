@@ -2,8 +2,11 @@
    "routing_nodes": [
        {
            "name": "matthew",
-           "some_attr": "",
-           "attachment_policy": "barabasi_albert",
+           "attachment_strategy": "barabasi_albert",
+           "channel_strategy": "sanity_check",
+           "pricing_strategy": "approx_best_uniform_distribution",
+           "rebalancing_strategy": "sanity_check",
+           "funding_strategy": "medium",
            "initial_distribution": 0.5
        },
        {
@@ -18,9 +21,11 @@
         "weighted_payment": false,
         "initial_nodes": 100,
         "payments_per_step": 1000,
-        "bankruptcy": 1,
+        "bankruptcy": 20,
         "new_nodes_per_step": 1,
         "new_nodes_policy": "mirror",
-        "time_steps": 5
+        "new_node_quantity": "percentage",
+        "time_steps": 750,
+        "initial_mode": "exact"
     }
 }

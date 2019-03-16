@@ -8,7 +8,7 @@ import sys
 import numpy
 import random
 
-from attachment_policies import AttachmentPolicies
+import strategies.attachment_strategies as attachment
 import plot
 from heapq import heappush, heappop
 from itertools import count
@@ -144,12 +144,13 @@ def create_node(settings):
 		'addresses': [{'port': 9735, 'address': '73.33.112.94', 'type': 'ipv4'}],
 
 		# Simulation attributes
-		'attachment_policy': settings['attachment_policy'],
+		'attachment_policy': settings['attachment_strategy'],
 
 		'profits': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 		'total_profits': 0,
 		"base_fee": random.randint(10, 1501),
-		"fee_per_millionth": random.randint(500, 1501)
+		"fee_per_millionth": random.randint(500, 1501),
+		"funding": 30000
 	}
 
 
@@ -172,16 +173,15 @@ def simulate(sim_file):
 	print(json.dumps(env, indent=2))
 
 	g = nx.DiGraph()
-	attachment = AttachmentPolicies()
 
-	build_environment(env, g, attachment)
+	build_environment(env, g)
 
 	routing_table, _ = nx.floyd_warshall_predecessor_and_distance(g)
 
 	print_alive_nodes(g)
 
-	history = {"barabasi_albert": [0] * (env['environment']['time_steps'] + 1),  # TODO make abstract
-				"random": [0] * (env['environment']['time_steps'] + 1)}
+	history = {"barabasi_albert": [0] * (env['environment']['time_steps']),  # TODO make abstract
+				"random": [0] * (env['environment']['time_steps'])}
 
 	for i in range(env['environment']['time_steps']):
 		print("Day: ", i)
@@ -190,8 +190,8 @@ def simulate(sim_file):
 		for j in range(env['environment']['payments_per_step']):
 			route_payments_all_to_all(g, i, routing_table)   # TODO CHANGE i to day
 
-		network_probability_node_creation(g, attachment)
-		routing_table = check_for_bankruptcy(g, attachment)
+		network_probability_node_creation(g)
+		routing_table = check_for_bankruptcy(g, env)
 		attachment.manage_channels(g)
 
 	print_profit_table(g)
@@ -199,22 +199,37 @@ def simulate(sim_file):
 	print_alive_nodes(g)
 	plot.plot_survival_history(history, [])
 	# betweenness_centrality()
-	return history
+	return history, g
 
 
-def build_environment(env, g, attachment):
-	for n in range(0, env['environment']['initial_nodes']):
-		settings = numpy.random.choice(env['routing_nodes'],   # TODO option for exact start
-										p=[i['initial_distribution'] for i in env['routing_nodes']])
-		node = create_node(settings)
-		attachment.attach(g, node, 5)
+def build_environment(env, g):
+
+	if env['environment']['initial_mode'] == "stochastic":
+
+		for n in range(0, env['environment']['initial_nodes']):
+			settings = numpy.random.choice(env['routing_nodes'],   # TODO option for exact start
+											p=[i['initial_distribution'] for i in env['routing_nodes']])
+
+			node = create_node(settings)
+			attachment.attach(g, node, 5)
+
+	else:   # Exact
+		nodes = []
+		for n in env['routing_nodes']:
+			for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
+				nodes.append(create_node(n))
+
+		while len(nodes) > 0:
+			selected = random.choice(nodes)
+			attachment.attach(g, selected, 5)
+			nodes.remove(selected)
 
 	return True
 
 
 def add_survival_history(g, history, day):
 	for n in g.nodes:
-		if g.nodes[n]['attachment_policy'] == "barabasi_albert":
+		if g.nodes[n]['attachment_strategy'] == "barabasi_albert":
 			history["barabasi_albert"][day] += 1
 		else:
 			history["random"][day] += 1
@@ -285,16 +300,16 @@ def create_liquid_route(g, source, target, liquidity):
 	return nodes
 
 
-def network_probability_node_creation(g, attachment):
+def network_probability_node_creation(g):
 	albert = 0
 	randoms = 0
 	for n in g.nodes:
-		if g.nodes[n]['attachment_policy'] == "barabasi_albert":   # TODO abstract
+		if g.nodes[n]['attachment_strategy'] == "barabasi_albert":   # TODO abstract
 			albert += 1
 		else:
 			randoms += 1
 
-	settings = numpy.random.choice([{"attachment_policy": "barabasi_albert"}, {"attachment_policy": "random"}],
+	settings = numpy.random.choice([{"attachment_strategy": "barabasi_albert"}, {"attachment_strategy": "random"}],
 								   p=[albert / len(g.nodes), randoms / len(g.nodes)])
 	node = create_node(settings)
 	attachment.attach(g, node, 5)
@@ -305,20 +320,19 @@ def reset_day(g, day):
 		g.nodes[n]['profits'][day % 10] = 0
 
 
-def check_for_bankruptcy(g, attachment):
+def check_for_bankruptcy(g, env):
 	changed = False
 	remove = []
 
 	for node in g.nodes:
 
-		if sum(g.nodes[node]['profits']) < 10:
+		if sum(g.nodes[node]['profits']) < env['environment']['bankruptcy']:
 			print(g.nodes[node]['nodeid'], " Went bankrupt with method: ",
 				g.nodes[node]['attachment_policy'])
 			remove.append(node)
 			changed = True
 	if changed:
 		for n in remove:
-			attachment.remove_all_barabasi(n)
 			g.remove_node(n)
 
 	routing_table, _ = nx.floyd_warshall_predecessor_and_distance(g, weight="base_fee_millisatoshi")
@@ -418,7 +432,7 @@ def print_alive_nodes(g):
 	albert = 0
 	random = 0
 	for n in g.nodes:
-		if g.nodes[n]['attachment_policy'] == "barabasi_albert":
+		if g.nodes[n]['attachment_strategy'] == "barabasi_albert":
 			albert += 1
 		else:
 			random += 1

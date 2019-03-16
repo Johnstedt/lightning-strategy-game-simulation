@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
-
+import statistics
 
 def plot_graph(g, num=''):
 
@@ -15,22 +15,27 @@ def plot_graph(g, num=''):
 	return True
 
 
-def plot_degree_distribution(graphs, references, name):
+def plot_degree_distribution(graphs, references, name, axis="log", x=500, labels=["a", "a", "a"],
+							function_labels=["a", "a", "a"]):
 
-	k = np.arange(8, 500, 0.1)
+	k = np.arange(0, x, 1)
 
 	colors = ['r--', 'b--', 'y--']
 	colors_b = ['ro', 'bo', 'yo']
 
 	fig, ax = plt.subplots()
-	fig.subplots_adjust(left=0.2)
+	#fig.subplots_adjust(left=0.2)
 	ax.set_xlabel("$k$")
 	ax.set_ylabel("$P(k)$")
 
-
 	i = 0
+	#for r in references:
+	#	plt.plot(k, 2000*p(k, r), colors[i % 3])
+	#	i += 1
+
 	for r in references:
-		plt.plot(k, 2000*p(k, r), colors[i % 3])
+		ylist = list(map(r, k))
+		plt.plot(k, ylist, colors[i % 3], label=function_labels[i])
 		i += 1
 
 	j = 0
@@ -39,23 +44,28 @@ def plot_degree_distribution(graphs, references, name):
 
 		g_dist = [0] * 5000
 		for n in g.nodes:
-			print(len(list(g.neighbors(n))))
+			#print(len(list(g.neighbors(n))))
 			g_dist[len(list(g.neighbors(n)))] += 1
 			list_to_plot.append(len(list(g.neighbors(n))))
 
 		pk = []
 		k = []
 		i = 0
-		for n in range(1, 500):
-			#if g_dist[n] != 0:
+		for n in range(1, x):
+			if g_dist[n] != 0:
 				k.append(n)
 				pk.append(g_dist[n] / len(g.nodes))
 				i += 1
-		print(pk)
-		plt.loglog(k, pk, colors_b[j % 3])
+		#print(pk)
+		if axis == "log":
+			plt.loglog(k, pk, colors_b[j % 3])
+		else:
+			plt.plot(k, pk, colors_b[j % 3], label=labels[j])
+			ax.legend()
 		j += 1
 
 	#plt.ylim([0.0001, 1])
+
 	plt.savefig("plots/{}_degree_distribution.png".format(name))
 	return True
 
@@ -70,8 +80,8 @@ def plot_survival_history(histories, references):
 
 	fig, ax = plt.subplots()
 	fig.subplots_adjust(left=0.2)
-	ax.set_xlabel("$Population$")
-	ax.set_ylabel("$Days$")
+	ax.set_xlabel("$Days$")
+	ax.set_ylabel("$Population$")
 
 	colors = ['r--', 'b--', 'y--']
 	colors_b = ['r-', 'b-', 'y-']
@@ -94,28 +104,56 @@ def plot_survival_history(histories, references):
 
 
 def plot_multiple_histories(histories):
-	print("LEN OF HISTORIES: ", len(histories))
-	datasets = [[0] * len(next(iter(histories[0].values))) for _ in range(len(histories[0]))]
-	print(len(datasets))
+
+	colors = ['r', 'b', 'y']
+	colors_b = ['r--', 'b--', 'y--']
+	plt.clf()
+	fig, ax = plt.subplots()
+	ax.set_xlabel("$Days$")
+	ax.set_ylabel("$Average Population$")
+
+	datasets = [[[0]*len(histories) for _ in range(len(next(iter(histories[0].values()))))] for _ in range(len(histories[0]))]
+	labels = []
+	history = 0
 	for n in histories:
 		i = 0
 		for h in n:
+			if history == 0:
+				labels.append(h)
 			j = 0
 			for val in n[h]:
-				datasets[i][j] = val
+				datasets[i][j][history] = val
 				j += 1
-
 			i += 1
+		history += 1
 
-	# Fixing random state for reproducibility
-	#np.random.seed(19680801)
+	print(datasets)
 
-	fig1, ax1 = plt.subplots()
-	ax1.set_title('Basic Plot')
-	ax1.boxplot(datasets[0])
-	ax1.boxplot(datasets[1])
+	""" fig1, ax1 = plt.subplots()
+	ax1.set_title('Box Plot')
+	ax1.boxplot(datasets[0], positions=[1, 3, 5, 7, 9], widths=0.6)
+	ax1.boxplot(datasets[1], positions=[2, 4, 6, 8, 10], widths=0.6)
 
-	plt.savefig("plots/box_plot.png")
+	ax1.set_xticklabels([0, 1, 2, 3, 4, 5])
+	ax1.set_xticks([0, 1.5, 3.5, 5.5, 7.5, 9.5])
+
+	plt.savefig("plots/box_plot.png")"""
+
+	p_color = 0
+	for populations in datasets:
+		std = []
+		mean = []
+		for days in populations:
+			mean.append(statistics.mean(days))
+			std.append(statistics.standard_deviation(days))
+
+		plt.plot(range(len(mean)), mean, colors[p_color], label=labels[p_color])
+		plt.plot(range(len(mean)), [sum(x) for x in zip(mean, std)], colors_b[p_color], label="{} +/- $\sigma$".format(labels[p_color]))
+		plt.plot(range(len(mean)), [x-y for (x, y) in zip(mean, std)], colors_b[p_color])
+		p_color += 1
+
+	ax.legend()
+	plt.savefig("plots/histories_deviation.png")
 
 
 def plot_fee_curve(fee, profits):
