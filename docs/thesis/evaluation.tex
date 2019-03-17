@@ -158,8 +158,10 @@ Thus adding an age bias causes the characteristics of the degree distribution to
 \end{figure}
 
 A more appropriate random model may be to consider $G_{n,m}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices and creates and edges when t < n. The probability of any previous vertex $i$ being selected is thus $p_i = \dfrac{m}{t_i}$. 
-As a node is not part of LN before edges are made, it reasonable to assume a node creates edges as part of joining the network.
-The degree distribution follows from definition
+As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a node creates edges as part of joining the network.
+The degree distribution follows by regarding the probability of each term
+
+\[ p(m) =  \]  
 
 \[p(k) =  \begin{cases}
 & \prod_{i=1}^{k}\sum_{j=k}^{n}m\dfrac{n-j}{n^2},~\text{if}~m<k\\
