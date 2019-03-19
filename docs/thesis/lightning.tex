@@ -104,6 +104,10 @@ Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used t
 
 If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to her revocation public key to Bob for Bob to be able to revoke a violation. 
 
+\subsection{Derived revocation address}
+
+The 2 of 2 multi-signature clause paying out to the violated party may be implemented in a denser form by paying to a blinded key neither party control. The private key is then derived from knowledge split between the two parties. When a new $CT$ is created the secret is shared so only the violated party could spend from the revocation clause in case the old $CT$ is broadcast. So hence forth only a revocation pubkey is used to denote a revocation output.
+
 \subsection{Closing channels}
 
 It's possible to close a channel by broadcasting either of the latest $CT$s. However the broadcasting needs to wait the designated time period, losing out on the time value of money. Instead both parties may agree to construct a new Exercise Settlement Transaction $ES$ with direct spendable outputs instead of a $RSMC$ output. Signing the $ES$ would close the channel and allowing both parities immediate access to the funds.

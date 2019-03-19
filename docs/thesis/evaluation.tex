@@ -159,35 +159,40 @@ Thus adding an age bias causes the characteristics of the degree distribution to
 
 A more appropriate random model may be to consider $G_{n,m}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices and creates and edges when t < n. The probability of any previous vertex $i$ being selected is thus $p_i = \dfrac{m}{t_i}$. 
 As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a node creates edges as part of joining the network.
-The degree distribution follows by regarding the probability of each term
 
-\[ p(m) =  \]  
+%[p(k) =  \begin{cases}
+%& \prod_{i=1}^{k} 1 - \sum_{j=1}^{n-1} m \dfrac{1}{n^2},~\text{if}~m<k\\
+%& 0,~~~~~~~~~~~~~~~~~~~~~~~~~\text{otherwise}
 
-\[p(k) =  \begin{cases}
-& \prod_{i=1}^{k}\sum_{j=k}^{n}m\dfrac{n-j}{n^2},~\text{if}~m<k\\
-& 0,~~~~~~~~~~~~~~~~~~~~~~~~~\text{otherwise}
+%\end{cases} \]
 
-\end{cases} \]
-
-\[ \prod_{i=1}^{k}\sum_{j=k}^{n}m\dfrac{n-j}{n^2} \sim m(\dfrac{1}{2})^k\]
+%\[ \prod_{i=1}^{k} 1 - \sum_{j=1}^{n-1} m \dfrac{1}{n^2} \sim 1 - m^k(\dfrac{1}{2})^k\]
 
 \subsection{Scale free models}
 
 In 1999 Barabási and Albert showed that many networks degree distribution follows a power law and that the distribution was independent from scale, thus scale free\cite{barabasi:albert:emergent:scaling}. Scale free networks follows a degree distribution of
 
-\[ p(k) \propto k^{-\gamma} \]
+\begin{equation}
+	 p(k) \propto k^{-\gamma} 
+	\label{eq:scale:free}
+\end{equation}
 
 and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$.
 A model was suggested to generate a scale free graph by having a graph $G_{n, m}$   
 
 preferential attachment, where a vertex prefer to connect to a vertex that already have many connections. 
 
-
-
-
-
-
 \[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+
+\begin{figure}[!htb]
+	\hspace*{-0.5cm} 
+	\centering
+	\includegraphics[width=9cm]{images/scale_free_degree_distribution.png}
+	\caption{Shows the degree distribution for an Barabási–Albert graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, m = 5 and the scale free\ref{eq:scale:free}(\textcolor{red}{|}) with $\gamma$ = 2.9 compared Erdős–Rényi graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{blue}{|}).
+	}
+	\label{fig:fee_curve}
+	\hspace*{2mm} 
+\end{figure}
 
 modified barabasi
 
