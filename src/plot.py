@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy
 import statistics
+from mpl_toolkits import mplot3d
+
 
 def plot_graph(g, num=''):
 
@@ -18,7 +20,7 @@ def plot_graph(g, num=''):
 def plot_degree_distribution(graphs, references, name, axis="log", x=500, labels=["a", "a", "a"],
 							function_labels=["a", "a", "a"]):
 
-	k = np.arange(0, x, 1)
+	k = np.arange(1, x, 1)
 
 	colors = ['r--', 'b--', 'y--']
 	colors_b = ['ro', 'bo', 'yo']
@@ -58,20 +60,17 @@ def plot_degree_distribution(graphs, references, name, axis="log", x=500, labels
 				i += 1
 		#print(pk)
 		if axis == "log":
-			plt.loglog(k, pk, colors_b[j % 3])
+			plt.loglog(k, pk, colors_b[j % 3], label=labels[j])
 		else:
 			plt.plot(k, pk, colors_b[j % 3], label=labels[j])
-			ax.legend()
+			print(pk)
+		ax.legend()
 		j += 1
 
-	#plt.ylim([0.0001, 1])
+	plt.ylim([0.00005, 1])
 
 	plt.savefig("plots/{}_degree_distribution.png".format(name))
 	return True
-
-
-def p(k, y):
-	return k**(-y)
 
 
 def plot_survival_history(histories, references):
@@ -156,6 +155,28 @@ def plot_multiple_histories(histories):
 	plt.savefig("plots/histories_deviation.png")
 
 
+def plot_price_dimensions(dim):
+	print("DIMENSION")
+	print(dim)
+	fig = plt.figure()
+	ax = plt.axes(projection='3d')
+	ax.view_init(60, 35)
+
+	Z = np.array(dim)
+	X, Y = np.meshgrid(range(1, 1500, 15), range(10, 12, 1))
+
+	ax.contour3D(X, Y, Z, 50, cmap='binary')
+	ax.set_xlabel('x')
+	ax.set_ylabel('y')
+	ax.set_zlabel('z')
+
+	plt.savefig("plots/price_dimensional.png")
+
+
+def f(x, y):
+	return np.sin(np.sqrt(x ** 2 + y ** 2))
+
+
 def plot_fee_curve(fee, profits):
 
 	fig, ax = plt.subplots()
@@ -171,4 +192,5 @@ def write_to_file(graph, name):
 
 
 if __name__ == "__main__":
+	plot_price_dimensions()
 	print("Should not be called directly")

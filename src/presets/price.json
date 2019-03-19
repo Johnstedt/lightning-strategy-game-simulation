@@ -1,0 +1,26 @@
+{
+	"routing_nodes": [
+		{
+			"name": "random",
+			"attachment_strategy": "random",
+			"channel_strategy": "sanity_check",
+			"pricing_strategy": "approx_best_uniform_distribution",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": "medium",
+			"initial_distribution": 1
+		}
+
+	],
+	"environment": {
+		"payments_distribution": "uniform",
+		"weighted_payment": false,
+		"initial_nodes": 100,
+		"payments_per_step": 1000,
+		"bankruptcy": 0,
+		"new_nodes_per_step": 0,
+		"new_nodes_policy": "mirror",
+		"new_node_quantity": "percentage",
+		"time_steps": 15,
+		"initial_mode": "exact"
+	}
+}
