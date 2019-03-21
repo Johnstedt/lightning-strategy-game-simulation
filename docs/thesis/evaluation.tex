@@ -16,7 +16,7 @@ The Lightning Network may be modeled as a directional Graph $G$ with vertices re
 	\hspace*{2mm}
 \end{figure}
 
-Modeling the network as a graph allows the use of graph theory. Thus routing, concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. 
+Modeling the network as a graph allows the use of graph theory. Thus routing, concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The topology of both testnet and mainnet is visualized in Figure \ref{fig:topology}.
 
 \section{Fee as a competitive equilibrium}
 
@@ -39,6 +39,23 @@ The fee market may also be seen in its aggregate, where the axis represents the 
 It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
 The cost of procuring a shortest path between s and d might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes.
+
+\newpage
+\onecolumn
+
+\begin{figure}[!htb]
+	\hspace*{-0.7cm} 
+	\centering
+	\includegraphics[width=12cm]{graphs/testnet_force.png}
+	\vspace*{-0.4cm} 
+	\includegraphics[width=13.6cm]{graphs/mainnet_force3.png}
+	\caption{\textit{
+			Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi\cite{repository:gephi}.}}
+	\label{fig:topology}
+	\hspace*{2mm} 	
+\end{figure}
+\newpage
+\twocolumn
 
 \section{Optimal fee price}
 
@@ -178,11 +195,11 @@ In 1999 Barabási and Albert showed that many networks degree distribution follo
 \end{equation}
 
 and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$.
-A model was suggested to generate a scale free graph by having a graph $G_{n, m}$   
-
-preferential attachment, where a vertex prefer to connect to a vertex that already have many connections. 
+A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex may be said to have a preferred attachment and the probability of a vertex receiving an edge from the new vertex:
 
 \[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+
+Such a graph follows the scale free property with a $\gamma_{ba}$ = 2.9 and can be seen in Figure \ref{fig:scale_free}
 
 \begin{figure}[!htb]
 	\hspace*{-0.5cm} 
@@ -190,34 +207,28 @@ preferential attachment, where a vertex prefer to connect to a vertex that alrea
 	\includegraphics[width=9cm]{images/scale_free_degree_distribution.png}
 	\caption{Shows the degree distribution for an Barabási–Albert graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, m = 5 and the scale free\ref{eq:scale:free}(\textcolor{red}{|}) with $\gamma$ = 2.9 compared Erdős–Rényi graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{blue}{|}).
 	}
-	\label{fig:fee_curve}
+	\label{fig:scale_free}
 	\hspace*{2mm} 
 \end{figure}
 
 modified barabasi
 
-lightnign 
-
-btc mainnet testnet degree distribution
-
-The topology of both testnet and mainnet is visualized in Figure \ref{fig:topology}.
-
-\newpage
-\onecolumn
+The actual degree distribution of the lightning network can be seen in Figure \ref{fig:real_network}.
 
 \begin{figure}[!htb]
-	\hspace*{-0.7cm} 
+	\hspace*{-0.5cm} 
 	\centering
-	\includegraphics[width=12cm]{graphs/testnet_force.png}
-	\vspace*{-0.4cm} 
-	\includegraphics[width=13.6cm]{graphs/mainnet_force3.png}
-	\caption{\textit{
-			Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi\cite{repository:gephi}.}}
-	\label{fig:topology}
-	\hspace*{2mm} 	
+	\includegraphics[width=9cm]{images/main-testnet_degree_distribution.png}
+	\caption{Shows the degree distribution for both the Mainnet (\tikzcircle[red, fill=red]{2pt}) and Testnet (\tikzcircle[blue, fill=blue]{2pt})
+		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning node\cite{repository:clightning} on 2019-03-21.
+	}
+	\label{fig:real_network}
+	\hspace*{2mm} 
 \end{figure}
-\newpage
-\twocolumn
+% Mainnet 4322 nodes and 21258 edges
+% Testnet 2027 nodes, 8712 edges  
+
+It should again be stated that the Lightning Network is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the degree distribution may indicate very little of future states. 
 
 \section{Routing as a Game}
 
