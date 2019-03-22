@@ -22,7 +22,7 @@ def plot_degree_distribution(graphs, references, name, axis="log", x=500, labels
 
 	k = np.arange(1, x, 1)
 
-	colors = ['r--', 'b--', 'y--']
+	colors = ['g--', 'r--', 'b--', 'y--']
 	colors_b = ['ro', 'bo', 'yo']
 
 	fig, ax = plt.subplots()
@@ -46,7 +46,6 @@ def plot_degree_distribution(graphs, references, name, axis="log", x=500, labels
 
 		g_dist = [0] * 5000
 		for n in g.nodes:
-			#print(len(list(g.neighbors(n))))
 			g_dist[len(list(g.neighbors(n)))] += 1
 			list_to_plot.append(len(list(g.neighbors(n))))
 
@@ -67,7 +66,7 @@ def plot_degree_distribution(graphs, references, name, axis="log", x=500, labels
 		ax.legend()
 		j += 1
 
-	plt.ylim([0.00005, 1])
+	plt.ylim([0.0001, 1])
 
 	plt.savefig("plots/{}_degree_distribution.png".format(name))
 	return True
@@ -156,21 +155,25 @@ def plot_multiple_histories(histories):
 
 
 def plot_price_dimensions(dim):
-	print("DIMENSION")
+
 	print(dim)
 	fig = plt.figure()
 	ax = plt.axes(projection='3d')
-	ax.view_init(60, 35)
 
 	Z = np.array(dim)
-	X, Y = np.meshgrid(range(1, 1500, 15), range(10, 12, 1))
+	X, Y = np.meshgrid(range(1, 1500, 15), range(1, 100, 10))
 
+	#ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='bone', edgecolor='none')
 	ax.contour3D(X, Y, Z, 50, cmap='binary')
-	ax.set_xlabel('x')
-	ax.set_ylabel('y')
-	ax.set_zlabel('z')
+	ax.set_xlabel('$F_{base}$')
+	ax.set_ylabel('$F_{proportional}$')
+	ax.set_zlabel('Profit')
 
-	plt.savefig("plots/price_dimensional.png")
+	plt.savefig("plots/price_dimensional_con.png")
+	ax.view_init(60, 35)
+	plt.savefig("plots/price_dimensional_bird_con.png")
+	ax.plot_wireframe(X, Y, Z, color="black")
+	plt.savefig("plots/price_dimensional_wire.png")
 
 
 def f(x, y):

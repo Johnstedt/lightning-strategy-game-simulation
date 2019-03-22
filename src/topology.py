@@ -9,6 +9,7 @@ import numpy
 import random
 import operator as op
 from functools import reduce
+from lightning_ops import LightningOperator
 
 
 def erdos_renyi():
@@ -70,6 +71,28 @@ def random_attachment(g, n, m):
 	return True
 
 
+def retrieve_graph(network):
+	print("Construct")
+	lightning = LightningOperator(network)
+	print("op")
+	g = nx.DiGraph()
+
+	lightning.populate_graph(g)
+
+	print("NODES: ", len(g.nodes))
+	print("EDGES: ", len(g.edges))
+
+	nx.write_gexf(g, "graph_data/mainnet2019-03-21.gexf")
+
+
+def get_mainnet():
+	return nx.read_gexf("graph_data/mainnet2019-03-21.gexf")
+
+
+def get_testnet():
+	return nx.read_gexf("graph_data/testnet2019-03-21.gexf")
+
+
 def plot_all_topologies():
 	"""plot.plot_degree_distribution([erdos_renyi(), callaway_hopcroft(), random_strategy_g(1)],
 									[lambda x: binomial_func(x, 10000, 0.0005), lambda x: callaway_func(x, 0.8)], "random_topology",
@@ -82,11 +105,17 @@ def plot_all_topologies():
 							labels=["m3", "m2", "m1"],
 							function_labels=["m3", "m2", "m1"],
 							axis="lin", x=23)
-	"""
+
 	plot.plot_degree_distribution([erdos_renyi(), barabasi_albert()],
 								[lambda x: binomial_func(x, 10000, 0.0005), lambda x: scale_free(x, 2.9)], "scale_free",
 								labels=["Erdős–Rényi", "Barabási-Albert"], x=100,
-								function_labels=["ER True distribution", "BA True distribution"])
+								function_labels=["ER True distribution", "BA True distribution"])"""
+
+	plot.plot_degree_distribution([get_mainnet(), get_testnet()],
+								[lambda x: scale_free(x, 1, 1.5)], "main-testnet",
+								labels=["Maintet", "Testnet"], x=100,
+								function_labels=["$\gamma_{1.5}$"])
+
 	return True
 
 
@@ -122,11 +151,11 @@ def random_func(x, m, n):
 #	return m*(1/2)**x
 
 
-def scale_free(k, y):
+def scale_free(k, c, y):
 	"""
 	\[ p(k) \propto k^{-\gamma} \]
 	"""
-	return 200 * k**(-y)
+	return c * k**(-y) # 200 for Barabasi
 
 
 def ncr(n, r):

@@ -33,7 +33,7 @@ def create_node(settings):
 		'profits': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
 		'total_profits': 0,
 		"base_fee": random.randint(10, 1501),
-		"fee_per_millionth": random.randint(1, 10),
+		"fee_per_millionth": random.randint(1, 100),
 		"funding": 30000
 	}
 

@@ -71,8 +71,8 @@ def manage_channels(g):
 	First only close and open
 	"""
 	# Channel close
-	for e in g.edges:
-		print(e[0])
+#	for e in g.edges:
+#		print(e[0])
 		#print(g.get_edge_data(e[0], e[1]))
 	# exit(1)
 	# if sum(e['last_10_fees']) < 20:
