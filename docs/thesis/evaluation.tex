@@ -42,15 +42,12 @@ The cost of procuring a shortest path between s and d might not be equal for two
 
 \section{Routing strategies under Game Theory}
 
-There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior maximizing profit. In economic theory \_ . Such notion is very similar to Game Theory and as each actor's profit depends on every other actor's behavior. More exactly this problem resembles a subset of Game Theory similar to that of biological ecosystems introduced by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory (EGT).
+There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. In economic theory optional behaviors as an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} with an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory (EGT).
 
-In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters,  
-
- - unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population.
+In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those to strategies. 
 
 
-
-Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly the success the behavior of each node, a 
+Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no node can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
 To evaluate strategies, the game is divided into five categories.
 
@@ -62,9 +59,7 @@ To evaluate strategies, the game is divided into five categories.
 	\item \textbf{Re-balance}, When and how aggressively should a node re-balance its channels.  
 \end{enumerate}
 
-Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. 
-
-Mixing of strategies, e.g behaving 'aggressive' 70\% of the time, ... , only regard true strategies as ... reason.
+Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing node may then choose a strategy per category, it is sufficient to only consider pure strategies. Mixing of strategies, e.g behaving 'aggressive' 70\% of the time and 'coy' 30\% of the time, is perfectly reasonable to assume. However convergence to a mixture is equivalent to the population mixture of pure strategies. Any equilibrium with only pure strategies could thus be transposed in to a mixed strategy~\cite{easly:kleinberg:network:crowds:markets}. This conveniently reduces the complexity of the simulation without compromising the results. 
 
 
 
@@ -93,7 +88,7 @@ does any channel opening algorithm perform better than another and essentially f
 
 \section{Optimal fee price}
 
-To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter. It would be useful to have a more rigid definition of how many shortest paths pass through a vertex. Freeman did so with the introduction of a measurement named \textit{Betweenness Centrality}\cite{freeman:betweenness:centrality} and defined it as
+To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}\cite{freeman:betweenness:centrality} and defined it as
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
@@ -140,7 +135,7 @@ Efficient algorithms for edge betweenness centrality have been developed\cite{br
 Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
 \begin{enumerate}
-	\item Calculate the shortest path from all-to-all vertices without going through $e$ with either Floyd-Warshall\cite{bakhtiar:floyd:warshall} or Johnson\cite{johnson:shortest:path:sparse:network} obtaining table A.
+	\item Calculate the shortest path from all-to-all vertices without going through $e$ with either Floyd-Warshall~\cite{bakhtiar:floyd:warshall} or Johnson~\cite{johnson:shortest:path:sparse:network} obtaining table A.
 	\item Calculate shortest path from the source of $e$, $V$-to-all explicitly going through $e$ with Dijkstra obtaining table D where $e$ weight set to 0.
 	\item Retrieve the difference for all pairs between the all-to-all distance with the all-to-$V$-to-all distance, A[s][d] - (A[s][V] + D[d]). Throw away the negative values and produce a cumulative summation over the differences in a table H.
 	\item Select $x_{opt}$ such that \[ \forall x (x H(x)) \leq x_{opt} H(x_{opt}) \]
@@ -172,7 +167,7 @@ depends on both edges and vertices.
 
 \subsection{Cost function}
 
-The fee is in part proportional to the size of the payment, and the aforementioned algorithm is only able to find the optimal price for one 
+The fee is in part proportional to the size of the payment, and the aforementioned algorithm is only able to find the optimal price for one payment size.  
 
  
 
