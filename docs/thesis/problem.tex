@@ -24,7 +24,7 @@ This thesis aim to address following three questions:
 
 	Little to nothing in the literature that addresses the Lightning Network Routing Policies has been found. Rene Pickard has made some early attempts to find suitable channel parties with traditional graph heuristics but is yet incomplete and unpublished[How source to unpublished?]. Further conversation with people in the community confirms that this problem set is known yet largely unexplored.
 	
-	The actual routing in LN has been researched[source] and implemented[source]. Further efficient sharing of routing tables have been proposed\cite{gunspan:marco:ant}.
+	The actual routing in LN has been researched\cite{distasi:avallone:cononico:routing} and implemented[source]. Further efficient sharing of routing tables have been proposed\cite{gunspan:marco:ant}.
 	
 	A similar problem at first glance, the estimation of the on-chain Bitcoin Network Fee has been covered extensively. However it's not applicable, nor is it even similar as a problem set. The Bitcoin Fee problem is far simpler as the competing transaction fees(mem-pool) are known at all times and estimating a fee too low can be corrected by \textit{fee bumping}\footnote{Broadcasting a new transaction spending the same UTXO with a higher fee.} or \textit{child-pay-for-parent}\footnote{Using the unconfirmed parent UTXO in a new transaction, a miner must include the parent tx to be able to mine the child tx and receive the child tx fee.} implementations.
 	
