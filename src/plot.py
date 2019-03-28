@@ -103,12 +103,14 @@ def plot_survival_history(histories, references):
 
 def plot_multiple_histories(histories):
 
-	colors = ['r', 'b', 'y']
-	colors_b = ['r--', 'b--', 'y--']
+	colors = ['r', 'b', 'g', 'c', 'm', 'y', 'k']
+	colors_b = ['r--', 'b--', 'g--', 'c--', 'm--', 'y--', 'k--']
 	plt.clf()
 	fig, ax = plt.subplots()
 	ax.set_xlabel("$Days$")
 	ax.set_ylabel("$Average Population$")
+
+	print(histories)
 
 	datasets = [[[0]*len(histories) for _ in range(len(next(iter(histories[0].values()))))] for _ in range(len(histories[0]))]
 	labels = []
@@ -145,9 +147,9 @@ def plot_multiple_histories(histories):
 			mean.append(statistics.mean(days))
 			std.append(statistics.standard_deviation(days))
 
-		plt.plot(range(len(mean)), mean, colors[p_color], label=labels[p_color])
-		plt.plot(range(len(mean)), [sum(x) for x in zip(mean, std)], colors_b[p_color], label="{} +/- $\sigma$".format(labels[p_color]))
-		plt.plot(range(len(mean)), [x-y for (x, y) in zip(mean, std)], colors_b[p_color])
+		plt.plot(range(len(mean)), mean, colors[p_color % 7], label=labels[p_color % 7])
+		plt.plot(range(len(mean)), [sum(x) for x in zip(mean, std)], colors_b[p_color % 7], label="{} +/- $\sigma$".format(labels[p_color % 7]))
+		plt.plot(range(len(mean)), [x-y for (x, y) in zip(mean, std)], colors_b[p_color % 7])
 		p_color += 1
 
 	ax.legend()
@@ -161,7 +163,7 @@ def plot_price_dimensions(dim):
 	ax = plt.axes(projection='3d')
 
 	Z = np.array(dim)
-	X, Y = np.meshgrid(range(1, 1500, 15), range(1, 100, 10))
+	X, Y = np.meshgrid(range(1, 4000, 30), range(1, 100, 10))
 
 	#ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='bone', edgecolor='none')
 	ax.contour3D(X, Y, Z, 50, cmap='binary')

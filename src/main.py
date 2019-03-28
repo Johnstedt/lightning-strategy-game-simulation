@@ -1,13 +1,17 @@
 import plot
 import simulation
+import json
 
 
 def simulations():
 
 	test = []
 
-	for i in range(10):
-		test.append(simulation.simulate("presets/test.json"))
+	env = json.loads(open("presets/validate_price_model.json", "r").read())
+
+	for i in range(5):
+		h, _ = simulation.simulate(env)
+		test.append(h)
 
 	plot.plot_multiple_histories(test)
 

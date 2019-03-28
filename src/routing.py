@@ -8,14 +8,13 @@ from heapq import heappush, heappop
 from itertools import count
 
 
-def dijkstra_liquid_path(G, source, target, liquidity, weight=None):
+def dijkstra_liquid_path(G, source, target, liquidity):
 	"""Uses Dijkstra's algorithm to find shortest weighted paths.
 
 	THIS METHOD IS MODIFIED TO HANDLE LIQUIDITY CONSTRAINS.
 	Stolen from networkx.
 	"""
 
-	weight = _weight_function(G, weight)
 	cutoff = None
 	pred = None
 	sources = [source]
@@ -45,7 +44,7 @@ def dijkstra_liquid_path(G, source, target, liquidity, weight=None):
 		if v == target:
 			break
 		for u, e in G_succ[v].items():
-			cost = weight(v, u, e)
+			cost = G.get_edge_data(v, u)['base_fee_millisatoshi'] + (G.get_edge_data(v, u)['fee_per_millionth']*liquidity)
 			if cost is None:
 				continue
 

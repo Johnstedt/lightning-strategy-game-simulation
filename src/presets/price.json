@@ -4,7 +4,8 @@
 			"name": "random",
 			"attachment_strategy": "random",
 			"channel_strategy": "sanity_check",
-			"pricing_strategy": "approx_best_uniform_distribution",
+			"price_strategy": "random",
+			"price_model": "price_models/test_open_close.json",
 			"rebalancing_strategy": "sanity_check",
 			"funding_strategy": "medium",
 			"initial_distribution": 1
@@ -16,11 +17,13 @@
 		"weighted_payment": false,
 		"initial_nodes": 100,
 		"payments_per_step": 1000,
-		"bankruptcy": 0,
-		"new_nodes_per_step": 0,
+		"bankruptcy": 15000,
+		"start_buf": 17000,
+		"new_nodes_per_step": 1,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
-		"time_steps": 15,
+		"time_steps": 500,
+		"fee": 2,
 		"initial_mode": "exact"
 	}
 }

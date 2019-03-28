@@ -1,0 +1,61 @@
+{
+	"routing_nodes": [
+		{
+			"name": "matthew-rand",
+			"attachment_strategy": "barabasi_albert",
+			"channel_strategy": "sanity_check",
+			"price_strategy": "random",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": "medium",
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "random-rand",
+			"some_attr": "",
+			"attachment_strategy": "random",
+			"channel_strategy": "sanity_check",
+			"price_strategy": "random",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": "medium",
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "matthew-model",
+			"attachment_strategy": "barabasi_albert",
+			"channel_strategy": "sanity_check",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": "medium",
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "random-model",
+			"some_attr": "",
+			"attachment_strategy": "random",
+			"channel_strategy": "sanity_check",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": "medium",
+			"initial_distribution": 0.25
+		}
+
+	],
+	"environment": {
+		"payments_distribution": "uniform",
+		"weighted_payment": false,
+		"initial_nodes": 100,
+		"payments_per_step": 300,
+		"bankruptcy": 15000,
+		"start_buf": 17000,
+		"new_nodes_per_step": 1,
+		"new_nodes_policy": "mirror",
+		"new_node_quantity": "percentage",
+		"time_steps": 500,
+		"fee": 2,
+		"initial_mode": "exact"
+	}
+}

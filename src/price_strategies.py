@@ -1,62 +1,79 @@
 import plot
 import simulation
 import networkx as nx
+import json
+import random
+import numpy
 
 
 def create_price_model():
 
 	test = []
 
-	#for i in range(10):
-	history, g = simulation.simulate("presets/price.json")
-	test.append(g)
+	env = json.loads(open("presets/price.json", "r").read())
 
-	price = []
+	for i in range(10):
 
-	selected_edge = betweenness_centrality(g)
+		print("SIMULATION: ", i)
 
-	for p in range(1, 100, 10):
-		sum_over_volume = []
-		for transaction_size in range(10, 100, 1):
-			for e in g.edges:
-				data = g.get_edge_data(e[0], e[1])
-				g.remove_edge(e[0], e[1])
-				data["price"] = data["base_fee_millisatoshi"] + (data["fee_per_millionth"] * transaction_size)
-				g.add_edge(e[0], e[1], **data)
+		history, g = simulation.simulate(env)
+		test.append(g)
 
-			data2 = g.get_edge_data(selected_edge[0][0], selected_edge[0][1])
-			g.remove_edge(selected_edge[0][0], selected_edge[0][1])
+		price = []
 
-			data2["price"] = data2["base_fee_millisatoshi"] + (p * transaction_size)
-			g.add_edge(selected_edge[0][0], selected_edge[0][1], **data2)
+		selected_edge = betweenness_centrality(g)
 
-			if len(sum_over_volume) == 0:
-				sum_over_volume = fast_price_function(g, selected_edge, (p * transaction_size))
-			else:
-				sum_over_volume = [x + y for x, y in zip(sum_over_volume, fast_price_function(g, selected_edge, (p * transaction_size)))]
-			print(sum_over_volume)
+		for p in range(1, 100, 10):
+			sum_over_volume = []
+			for transaction_size in range(10, 100, 1):
+				for e in g.edges:
+					data = g.get_edge_data(e[0], e[1])
+					g.remove_edge(e[0], e[1])
+					data["price"] = data["base_fee_millisatoshi"] + (data["fee_per_millionth"] * transaction_size)
+					g.add_edge(e[0], e[1], **data)
 
-		price.append(sum_over_volume)
+				data2 = g.get_edge_data(selected_edge[0][0], selected_edge[0][1])
+				g.remove_edge(selected_edge[0][0], selected_edge[0][1])
 
-	plot.plot_price_dimensions(price)
+				data2["price"] = data2["base_fee_millisatoshi"] + (p * transaction_size)
+				g.add_edge(selected_edge[0][0], selected_edge[0][1], **data2)
 
-	base, prop = retrieve_optimal_price(price)
+				if len(sum_over_volume) == 0:
+					sum_over_volume = fast_price_function(g, selected_edge, (p * transaction_size))
+				else:
+					sum_over_volume = [x + y for x, y in zip(sum_over_volume, fast_price_function(g, selected_edge, (p * transaction_size)))]
 
-	prop_curve = []
-	for n in price:
-		prop_curve.append(n[base])
+			price.append(sum_over_volume)
 
-	base_curve = price[prop]
+		plot.plot_price_dimensions(price)
 
-	print("BASE CURVE")
-	print(base_curve)
-	print("Normalize list")
-	print(normalize_list(base_curve))
+		base, prop = retrieve_optimal_price(price)
 
-	print("PROPORTIONAL CURVE")
-	print(prop_curve)
-	print("Normalize")
-	print(normalize_list(prop_curve))
+		prop_curve = []
+		for n in price:
+			prop_curve.append(n[base])
+
+		base_curve = price[prop]
+
+		print("BASE CURVE")
+		print(base_curve)
+		print("Normalize list")
+		print(normalize_list(base_curve))
+
+		print("PROPORTIONAL CURVE")
+		print(prop_curve)
+		print("Normalize")
+		print(normalize_list(prop_curve))
+		model = {
+			"base_price": list(range(1, 4000, 30)),
+			"base_probability": normalize_list(base_curve),
+			"proportional_price": list(range(1, 100, 10)),
+			"proportional_probability": normalize_list(prop_curve)
+		}
+		with open('price_models/test_open_close.json', 'w') as fp:
+			json.dump(model, fp, indent=4)
+
+		env["routing_nodes"][0]["price_strategy"] = "neutral"
 
 
 def betweenness_centrality(g):
@@ -147,7 +164,7 @@ def fast_price_function(g, e, proportional, algorithm='johnson'):
 				if diff < 0:  # TODO: WHAT TO DO WITH TIES?
 					path_price_difference.append(-diff)
 
-	fee_range = range(1, 3000, 30)
+	fee_range = range(1, 4000, 30)
 	plot_list = []
 
 	e_data["price"] = temp_price
@@ -178,6 +195,24 @@ def retrieve_optimal_price(dim):
 def normalize_list(l):
 	tot = sum(l)
 	return [x / tot for x in l]
+
+
+def get_price_by_strategy(strategy, path=""):
+
+	if strategy == "random":
+		return random.randint(10, 1501), random.randint(1, 100)
+	elif path != "":
+		model = js_r(path)
+		base = numpy.random.choice(model['base_price'],
+							p=model['base_probability'])
+		prop = numpy.random.choice(model['proportional_price'],
+							p=model['proportional_probability'])
+		return base, prop
+
+
+def js_r(filename):
+	with open(filename) as f_in:
+		return json.load(f_in)
 
 
 if __name__ == "__main__":

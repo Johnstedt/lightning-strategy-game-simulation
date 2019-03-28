@@ -4,7 +4,8 @@
            "name": "matthew",
            "attachment_strategy": "barabasi_albert",
            "channel_strategy": "sanity_check",
-           "pricing_strategy": "approx_best_uniform_distribution",
+           "price_strategy": "neutral",
+           "price_model": "approx_best_uniform_distribution.json",
            "rebalancing_strategy": "sanity_check",
            "funding_strategy": "medium",
            "initial_distribution": 0.5
@@ -12,9 +13,15 @@
        {
            "name": "random",
            "some_attr": "",
-           "attachment_policy": "random",
+           "attachment_strategy": "random",
+           "channel_strategy": "sanity_check",
+           "price_strategy": "neutral",
+           "price_model": "approx_best_uniform_distribution.json",
+           "rebalancing_strategy": "sanity_check",
+           "funding_strategy": "medium",
            "initial_distribution": 0.5
        }
+
    ],
     "environment": {
         "payments_distribution": "uniform",
