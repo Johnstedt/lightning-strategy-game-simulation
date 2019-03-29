@@ -31,6 +31,7 @@ def create_node(settings, buf):
 		# Simulation attributes
 		'attachment_strategy': settings['attachment_strategy'],
 		'price_strategy': settings['price_strategy'],
+		'timing_strategy': settings['timing_strategy'],
 		'price_model': settings['price_model'],
 
 		'profits': [buf / 10 for n in range(10)],

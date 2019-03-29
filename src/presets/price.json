@@ -3,7 +3,7 @@
 		{
 			"name": "random",
 			"attachment_strategy": "random",
-			"channel_strategy": "sanity_check",
+			"timing_strategy": "sanity_check",
 			"price_strategy": "random",
 			"price_model": "price_models/test_open_close.json",
 			"rebalancing_strategy": "sanity_check",
@@ -16,14 +16,14 @@
 		"payments_distribution": "uniform",
 		"weighted_payment": false,
 		"initial_nodes": 100,
-		"payments_per_step": 1000,
+		"payments_per_step": 400,
 		"bankruptcy": 15000,
 		"start_buf": 17000,
 		"new_nodes_per_step": 1,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
 		"time_steps": 500,
-		"fee": 2,
+		"fee": 500,
 		"initial_mode": "exact"
 	}
 }

@@ -3,7 +3,7 @@
 		{
 			"name": "matthew-rand",
 			"attachment_strategy": "barabasi_albert",
-			"channel_strategy": "sanity_check",
+			"timing_strategy": "close_avg_bankruptcy",
 			"price_strategy": "random",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalancing_strategy": "sanity_check",
@@ -14,7 +14,7 @@
 			"name": "random-rand",
 			"some_attr": "",
 			"attachment_strategy": "random",
-			"channel_strategy": "sanity_check",
+			"timing_strategy": "close_avg_bankruptcy",
 			"price_strategy": "random",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalancing_strategy": "sanity_check",
@@ -24,7 +24,7 @@
 		{
 			"name": "matthew-model",
 			"attachment_strategy": "barabasi_albert",
-			"channel_strategy": "sanity_check",
+			"timing_strategy": "close_avg_bankruptcy",
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalancing_strategy": "sanity_check",
@@ -35,7 +35,7 @@
 			"name": "random-model",
 			"some_attr": "",
 			"attachment_strategy": "random",
-			"channel_strategy": "sanity_check",
+			"timing_strategy": "close_avg_bankruptcy",
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalancing_strategy": "sanity_check",
@@ -55,7 +55,7 @@
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
 		"time_steps": 500,
-		"fee": 2,
+		"fee": 500,
 		"initial_mode": "exact"
 	}
 }

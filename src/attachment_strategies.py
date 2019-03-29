@@ -100,10 +100,13 @@ def manage_channels(g, env):
 	close = []
 
 	for e in g.edges:
+		if g.nodes[e[0]]["timing_strategy"] == "sanity_check":
+			continue
+
 		if g.get_edge_data(e[0], e[1])["satoshis"] == 0:
 			close.append((e[0], e[1]))
 		else:
-			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < 1500:
+			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < 0.5:
 				close.append((e[0], e[1]))
 
 	for f, s in close:
