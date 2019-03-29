@@ -1,8 +1,77 @@
-\chapter{Strategies Guide}
+\chapter{Strategy Guide}
 \label{chapter:strategies}
 
-\section{Fee}
-\section{Preferential Attachment}
-\section{Timing}
-\section{Funding}
-\section{Re-balance}
+
+
+\section{Simulation Environment}
+
+
+\section{Strategies}
+
+
+\section*{Fee Strategies}
+
+The Fee Strategy determine which fee($F_B$, $F_P$) to set to each channel.
+
+\subsection*{random\_fee \texttt{interval\_base} \texttt{interval\_proportional}}
+
+Sets the base- and proportional fee randomly given intervals. This is used as a sanity check benchmark for the other strategies.
+
+\subsection*{title}
+
+\section*{Preferential Attachment Strategies}
+
+The Preferential attachment determine the bias a node use in selecting a node to open a channel with.
+
+\subsection*{random\_attachment}
+
+Selects a random node in the network and opens a channel. It must not be confused with the Erdős–Rényi model as it has a innate age bias.
+
+\subsection*{barabasi-albert}
+
+Selects a node in the network with a probability dependent on degree according to the Barabási-Albert model. The probability is given by:
+
+\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+
+where $p_i$ is the probability to select $i$ and k is the degree.
+
+\section*{Timing Strategies}
+The Timing strategies determine when a node should close a channel.
+
+\subsection*{sanity\_check}
+
+Does not close any channel whatsoever. It is used as a sanity check benchmark for the other strategies.
+
+\subsection*{bankruptcy\_avg\_usage}
+
+Does close a channel if the usage, on average, leads to bankruptcy. A channel is closed if and only if:
+
+\[ \frac{recent\_profit}{channel\_liquidity} < \frac{floor\_bankrupcy}{total\_funding} \]
+ 
+\subsection*{bankruptcy\_avg\_usage\_aggressiveness \texttt{scalar}}
+
+Similar to \textbf{bankruptcy\_avg\_usage} but scaled with an aggressiveness scalar:
+
+\[ \frac{recent\_profit}{channel\_liquidity} < \frac{floor\_bankrupcy}{total\_funding} \texttt{scalar} \]
+
+\[ \texttt{scalar} \in \mathbb{R} \text{ and } 0 < \texttt{scalar}  \]
+
+A \texttt{scalar} greater than 1 may be called a \textit{hawkish} strategy and one lesser than 1 may be called \textit{dovish}.
+
+\section*{Funding strategies}
+
+The funding strategy determine how much the node has available to fund channels.
+
+\subsection{funding \texttt{satoshis}}
+
+Funds the node with \texttt{satoshis}. Although relative a node with large quantity may be called a \textit{rich} strategy and
+one with small quantity a \textit{poor} strategy. It may seem dissonant to reefer to wealth as a strategy but remember 
+that profit is relative to funding and one operator may have many nodes instead of one large if a \textit{poor} strategy
+has higher \textit{fitness}. Further beetle size is similarly referred to as a strategy in EGT.
+
+
+\section*{Re-balance}
+
+\subsection*{sanity\_check}
+
+Does not re-balance channels whatsoever. It is used as a sanity check benchmark for the other strategy
