@@ -2,12 +2,12 @@
 
 @misc{
 	repository:bitcoin:sourceforge,
-	author = {},
-	title = {Original bitcoin repository with the genisis block function},
+	author = {Nakamoto, Satoshi},
+	title = {main.cpp, bitcoin line \#1673},
 	year = 2009,
-	howpublished = {
+	ahowpublished = {
 		\url{https://sourceforge.net/p/bitcoin/code/133/tree/trunk/main.cpp#l1673}},
-	note = {The source forge repostiory was later moved to github.},
+	anote = {The source forge repostiory was later moved to github.},
 }
 
 @misc{
@@ -15,9 +15,10 @@
 	author = {},
 	year = 2009,
 	title = {The coinbase transaction of the genesis block.},
-	howpublished = {
+	ahowpublished = {
 		\url{https://www.blockchain.com/btc/tx/4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b?show_adv=true}},
-	note = {(Accessed on 2019-01-30)},
+	howpublished = {\\TX 4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b},	
+	anote = {(Accessed on 2019-01-30)},
 }
 
 @book{
@@ -124,9 +125,10 @@
 	title = {Functions of Money},
 	author = {Federal Reserve Bank of Saint Louis},
 	year = "",
-	howpublished = {
+	ahowpublished = {
 	\url{https://www.stlouisfed.org/education/economic-lowdown-podcast-series/episode-9-functions-of-money}
 	},
+	howpublished = "economic-lowdown"
 }
 
 @book{
@@ -157,7 +159,9 @@
 	hanke:hyperinflation,
 	author={Hanke, Steve H.},
 	title={Venezuela Hyperinflation},
-	howpublished = {
+	year = "2018",
+	month = "October",
+	ahowpublished = {
 		\url{https://www.forbes.com/sites/stevehanke/2018/10/23/venezuelas-hyperinflation-24-months-and-counting/#778fc64a162d}
 	},	
 }
@@ -167,7 +171,7 @@
 	author = {Roosevelt, Franklin D.},
 	title = "Executive order 6102",
 	year = "",
-	howpublished = {
+	ahowpublished = {
 		\url{https://en.wikipedia.org/wiki/Executive_Order_6102#/media/File:Executive_Order_6102.jpg}
 	},	
 }
@@ -179,7 +183,7 @@
 	year = "1934",
 	month = "January",
 	day = "30",
-	howpublished = {
+	ahowpublished = {
 		\url{http://legisworks.org/congress/73/publaw-87.pdf}
 	},
 }
@@ -207,29 +211,29 @@
 
 @misc{nakamoto:post:deflation,
 	author = {nakamoto, Satoshi},
-	title = {Bitcoin talk forum post},
+	title = {bitcointalk.org topic 57 \#415},
 	year = "2010",
-	howpublished = {
+	ahowpublished = {
 	\url{https://bitcointalk.org/index.php?topic=57.msg415#msg415}},
-	note = {\\(Accessed on 2019-02-04)},
+	anote = {\\(Accessed on 2019-02-04)},
 }
 
 @misc{nakamoto:govern:print,
 	author = {Nakamoto, Satoshi},
-	title = {Bitcoin talk forum post},
+	title = {bitcointalk.org topic 13 \#46},
 	year = "2010",
-	howpublished = {
+	ohowpublished = {
 		\url{https://bitcointalk.org/index.php?topic=13.msg46#msg46}},
-	note = {\\(Accessed on 2019-02-04)},
+	anote = {\\(Accessed on 2019-02-04)},
 }
 
 @misc{nakamoto:predicate,
 	author = {Nakamoto, Satoshi},
-	title = {Bitcoin talk forum post},
+	title = {bitcointalk.org topic 195 \#1611},
 	year = "2010",
-	howpublished = {
+	ahowpublished = {
 		\url{https://bitcointalk.org/index.php?topic=195.msg1611#msg1611}},
-	note = {\\(Accessed on 2019-02-11)},
+	anote = {\\(Accessed on 2019-02-11)},
 }
 
 @book{boulding:evolutionary:economy,
@@ -251,6 +255,32 @@ https://bitcointalk.org/index.php?topic=13.msg46#msg46
 TOR, reverse govern-print mention
 
 % Bitcoin
+
+@article{
+	mosterland:transaction:fee,
+	author = { Möser1and, Malte and Rainer Böhme},
+	title = { Trends, Tips, Tolls: A Longitudinal Studyof Bitcoin Transaction Fees },
+	day = "30",
+	journal = "Lecture Notes in Computer Science",
+	vol = "8977",
+	month = "January",
+	year = "2015",
+	howpublished = { 
+		\url{https://maltemoeser.de/paper/transaction-fees.pdf}
+	}
+}
+
+@article{
+	houy:transaction:fee,
+	author = { Houy, Nicolas },
+	title = { The economics of Bitcoin transaction fees },
+	day = "24",
+	month = "February",
+	year = "2014",
+	howpublished = { 
+		\url{https://halshs.archives-ouvertes.fr/halshs-00951358/document}
+	}
+}
 
 @book{antonopoulos:mastering:bitcoin,
 	author = {Antonopoulos, Andreas},   
@@ -293,7 +323,7 @@ TOR, reverse govern-print mention
 	day = "8",
 	month = "August",
 	year = 2016,
-	howpublished = { 
+    howpublished = { 
 		\url{https://segwit.org/segregated-witness-and-aligning-economic-incentives-with-resource-costs-7d987b135c00}
 	}
 }
@@ -302,8 +332,10 @@ TOR, reverse govern-print mention
 	nakamoto:bitcoin,
 	author = { Nakamoto, Satoshi},
 	title = { Bitcoin: A Peer-to-Peer Electronic Cash System },
-	year = 2008,
-	howpublished = { https://bitcoin.org/bitcoin.pdf },
+	year = "2008",
+	month = "October",
+	day = "31",
+	ahowpublished = { https://bitcoin.org/bitcoin.pdf },
 	issue_date = {31 october 2008},
 }
 
@@ -312,8 +344,8 @@ TOR, reverse govern-print mention
 	author = { Back, Adam},
 	title = { Hashcash - A Denial of Service Counter-Measure },
 	year = 2002,
-	howpublished = { http://www.hashcash.org/papers/hashcash.pdf },
-	issue_date = {a August 2002},
+	ahowpublished = { http://www.hashcash.org/papers/hashcash.pdf },
+	issue_date = {August 2002},
 }
 
 @article{
@@ -328,59 +360,61 @@ TOR, reverse govern-print mention
 
 @misc{
 	nakamoto:finney:tx,
-	author = {},
-	title = {The first transaction, Satoshi Nakamoto -> Hal Finney in block 170},
-	howpublished = {
+	author = {TX f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16},
+	title = {block 170},
+	ahowpublished = {
 		\url{https://www.blockchain.com/btc/tx/f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16}
 	},
-	note = {\\(Accessed on 2019-02-06)}
+	anote = {\\(Accessed on 2019-02-06)}
 }
 
 @misc{
 	nakamoto:commit:1,
 	author = {Nakamoto, Satoshi},
 	title = {fix openssl linkage problems,},
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bitcoin/commit/a30b56ebe76ffff9f9cc8a6667186179413c6349}
 	},
-	note = {\\(Accessed on 2019-02-19)}
+	howpublished = {bitcoin commit a30b56ebe76ffff9f9cc8a6667186179413c6349}
+	anote = {\\(Accessed on 2019-02-19)}
 }
 
 @misc{
 	nakamoto:commit:2,
 	author = {Nakamoto, Satoshi},
 	title = {only accept transactions sent by IP address if -allowreceivebyip is s…},
-	howpublished = {
+	ahowpublished = {
 	\url{https://github.com/bitcoin/bitcoin/commit/172f006020965ae8763a0610845c051ed1e3b522}
 	},
-	note = {\\(Accessed on 2019-02-19)}
+		howpublished = {bitcoin commit 172f006020965ae8763a0610845c051ed1e3b522}
+	anote = {\\(Accessed on 2019-02-19)}
 }
 
 @misc{repository:bitcoin,
 	author = {},
-	title = {Bitcoin Reference Implementation},
+	title = {Bitcoin Core},
 	year = "2009-",
 	howpublished = {
-	\url{https://github.com/bitcoin/bitcoin}},
-	note = {},
+		\url{https://github.com/bitcoin/bitcoin}},
+	anote = {},
 }
 
 @misc{repository:neutrino,
-	author = {},
-	title = {Light weight Bitcoin node implementation},
+	author = {lightninglabs},
+	title = {Neutrino},
 	year = "",
 	howpublished = {
 	\url{https://github.com/lightninglabs/neutrino}},
-	note = {},
+	anote = {},
 }
 
 @misc{repository:btcd,
-	author = {},
-	title = {btcd: a full node Bitcoin implementation},
+	author = {btcsuite},
+	title = {btcd},
 	year = "",
-	howpublished = {\\
-	\url{https://github.com/btcsuite/btcd}},
-	note = {},
+	howpublished = {
+		\url{https://github.com/btcsuite/btcd}},
+	anote = {},
 }
 
 % Bitcoin - Bips
@@ -390,18 +424,18 @@ TOR, reverse govern-print mention
 	title = {BIP 0141 Segregated Witness},
 	year = "2015",
 	month = "December",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki}},
-	note = {(Accessed on 2019-02-13)},
+	anote = {(Accessed on 2019-02-13)},
 }
 
 @misc{bip:148:uasf:segwit,
 	author = {Fry, Shaolin},
 	title = {BIP 0148 Mandatory activation of segwit deployment},
 	year = "2017",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0148.mediawiki}},
-	note = {(Accessed on 2019-02-13)},
+	anote = {(Accessed on 2019-02-13)},
 }
 
 @misc{
@@ -409,9 +443,9 @@ TOR, reverse govern-print mention
 	author = {Lau, Johnson},
 	title = {BIP 0147 Dealing with dummy stack element malleability},
 	year = "",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0147.mediawiki}},
-	note = {\\(Accessed on 2019-02-07)},
+	anote = {\\(Accessed on 2019-02-07)},
 }
 
 @misc{bip:0016:p2sh,
@@ -420,9 +454,9 @@ TOR, reverse govern-print mention
 	year = "2012",
 	month = "January",
 	day = "03",
-	howpublished = {
+	ahowpublished = {
 	\url{https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki}},
-	note = {\\(Accessed on 2019-02-07)},
+	anote = {\\(Accessed on 2019-02-07)},
 }
 
 @misc{bip:0013:p2shaddr,
@@ -431,9 +465,9 @@ TOR, reverse govern-print mention
 	year = "2012",
 	month = "January",
 	day = "03",
-	howpublished = {
+	ahowpublished = {
 	\url{https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki}},
-	note = {\\(Accessed on 2019-02-07)},
+	anote = {\\(Accessed on 2019-02-07)},
 }
 
 @misc{bip:0118:sighash:noinput,
@@ -442,9 +476,9 @@ TOR, reverse govern-print mention
 	year = "2017",
 	month = "February",
 	day = "28",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0118.mediawiki}},
-	note = {\\(Accessed on 2019-02-13)},
+	anote = {\\(Accessed on 2019-02-13)},
 }
 
 @misc{bip:0068:sequence:lock:time,
@@ -453,9 +487,9 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "May",
 	day = "28",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki}},
-	note = {\\(Accessed on 2019-02-13)},
+	anote = {\\(Accessed on 2019-02-13)},
 }
 
 @misc{bip:0112:sequence:lock:time:soft:fork,
@@ -464,9 +498,9 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "august",
 	day = "10",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki}},
-	note = {\\(Accessed on 2019-02-18)},
+	anote = {\\(Accessed on 2019-02-18)},
 }
 
 @misc{bip:0113:median:time:passed,
@@ -475,9 +509,9 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "august",
 	day = "10",
-	howpublished = {
-		\url{https://github.com/bitcoin/bips/blob/master/bip-0113.mediawiki}},
-	note = {\\(Accessed on 2019-02-18)},
+	ahowpublished = {
+		\url{ https://github.com/bitcoin/bips/blob/master/bip-0113.mediawiki}},
+	anote = {\\(Accessed on 2019-02-18)},
 }
 
 @misc{bip:0032:hd:wallet,
@@ -486,9 +520,9 @@ TOR, reverse govern-print mention
 	year = "2012",
 	month = "February",
 	day = "11",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki}},
-	note = {\\(Accessed on 2019-02-18)},
+	anote = {\\(Accessed on 2019-02-18)},
 }
 
 @misc{bip,
@@ -510,9 +544,9 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "august",
 	day = "10",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/jgarzik/bip100/blob/master/bip-0100.mediawiki}},
-	note = {\\(Accessed on 2019-02-18)},
+	anote = {\\(Accessed on 2019-02-18)},
 }
 
 @misc{bip:0101:increase:block:size,
@@ -521,7 +555,7 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "June",
 	day = "22",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0101.mediawiki}},
 	note = {\\(Accessed on 2019-02-19)},
 }
@@ -532,9 +566,9 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "June",
 	day = "23",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0102.mediawiki}},
-	note = {\\(Accessed on 2019-02-19)},
+	anote = {\\(Accessed on 2019-02-19)},
 }
 
 @misc{bip:0103:increase:with:technology,
@@ -543,9 +577,9 @@ TOR, reverse govern-print mention
 	year = "2015",
 	month = "June",
 	day = "23",
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/bitcoin/bips/blob/master/bip-0103.mediawiki}},
-	note = {\\(Accessed on 2019-02-19)},
+	anote = {\\(Accessed on 2019-02-19)},
 }
 
 % Scaling
@@ -561,14 +595,15 @@ TOR, reverse govern-print mention
 @misc{donald:scale,
 	title = {Re: Bitcoin P2P e-cash paper},
 	author = {Donald, James A.},
-	howpublished = { \url{https://www.mail-archive.com/cryptography@metzdowd.com/msg09963.html} },
+	ahowpublished = { \url{https://www.mail-archive.com/cryptography@metzdowd.com/msg09963.html} },
+	howpublished = "Cyberpunk mailing list",
 	year = 2008,
 }
 
 @misc{hearn:classic,
 	title = {Why is bitcoin forking},
 	author = {Hearn, Mike},
-	howpublished = { \url{https://medium.com/faith-and-future/why-is-bitcoin-forking-d647312d22c1} },
+	ahowpublished = { \url{https://medium.com/faith-and-future/why-is-bitcoin-forking-d647312d22c1} },
 	month = "august",
 	day = "15",
 	year = "2015",
@@ -584,7 +619,7 @@ TOR, reverse govern-print mention
 @article{song:lightning:malleability,
 	title = {Transaction Malleability Explained},
 	author = {Song, Jimmy},
-	howpublished = { 
+	ahowpublished = { 
 		\url{https://bitcointechtalk.com/transaction-malleability-explained-b7e240236fc7} 
 	},
 	year = "2017",
@@ -595,7 +630,7 @@ TOR, reverse govern-print mention
 @article{song:asicboost,
 	title = {Examining Bitmain’s Claims about ASICBoost},
 	author = {Song, Jimmy},
-	howpublished = { 
+	ahowpublished = { 
 		\url{https://medium.com/@jimmysong/examining-bitmains-claims-about-asicboost-1d61118c678d} 
 	},
 	year = "2017",
@@ -606,7 +641,7 @@ TOR, reverse govern-print mention
 @article{bitmain:response,
 	title = {Regarding Recent Allegations and Smear Campaigns},
 	author = {Bitmain},
-	howpublished = { 
+	ahowpublished = { 
 		\url{https://blog.bitmain.com/en/regarding-recent-allegations-smear-campaigns/} 
 	},
 	year = "2017",
@@ -617,9 +652,10 @@ TOR, reverse govern-print mention
 @misc{maxwell:asicboost:fix,
 	title = {Inhibiting a covert attack on the Bitcoin POW function},
 	author = {Maxwell, Gregory},
-	howpublished = { 
+	ahowpublished = { 
 		\url{https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-April/013996.html} 
 	},
+	howpublished = "Bitcoin-dev mailing list, Linuxfoundation",
 	year = "2017",
 	month = "April",
 	Day = "5"
@@ -637,9 +673,9 @@ TOR, reverse govern-print mention
 
 @misc{repository:lightning:rfc,
 	author = {},
-	title = {Lightning specification, Request for comments},
-	howpublished = {\\
-	\url{https://github.com/lightningnetwork/lightning-rfc}},
+	title = {Lightning, Request For Comments},
+	howpublished = {
+		\url{https://github.com/lightningnetwork/lightning-rfc}},
 	note = {},
 	year = "",
 }
@@ -669,8 +705,8 @@ TOR, reverse govern-print mention
 }
 
 @misc{repository:lnd,
-	author = {},
-	title = {Lightning node daemon},
+	author = {Lightning labs},
+	title = {Lightning Node Daemon},
 	howpublished = {
 	\url{https://github.com/lightningnetwork/lnd}},
 	note = {},
@@ -678,8 +714,8 @@ TOR, reverse govern-print mention
 }
 
 @misc{repository:clightning,
-	author = {},
-	title = {Lightning node c-lightning developed by Blockstream},
+	author = {blockstream},
+	title = {c-lightning},
 	howpublished = {
 	\url{https://github.com/ElementsProject/lightning}},
 	note = {},
@@ -687,8 +723,8 @@ TOR, reverse govern-print mention
 }
 
 @misc{repository:eclair,
-	author = {},
-	title = {Lightning node eclair developed by Acinq},
+	author = { Acinq },
+	title = {eclair},
 	howpublished = {
 	\url{https://github.com/ACINQ/eclair}},
 	note = {},
@@ -696,8 +732,8 @@ TOR, reverse govern-print mention
 }
 
 @misc{repository:lit,
-author = {},
-title = {Lightning node lit developed under MIT Digital Currency Initative},
+author = {MITDCI},
+title = {lit},
 howpublished = {
 	\url{https://github.com/mit-dci/lit}},
 note = {},
@@ -705,9 +741,9 @@ year = "",
 }
 
 @misc{repository:rene:pickard,
-	author = {Pickard, Rene},
+	author = {Pickhardt, René },
 	title = {Automatically-Generating-a-Robust-Topology-for-the-Lightning-Network-on-top-of-Bitcoin},
-	howpublished = {
+	ahowpublished = {
 		\url{https://github.com/renepickhardt/Automatically-Generating-a-Robust-Topology-for-the-Lightning-Network-on-top-of-Bitcoin}
 	},
 	note = {},
@@ -730,9 +766,10 @@ year = "",
 @misc{raspitzu:fee,
 	title = {re: Fee Structure},
 	author = {Raspitzu, Andrea},
-	howpublished = { 
+	ahowpublished = { 
 		\url{https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-March/001897.html} 
 	},
+	howpublished = "Lightning-dev mailing list",
 	year = "2019",
 	month = "March",
 	Day = "13"
@@ -741,12 +778,25 @@ year = "",
 @misc{ZmnSCPxj:fee,
 	title = {re: Fee Structure},
 	author = {ZmnSCPxj},
-	howpublished = { 
+	ahowpublished = { 
 		\url{https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-March/001899.html} 
 	},
+	howpublished = "Lightning-dev mailing list",
 	year = "2019",
 	month = "March",
 	Day = "14"
+}
+
+@misc{pickard:jit,
+	title = {Just in Time Routing (JIT-Routing) and a channel rebalancing heuristic},
+	author = {Pickhardt, René },
+	ahowpublished = { 
+		\url{https://lists.linuxfoundation.org/pipermail/lightning-dev/2019-March/001891.html} 
+	},
+	howpublished = "Lightning-dev mailing list",
+	year = "2019",
+	month = "March",
+	Day = "5"
 }
 
 @article{

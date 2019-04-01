@@ -52,6 +52,9 @@ Here the fees are much larger for the payment that unbalances the channel than t
 
 However there are some clear problems with this approach. Every new payment would require each node on the path to rebroadcast the new balance to all other nodes\footnote{As brought up by Andrea Rapitzu.~\cite{raspitzu:fee}}. Which would scale even worse than the Bitcoin bottom layer in message passing. There would also be privacy issues as any observant node could track the payments through balance updates\footnote{As brought up by ZmnSCPxj.~\cite{ZmnSCPxj:fee}}.
 
+It is further unclear how much immediate balance will matter for routing success and other solutions have been proposed to levitate this pressure point. E.g René Pickhardt JIT-routing~\cite{pickard:jit} and branching out utilizing multiple paths to fulfill liquidity needs.   
+
+
 \section{Future work}
 
 As 
