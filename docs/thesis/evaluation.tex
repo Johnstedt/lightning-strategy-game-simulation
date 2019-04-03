@@ -40,6 +40,19 @@ It may be unusual to view demand through the usage of its medium, their is of co
 
 The cost of procuring a shortest path between s and d might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes.
 
+\section{Fee floor}
+
+The fee price, assuming rational actors, can only fall to a level where the operators are able to sustain their operation. The fees received must compensate for the \textit{time-value-of-money}, the security risk of having liquidity on a connected public node and the operational cost of running and managing the software. Bhatia has proposed a standardized reference rate as Lightning Network Reference Rate(LNRR) similar to LIBOR, OIS and SOFR~\cite{bhatia:time:value}. Operational cost isn't included in LNRR as with managed funds a  operational fee is removed after the returns are calculated. The competition of fees drives down the price until a certain point, a floor, where there is better returns elsewhere. Therefor a the fee has a floor at
+
+\[ F_{floor} = C_{op} + C_{risk-prem} + C_{risk-free-rent} \]
+
+Note that the operational costs are independent of liquidity while the security risk premium and risk-free-returns are dependent.
+
+\subsection{Security Risk premium}
+
+\subsection{Time value of money}
+
+
 \section{Routing strategies under Game Theory}
 
 There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. In economic theory optional behaviors as an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} with an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory (EGT).
@@ -55,8 +68,9 @@ To evaluate strategies, the game is divided into five categories.
 	\item \textbf{Fee}, Determine the fee on the outgoing
 	\item \textbf{Preferential Attachment}, Determine which nodes to open channels with.
 	\item \textbf{Timing}, When to open and close channels.
+	\item \textbf{Allocation}, How much capital should be allocated for each channel.
 	\item \textbf{Funding}, How much capital is available to the node.
-	\item \textbf{Re-balance}, When and how aggressively should a node re-balance its channels.  
+	\item \textbf{Re-balance}, When and how aggressively should a node re-balance its channels. 
 \end{enumerate}
 
 Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing node may then choose a strategy per category, it is sufficient to only consider pure strategies. Mixing of strategies, e.g behaving 'aggressive' 70\% of the time and 'coy' 30\% of the time, is perfectly reasonable to assume. However convergence to a mixture is equivalent to the population mixture of pure strategies. Any equilibrium with only pure strategies could thus be transposed in to a mixed strategy~\cite{easly:kleinberg:network:crowds:markets}. This conveniently reduces the complexity of the simulation without compromising the results. 
@@ -65,16 +79,6 @@ Most categories are quite distinct and natural to separate but there is some amb
 It should be noted that profit may not be the only parameter worth maximizing as privacy can be increased with a behavior deviating from a strictly most profitable action.   
 
 does any channel opening algorithm perform better than another and essentially force the network into a scale free hub-spoke network instead of a mesh network?
-
-\section{Fee floor}
-
-The fee price, assuming rational actors, can only fall to a level where the operators are able to sustain their operation. The fees received must compensate for the \textit{time-value-of-money}, the security risk of having liquidity on a connected public node and the operational cost of running and managing the software. Bhatia has proposed a standardized reference rate as Lightning Network Reference Rate(LNRR) similar to LIBOR, OIS and SOFR~\cite{bhatia:time:value}. Operational cost isn't included in LNRR as with managed funds a  operational fee is removed after the returns are calculated. The competition of fees drives down the price until a certain point, a floor, where there is better returns elsewhere. Therefor a the fee has a floor at
-
-\[ F_{floor} = C_{op} + C_{risk-prem} + C_{risk-free-rent} \]
-
-Note that the operational costs are independent of liquidity while the security risk premium and risk-free-returns are dependent.
-
-\subsection{risk}
 
 \newpage
 \onecolumn
@@ -146,19 +150,6 @@ Instead the optimal fee price an for outgoing channel $e$, still holding the ass
 	\item Calculate shortest path from the source of $e$, $V$-to-all explicitly going through $e$ with Dijkstra obtaining table D where $e$ weight set to 0.
 	\item Retrieve the difference for all pairs between the all-to-all distance with the all-to-$V$-to-all distance, A[s][d] - (A[s][V] + D[d]). Throw away the negative values and produce a cumulative summation over the differences in a table H.
 	\item Select $x_{opt}$ such that \[ \forall x (x H(x)) \leq x_{opt} H(x_{opt}) \]
-%	 producing a cumulative summation over the difference.\\
-%	For all pairs s, d:\\
-%		If $A[s][d] > A[s][i] + S[d]$ \\
-%		then $D[A[s][d] - (A[s][i] + S[d])] += 1$.\\
-	
-	
-		%\[ M_i := \sum_{s \neq d}^{i} A[s][d] > A[s][i] + D[d]  \]
-%	\[ \sum_{s \neq d} 
-%	\begin{cases}
-%		A[s][d] - A[s][i] + D[d],& \text{if } A[s][d] > A[s][i] + D[d]\\
-%		0,              & \text{otherwise}
-%	\end{cases} \]
-
 
 \end{enumerate} 
 
@@ -239,10 +230,10 @@ In 1999 Barabási and Albert showed that many networks degree distribution follo
 and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Principle}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible} }. 
 A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex may be said to have a preferred attachment and the probability of a vertex receiving an edge from the new vertex:
 
-\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+\[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
 
 Such a graph follows the scale free property with a $\gamma_{ba}$ = 2.9 and can be seen in Figure \ref{fig:scale_free}
-
+\newpage
 \begin{figure}[!htb]
 	\hspace*{-0.5cm} 
 	\centering
@@ -271,6 +262,30 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 % Testnet 2027 nodes, 8712 edges  
 
 It should again be stated that the Lightning Network is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the degree distribution may indicate very little of future states. 
+
+\subsection{Mediation-driven attachment}
+
+Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator node. Consider a node $i$ which degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly:   
+
+\[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
+
+From
+
+
+\subsection{Connectivity}
+
+\subsection{Fitness models}
+
+Fitness heuristics added bianconi-barabasi~\cite{bianconi:barabasi:fitness:network}.
+
+\[ \Pi(i) = \dfrac{\eta_ik_i}{\sum_{j=1}^{n}n_jk_j}\ \]
+
+\[ \dfrac{\partial k_i}{\partial t} = m \dfrac{\eta_ik_i}{\sum_{j=1}^{n}n_jk_j} \]
+
+
+\section{Re-balancing channels}
+
+\section{Funding, timing and allocation strategies}
 
 \section{Simulation}
 

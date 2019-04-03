@@ -1,7 +1,7 @@
 \chapter{The Lightning Network}
 \label{sec:lightning:network}
 
-The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a \textit{user-activated-soft-fork} in mid 2017\cite{bip:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts may be valid for a single locking script. 
+The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a \textit{user-activated-soft-fork} in mid 2017\cite{bip:148:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts may be valid for a single locking script. 
 
 The network protocol have been defined\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes\cite{repository:lnd}\cite{repository:eclair}\cite{repository:clightning}\cite{repository:lit}.
 
