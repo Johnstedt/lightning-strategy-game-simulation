@@ -265,14 +265,20 @@ It should again be stated that the Lightning Network is still in a very early st
 
 \subsection{Mediation-driven attachment}
 
-Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator node. Consider a node $i$ which degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly:   
+Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator node. Consider a node $i$ which degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly,
 
 \[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
 
 From
 
 
-\subsection{Connectivity}
+\subsection{Inverse Barabási-Albert}
+
+%https://www.ncbi.nlm.nih.gov/pubmed/23005719
+
+
+
+\[ \Pi(i) =  \dfrac{\dfrac{1}{k_i}}{\sum_{j}^{n} \dfrac{1}{k_j}}   \]
 
 \subsection{Fitness models}
 
@@ -284,6 +290,35 @@ Fitness heuristics added bianconi-barabasi~\cite{bianconi:barabasi:fitness:netwo
 
 
 \section{Re-balancing channels}
+
+The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol~[my impl] which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 
+
+\subsection{Linear displacement}
+
+If all increments towards the middle of the channel is considered equally valuable, then a the utility of a path is the combined liquidity towards balance per fee cost. Thus giving utility function,
+
+\[ U(c) = \begin{cases} 
+\dfrac{2|(B_{1S} - B_{1M})|}{f_c(|B_{1S} - B_{1M}|)}  & if~B_{1S} - B_{1M} < B_{2M} - B_{2S} \\ 
+\\
+\dfrac{2|(B_{2M} - B_{2S})|}{f_c(|B_{2M} - B_{2S}|)}  & otherwise
+\end{cases} \]
+
+where $B_{1S}$, $B_{2S}$ is the state of the channel and $B_{1M}$, $B_{2M}$ the middle and$f$ is the total fee for the cycle $c$.
+
+\[f_c(L) = \sum_{i=1}^{n} B_i + P_iL \]
+
+with $B_i$ is the base fee, $P_i$ is the proportional fee for node $i$ in path $c$.
+
+\subsection{Edge biased displacement}
+
+
+
+
+
+\subsection{Utility strategy scalar}
+
+Each node can define how high the utility value must be to consider to re-balancing the channel by routing a payment to oneself.
+
 
 \section{Funding, timing and allocation strategies}
 
