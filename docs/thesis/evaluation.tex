@@ -142,7 +142,7 @@ The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for a fictitio
 
 Freeman also defined a centrality measurement for whole graphs, it utilizes the betweenness centrality of every vertex and is thus brutal to calculate in practice for larger graphs. 
 
-Efficient algorithms for edge betweenness centrality have been developed\cite{brandes:betweenness:centrality:algorithm}. Although it is possible to run such an algorithm for each potential fee price to find the optima it would be very slow.
+Efficient algorithms for edge betweenness centrality have been developed~\cite{brandes:betweenness:centrality:algorithm}. Although it is possible to run such an algorithm for each potential fee price to find the optima it would be very slow.
 Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
 \begin{enumerate}
@@ -227,7 +227,7 @@ In 1999 Barabási and Albert showed that many networks degree distribution follo
 	\label{eq:scale:free}
 \end{equation}
 
-and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Principle}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible} }. 
+and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Effect}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible}, after Robert K. Merton~\cite{merton:matthew:effect} }. 
 A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex may be said to have a preferred attachment and the probability of a vertex receiving an edge from the new vertex:
 
 \[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
@@ -269,32 +269,53 @@ Rather than explicitly attaching with a degree bias as with the Barabási-Albert
 
 \[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
 
-From
-
+They also show that it will lead to a scale free network, however the degree distribution $\gamma$ is dependent on $m$ which differ from Barabási-Albert.
 
 \subsection{Inverse Barabási-Albert}
 
 %https://www.ncbi.nlm.nih.gov/pubmed/23005719
 
+It may seem ridiculous that selecting nodes with low degree would be successful, however doing the opposite to the majority may be very promising. As these niche routes have considerably less competition, especially considering a node created at a large $t$ . If differentiation is a good strategy, this may capture it. The selection probability follows as, 
 
+\[ \Pi(i) =  \dfrac{\dfrac{1}{k_i}}{\sum_{j}^{n} \dfrac{1}{k_j}} \]
 
-\[ \Pi(i) =  \dfrac{\dfrac{1}{k_i}}{\sum_{j}^{n} \dfrac{1}{k_j}}   \]
+where $\Pi(i)$ is the probability that node $i$ is selected with degree $k_i$
 
 \subsection{Fitness models}
 
-Fitness heuristics added bianconi-barabasi~\cite{bianconi:barabasi:fitness:network}.
+Fitness heuristics added Bianconi-Barabasi~\cite{bianconi:barabasi:fitness:network}.
 
-\[ \Pi(i) = \dfrac{\eta_ik_i}{\sum_{j=1}^{n}n_jk_j}\ \]
+\[ \Pi(i) = \dfrac{\eta_ik_i}{\sum_{j=1}^{n}\eta_jk_j}\ \]
 
-\[ \dfrac{\partial k_i}{\partial t} = m \dfrac{\eta_ik_i}{\sum_{j=1}^{n}n_jk_j} \]
 
+By regarding the attachment probability growth over time,
+
+\[ \dfrac{\partial k_i}{\partial t} = m \dfrac{\eta_ik_i}{\sum_{j=1}^{n}\eta_jk_j} \]
+
+they are able to show that not all fitness distributions $\rho(\eta)$ results in a scale free network.
+
+As there are many possible node heuristics beyond degree, e.g. capacity, availability and fee, these heuristics could be blend into the attachment models. 
+
+Although Bianconi and Barabasi only studied fitness with the Barabási-Albert preferential attachment, it can however be added to the other models as well.
+
+Time biased random model,
+~
+\[ \Pi(i) = \dfrac{\eta_i}{\sum_{j=1}^{n} \eta_j} \]
+
+Inverse Barabasi-Albert model,
+
+\[ \Pi(i) =  \dfrac{\eta_i\dfrac{1}{k_i}}{\sum_{j}^{n}\eta_j \dfrac{1}{k_j}} \]
+
+Mediation driven attachment model,
+
+\[ \Pi(i) = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}\eta_i}{N\sum_{j=1}^{n}\eta_j} \]
 
 \section{Re-balancing channels}
 
 The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol~[my impl] which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 
 
 \subsection{Linear displacement}
-
+\label{sec:linear:displacement}
 If all increments towards the middle of the channel is considered equally valuable, then a the utility of a path is the combined liquidity towards balance per fee cost. Thus giving utility function,
 
 \[ U(c) = \begin{cases} 
@@ -303,17 +324,20 @@ If all increments towards the middle of the channel is considered equally valuab
 \dfrac{2|(B_{2M} - B_{2S})|}{f_c(|B_{2M} - B_{2S}|)}  & otherwise
 \end{cases} \]
 
-where $B_{1S}$, $B_{2S}$ is the state of the channel and $B_{1M}$, $B_{2M}$ the middle and$f$ is the total fee for the cycle $c$.
+where $B_{1S}$, $B_{2S}$ are the states of the out and in channels and $B_{1M}$, $B_{2M}$ their middles and $f$ is the total fee for the cycle $c$. 
 
 \[f_c(L) = \sum_{i=1}^{n} B_i + P_iL \]
 
 with $B_i$ is the base fee, $P_i$ is the proportional fee for node $i$ in path $c$.
 
 \subsection{Edge biased displacement}
+\label{sec:edge:bias:displacement}
 
+As a channel with most liquidity at one edge of the channel would only be able to route in one direction. Thus channels at one edge may be regarded with a bias in such that those channels would be preferred to re-balance. The bias can be stated explicitly to modify the linear displacement,
 
+\[ U'(c) = U(c) \bigg(1,5 - \big(1 - \dfrac{B_{1S}}{2B_{1M}}\big) \bigg)^s \bigg(1,5 - \big(\dfrac{B_{2S}}{2B_{2M}}\big)\bigg)^s  \]
 
-
+given a scalar $s$ by which the bias can by adjusted.
 
 \subsection{Utility strategy scalar}
 

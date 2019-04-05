@@ -10,6 +10,8 @@
 
 \section{Strategies}
 
+Following is a list of all implemented strategies and their arguments, 
+
 \section*{Fee Strategies}
 
 The Fee Strategy determine which fee($F_B$, $F_P$) to set to each channel.
@@ -26,15 +28,31 @@ The Preferential attachment determine the bias a node use in selecting a node to
 
 \subsection*{random\_attachment}
 
-Selects a random node in the network and opens a channel. It must not be confused with the Erdős–Rényi model as it has a innate age bias.
+Selects a random node in the network and opens a channel. It must not be confused with the Erdős–Rényi model as it has an innate age bias.
 
 \subsection*{barabasi-albert}
 
 Selects a node in the network with a probability dependent on degree according to the Barabási-Albert model. The probability is given by:
 
-\[ p_i = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+\[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
 
-where $p_i$ is the probability to select $i$ and k is the degree.
+where $\Pi(i)$ is the probability to select $i$ with degree $k_i$.
+
+\subsection*{hassan\_islam\_haque}
+
+Randomly chooses a node and then selects one of its neighbors randomly according to the Mediation-driven attachment model. The probability is given by:
+
+\[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
+
+where $\Pi(i)$ is the probability to select $i$ with degree $k_i$.
+
+\subsection*{inverse\_barabasi\_albert}
+
+Selects a node in the network with a probability inversely dependent on degree. The probability is given by:
+
+\[ \Pi(i) =  \dfrac{\dfrac{1}{k_i}}{\sum_{j}^{n} \dfrac{1}{k_j}} \]
+ 
+where $\Pi(i)$ is the probability to select $i$ with degree $k_i$.
 
 \section*{Timing Strategies}
 The Timing strategies determine when a node should close a channel.
@@ -63,7 +81,7 @@ A \texttt{scalar} greater than 1 may be called a \textit{hawkish} strategy and o
 
 The funding strategy determine how much the node has available to fund channels.
 
-\subsection{funding \texttt{satoshis}}
+\subsection*{funding \texttt{[satoshis]}}
 
 Funds the node with \texttt{satoshis}. Although relative a node with large quantity may be called a \textit{rich} strategy and
 one with small quantity a \textit{poor} strategy. It may seem dissonant to reefer to wealth as a strategy but remember 
@@ -73,6 +91,32 @@ has higher \textit{fitness}. Further beetle size is similarly referred to as a s
 
 \section*{Re-balance}
 
+The re-balancing strategy determine if it is worth to re-balance a pair of channels by routing a payment to oneself.
+
 \subsection*{sanity\_check}
 
-Does not re-balance channels whatsoever. It is used as a sanity check benchmark for the other strategy
+Does not re-balance channels whatsoever. It is used as a sanity check benchmark for the other strategy.
+
+\subsection*{linear\_displacement \texttt{[depth]} \texttt{[ratio]}}
+
+Does a \textit{breath-first-search} for cycles with \texttt{[depth]}. If the \texttt{[ratio]} given by an Utility(\ref{sec:linear:displacement}) as,
+
+\[ U(c) = \begin{cases} 
+\dfrac{2|(B_{1S} - B_{1M})|}{f_c(|B_{1S} - B_{1M}|)}  & if~B_{1S} - B_{1M} < B_{2M} - B_{2S} \\ 
+\\
+\dfrac{2|(B_{2M} - B_{2S})|}{f_c(|B_{2M} - B_{2S}|)}  & otherwise
+\end{cases} \]
+
+where $B_{1S}$, $B_{2S}$ are the states of the out and in channels and $B_{1M}$, $B_{2M}$ their middles and $f$ is the total fee for the cycle $c$. 
+
+\[f_c(L) = \sum_{i=1}^{n} B_i + P_iL \]
+
+with $B_i$ is the base fee, $P_i$ is the proportional fee for node $i$ in path $c$.
+
+\subsection*{edge\_biased\_displacement \texttt{[depth]} \texttt{[ratio]} \texttt{[scalar]}}
+
+Does a \textit{breath-first-search} for cycles with \texttt{[depth]}. If the \texttt{[ratio]} given by a biased to aforementioned Utility function as,
+
+\[ U'(c) = U(c) \bigg(1,5 - \big(1 - \dfrac{B_{1S}}{2B_{1M}}\big) \bigg)^s \bigg(1,5 - \big(\dfrac{B_{2S}}{2B_{2M}}\big)\bigg)^s  \]
+
+where $s$ is a scalar given as argument \texttt{[scalar]}
