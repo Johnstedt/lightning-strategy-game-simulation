@@ -1,0 +1,60 @@
+{
+	"routing_nodes": [
+		{
+			"name": "lowel-middle",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": 30000,
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "upper-middle",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": 60000,
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "rich",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": 120000,
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "poor",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalancing_strategy": "sanity_check",
+			"funding_strategy": 15000,
+			"initial_distribution": 0.25
+		}
+	],
+	"environment": {
+		"payments_distribution": "uniform",
+		"initial_nodes": 100,
+		"payments_per_step": 300,
+		"bankruptcy": 15000,
+		"risk_free_rent": 0.02,
+		"risk_premium": 0.02,
+		"operational_cost": 2,
+		"immunity_period": 5,
+		"new_nodes_per_step": 1,
+		"new_nodes_policy": "mirror",
+		"new_node_quantity": "percentage",
+		"time_steps": 8000,
+		"fee": 500,
+		"initial_mode": "exact"
+	}
+}

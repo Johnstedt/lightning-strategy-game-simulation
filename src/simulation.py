@@ -9,13 +9,18 @@ import numpy
 import random
 
 import attachment_strategies as attachment
+import rebalancing_strategies as rebalance
 import plot
 import routing
 from collections import OrderedDict
 
 
-def create_node(settings, buf):
+def create_node(settings, immunity):
 	rand_id = '%066x' % random.randrange(16 ** 66)
+
+	profit = [settings["funding_strategy"] for n in range(immunity)]
+	while len(profit) < 10:
+		profit.append(0)
 
 	return {
 		'name': settings['name'],
@@ -33,18 +38,22 @@ def create_node(settings, buf):
 		'price_strategy': settings['price_strategy'],
 		'timing_strategy': settings['timing_strategy'],
 		'price_model': settings['price_model'],
+		'allocation_strategy': settings['allocation_strategy'],
+		'rebalance_strategy': settings['rebalance_strategy'],
 
-		'profits': [buf / 10 for n in range(10)],
+		'profits': profit[::-1],
+
 		'total_profits': 0,
 		"base_fee": random.randint(10, 1501),
 		"fee_per_millionth": random.randint(1, 100),
-		"funding": 30000
+		"funding": settings["funding_strategy"],
+		"original_funding": settings["funding_strategy"]
 	}
 
 
 def if_main():
 	if len(sys.argv) == 1:
-		print("SUPPLY ARGS PLZ")
+		print("Supply arguments, either -preset <preset>, or -file <path to simulation json>")
 		exit(0)
 
 	for i in range(1, len(sys.argv)):
@@ -80,6 +89,7 @@ def simulate(env):
 		network_probability_node_creation(g, env)
 		check_for_bankruptcy(g, env)
 		attachment.manage_channels(g, env)
+		rebalance.rebalance_channels(g, day)
 
 	print_profit_table(g, env)
 
@@ -103,7 +113,7 @@ def build_environment(env, g):
 		nodes = []
 		for n in env['routing_nodes']:
 			for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
-				nodes.append(create_node(n, env['environment']['start_buf']))
+				nodes.append(create_node(n, env['environment']['immunity_period']))
 
 		while len(nodes) > 0:
 			selected = random.choice(nodes)
@@ -200,7 +210,7 @@ def network_probability_node_creation(g, env):
 
 	settings = numpy.random.choice(env["routing_nodes"],  # Verify this works
 								p=list(nodes.values()))
-	node = create_node(settings, env["environment"]["start_buf"])
+	node = create_node(settings, env["environment"]["immunity_period"])
 	attachment.attach(g, node, 5, env)
 
 
@@ -215,8 +225,11 @@ def check_for_bankruptcy(g, env):
 
 	for node in g.nodes:
 
-		if sum(g.nodes[node]['profits']) < env['environment']['bankruptcy']:
-			print(g.nodes[node]['nodeid'], " Went bankrupt with method: ",
+		if sum(g.nodes[node]['profits']) < g.nodes[node]['original_funding'] / 2 + g.nodes[node]['original_funding'] \
+				* env["environment"]["risk_premium"] / 36.5 + \
+				g.nodes[node]['original_funding'] * env["environment"]["risk_premium"] / 36.5 + \
+				env["environment"]["operational_cost"] / 36.5:
+			print(g.nodes[node]['nodeid'][:10], " bankrupt with strategies: ",
 				g.nodes[node]['name'])
 			remove.append(node)
 			changed = True

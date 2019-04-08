@@ -1,0 +1,64 @@
+{
+	"routing_nodes": [
+		{
+			"name": "xl",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalance_strategy": {"name": "sanity_check"},
+			"funding_strategy": 20000,
+			"allocation_strategy": 1200,
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "anit",
+			"attachment_strategy": "inverse_barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalance_strategy": {"name": "linear_displacement", "ratio": 1000},
+			"funding_strategy": 20000,
+			"allocation_strategy": 600,
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "hassan",
+			"attachment_strategy": "hassan_islam_haque",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalance_strategy": {"name": "edge_bias_displacement", "ratio": 1000, "scale": 2},
+			"funding_strategy": 20000,
+			"allocation_strategy": 400,
+			"initial_distribution": 0.25
+		},
+		{
+			"name": "s",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalance_strategy": {"name": "sanity_check"},
+			"funding_strategy": 20000,
+			"allocation_strategy": 200,
+			"initial_distribution": 0.25
+		}
+	],
+	"environment": {
+		"payments_distribution": "uniform",
+		"initial_nodes": 100,
+		"payments_per_step": 300,
+		"bankruptcy": 15000,
+		"risk_free_rent": 0.02,
+		"risk_premium": 0.02,
+		"operational_cost": 2,
+		"immunity_period": 5,
+		"new_nodes_per_step": 1,
+		"new_nodes_policy": "mirror",
+		"new_node_quantity": "percentage",
+		"time_steps": 200,
+		"fee": 500,
+		"initial_mode": "exact"
+	}
+}

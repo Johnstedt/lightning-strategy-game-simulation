@@ -7,7 +7,7 @@ def simulations():
 
 	test = []
 
-	env = json.loads(open("presets/validate_price_model.json", "r").read())
+	env = json.loads(open("presets/allocation.json", "r").read())
 
 	for i in range(5):
 		h, _ = simulation.simulate(env)

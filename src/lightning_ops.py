@@ -23,7 +23,6 @@ class LightningOperator:
 			#self.rpc_interface.connect("03cb7983dc247f9f81a0fa2dfa3ce1c255365f7279c8dd143e086ca333df10e278@46.28.204.21:9735")
 			#self.rpc_interface.connect("03e50492eab4107a773141bb419e107bda3de3d55652e6e1a41225f06a0bbf2d56@35.172.33.197:9735")
 
-
 		else:
 			self.rpc_interface = LightningRpc(expanduser("~")+"/.lightning/lightning-rpc")
 
@@ -31,7 +30,6 @@ class LightningOperator:
 			#self.rpc_interface.connect("03782bb858e1ec9c0a4a5ac665ed658c97ced02e723eafc3c56137ab4e2e3caebf@52.8.119.71:9736")
 			#self.rpc_interface.connect("02ec66fb12dd5d4943d63e7a1a35d063aec015e1c8b89cee6c9f2db3faf0f6687f@3.93.159.131:19735")
 			#self.rpc_interface.connect("0218b92d19de937ef740154d20d3a6f37c44e6381ca72b95789295073664cfdd36@5.95.80.47:9735")
-
 
 		print(type(self.rpc_interface.getinfo()))
 

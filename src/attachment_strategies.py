@@ -1,5 +1,7 @@
 import random
 import price_strategies
+import rebalancing_strategies
+import numpy
 
 
 def create_channel(node, destination):
@@ -8,14 +10,14 @@ def create_channel(node, destination):
 
 	return {
 		'base_fee_millisatoshi': base,
-		'satoshis': 5000,
+		'satoshis': node['allocation_strategy'],
 		'public': True,
 		'destination': destination,
 		'source': node['nodeid'],
 		'fee_per_millionth': prop,
 		'active': True,
 
-		'last_10_fees': [node['profits'][0] / 5 for n in range(10)],
+		'last_10_fees': [n / (node["original_funding"]/5000) for n in node["profits"]],
 
 		#'last_update': 1550232803,
 		#'delay': 144,
@@ -38,9 +40,9 @@ def barabasi_albert(g, n, m, env):
 			random_strategy(g, n, m, env)
 			return False
 
-		g.add_node(n["nodeid"], **n)
-
 		targets = [i[0] for i in random.sample(g.edges, m)]
+
+		g.add_node(n["nodeid"], **n)
 
 		channels = [create_channel(n, target_id) for target_id in targets]
 		g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
@@ -48,16 +50,70 @@ def barabasi_albert(g, n, m, env):
 		channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
 		g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
 
+		for s in range(m):
+			reduce_funding(g, n["nodeid"], env)
+
 		return True
 
 
 def random_strategy(g, n, m, env):
 
 	if m >= len(g.nodes):
-		g.add_node(n["nodeid"], **n)
+		targets = g.nodes()
+	else:
+		targets = random.sample(g.nodes(), m)
+
+	g.add_node(n["nodeid"], **n)
+
+	channels = [create_channel(n, target_id) for target_id in targets]
+	g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
+
+	channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
+	g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
+
+	for s in range(m):
+		reduce_funding(g, n["nodeid"], env)
+
+	return True
+
+
+def hassan_islam_haque(g, n, m, env):
+
+	if m >= len(g.edges):
+		random_strategy(g, n, m, env)
 		return False
 
-	targets = random.sample(g.nodes(), m)
+	neighbor = [i[0] for i in random.sample(g.edges, m)]
+
+	g.add_node(n["nodeid"], **n)
+
+	targets = [random.sample(list(g.successors(nk)), 1)[0] for nk in neighbor]
+
+	channels = [create_channel(n, target_id) for target_id in targets]
+	g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
+
+	channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
+	g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
+
+	for s in range(m):
+		reduce_funding(g, n["nodeid"], env)
+
+	return True
+
+
+def inverse_barabasi_albert(g, n, m, env):  # TODO how the fuck is this done simple without
+
+	if m >= len(g.edges):
+		random_strategy(g, n, m, env)
+		return False
+
+	sum = 0
+	for new in g.nodes:
+		sum += 1 / len(list(g.edges(new)))
+
+	targets = [i for i in numpy.random.choice(list(g.nodes), m,
+											p=[1/len(list(g.edges(new)))/sum for new in g.nodes])]
+
 	g.add_node(n["nodeid"], **n)
 
 	channels = [create_channel(n, target_id) for target_id in targets]
@@ -73,8 +129,8 @@ def random_strategy(g, n, m, env):
 
 
 def reduce_funding(g, n, env):
-	if g.nodes[n]['funding'] > (2*env['environment']['fee'] + 5000):
-		g.nodes[n]['funding'] -= (2*env['environment']['fee'] + 5000)  # TODO Allocation strategy
+	if g.nodes[n]['funding'] > (2*env['environment']['fee'] + g.nodes[n]["allocation_strategy"]):
+		g.nodes[n]['funding'] -= (2*env['environment']['fee'] + g.nodes[n]["allocation_strategy"])
 		return True
 	else:
 		return False
@@ -114,7 +170,7 @@ def manage_channels(g, env):
 
 	# Open channel
 	for n in g.nodes:
-		if g.nodes[n]["funding"] > 5000:
+		while g.nodes[n]["funding"] > (2*env['environment']['fee'] + g.nodes[n]["allocation_strategy"]):
 			switch(g.nodes[n]['attachment_strategy'])(g, g.nodes[n], 1, env)
 
 	return True
@@ -123,5 +179,7 @@ def manage_channels(g, env):
 def switch(policy):
 	return {
 		"barabasi_albert": barabasi_albert,
-		"random": random_strategy
+		"random": random_strategy,
+		"hassan_islam_haque": hassan_islam_haque,
+		"inverse_barabasi_albert": inverse_barabasi_albert
 	}[policy]
