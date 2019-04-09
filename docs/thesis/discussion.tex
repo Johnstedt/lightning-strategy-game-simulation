@@ -58,13 +58,25 @@ It is further unclear how much immediate balance will matter for routing success
 
 \section{Future work}
 
-\subsection{Protocol changes}
+Future work might be interesting in many different directions.
+
+\subsection{Protocol changes and growth}
 
 As the lightning network protocol is still under development and small changes in the Bitcoin protocol may change the dynamics of which the nodes operate. E.g. It seem probably that funding channels by both parties will be available in the near future. \\
 
-It is difficult to say how universal these results are although surely many strategies suggested herein will still be successful with protocol changes.
+It is difficult to say how universal these results are although surely many strategies suggested herein will still be successful with protocol changes. Each strategy is also dependent on what every other node in the network does. As the network grow - strategies and behavior will change. Thus the practicality of the results of these simulations are very context dependent, with introduction of new strategies, protocol changes etc. will require this model to be gradually updated to remain relevant.  
 
-The simulation must thus stay 
+\subsection{Network theory}
+
+Albert-László Barabási recently remarked that the bottleneck in network theory is mainly data-driven~\cite{barabasi:decade:beyond}. The Lightning network provides accurate network data with clear economic incentives for each actor. This may, in many ways, are unprecedented. There might be worth to study the network, in addition to its ability to scale Bitcoin, for what it suggest for networks in general. Many studies, cited herein, have been done on attachment heuristics in relation to fitness - it has however, been difficult to apply in practice to real networks. The Lightning network may be a better empirical test-bed for models than any preceding network. 
+
+\subsection{Game Theory}
+
+Much similar to network theory, Game theory have been difficult to use in empirical context. Especially in EGT as nature seldom have clear pay-off matrices. Even very clear examples, such as with the Bacteriophage shown by Turner and Chao~\cite{turner:chao:prisoners:dilemma, nowak:sigmund:phage}, still contains significant noise. Market data on the other hand, especially prices, is available in droves and it is arguable easier to apply game theory to economics. It usually still require effort to retrieve data, e.g. geo-locations of competing businesses. The Lightning network might give us further insight into regional nuances and due to completeness tie together individual strategy with full market Marshallian dynamics.    
+
+\subsection{Further implementation}
+
+
 
 
 

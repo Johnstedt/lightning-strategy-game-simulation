@@ -52,17 +52,15 @@ Note that the operational costs are independent of liquidity while the security 
 
 \subsection{Time value of money}
 
-
 \section{Routing strategies under Game Theory}
 
-There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. In economic theory optional behaviors as an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} with an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory (EGT).
+There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory (EGT).
 
 In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those to strategies. 
 
-
 Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no node can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
-To evaluate strategies, the game is divided into five categories.
+To evaluate strategies, the game is divided into six categories.
 
 \begin{enumerate}
 	\item \textbf{Fee}, Determine the fee on the outgoing
@@ -73,10 +71,23 @@ To evaluate strategies, the game is divided into five categories.
 	\item \textbf{Re-balance}, When and how aggressively should a node re-balance its channels. 
 \end{enumerate}
 
-Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing node may then choose a strategy per category, it is sufficient to only consider pure strategies. Mixing of strategies, e.g behaving 'aggressive' 70\% of the time and 'coy' 30\% of the time, is perfectly reasonable to assume. However convergence to a mixture is equivalent to the population mixture of pure strategies. Any equilibrium with only pure strategies could thus be transposed in to a mixed strategy~\cite{easly:kleinberg:network:crowds:markets}. This conveniently reduces the complexity of the simulation without compromising the results. 
+Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing node may then choose a strategy per category, it is sufficient to only consider pure strategies. 
 
+\subsection{Mixing strategies}
 
-It should be noted that profit may not be the only parameter worth maximizing as privacy can be increased with a behavior deviating from a strictly most profitable action.   
+Mixing of strategies, e.g behaving 'aggressive' 70\% of the time and 'coy' 30\% of the time, is perfectly reasonable to assume. However convergence to a mixture is equivalent to the population mixture of pure strategies. Any equilibrium with only pure strategies could thus be transposed in to a mixed strategy~\cite{easly:kleinberg:network:crowds:markets}. This conveniently reduces the complexity of the simulation without compromising the results. 
+
+However, the strategies success is dependent on the graph state and thus previously played strategies, this is not the case here. 
+
+\subsection{Non-advertised nodes}
+
+The network is not only made up of actors, or players, trying to maximize profit. But also, of course, of nodes wanting to utilize the network as a payment medium. Since routing requires a bit of commitment, regular users can open private channels and not broadcast these to the rest of the network. These non-advertised nodes have other priorities than profit, as it doesn't receive any fees, like having highly liquid paths to many nodes. It may also be worth deviating from the shortest payment paths to increase privacy and paying a higher fee than necessary.
+
+Although this thesis concerns the routing nodes, the behavior of non-advertised affect the routing nodes. If non-advertised nodes prefer to open channels with high capacity nodes, in attempt to receive high liquid paths, it would be preferred to have high capacity for a routing node.  
+
+\subsection{Emerging strategies}
+
+The Lightning network consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid nodes be profitable?
 
 does any channel opening algorithm perform better than another and essentially force the network into a scale free hub-spoke network instead of a mesh network?
 
@@ -287,7 +298,6 @@ Fitness heuristics added Bianconi-Barabasi~\cite{bianconi:barabasi:fitness:netwo
 
 \[ \Pi(i) = \dfrac{\eta_ik_i}{\sum_{j=1}^{n}\eta_jk_j}\ \]
 
-
 By regarding the attachment probability growth over time,
 
 \[ \dfrac{\partial k_i}{\partial t} = m \dfrac{\eta_ik_i}{\sum_{j=1}^{n}\eta_jk_j} \]
@@ -308,7 +318,17 @@ Inverse Barabasi-Albert model,
 
 Mediation driven attachment model,
 
-\[ \Pi(i) = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}\eta_i}{N\sum_{j=1}^{n}\eta_j} \]
+\[ \Pi(i) = \dfrac{\eta_i\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N\sum_{j=1}^{n}\eta_j} \]
+
+The $\eta_i$ can of course be a combination of heuristics $\eta_i = \phi_{i1} * \phi_{i2} * ... * \phi_{ik}$, scaled by constants in relation to each other and/or feature scaling normalized $\eta_i = c_1\rho(\phi_{i1}) * c_2\rho(\phi_{i2}) * ... * c_k\rho(\phi_{ik})$.
+
+\subsection{Non degree fitness models}
+
+All previous models have assumed that degree is relevant\footnote{Which is probable, it may though be useful to express it as any other heuristic.}. However it doesn't need to be expressed so explicitly, following from the Lognormal  Fitness Attachment (LNFA)~\cite{bell:logonormal},
+
+\[ \Pi(i) = \dfrac{\prod_{k=1}\phi_{ik}}{\sum_{j=1}^n\prod_{k=1} \phi_{jk}} = \dfrac{\eta_i}{\sum_{j=1}^{n} \eta_j} \]
+
+which is evidently the same as the time biased random model. 
 
 \section{Re-balancing channels}
 
@@ -348,7 +368,7 @@ Each node can define how high the utility value must be to consider to re-balanc
 
 \section{Simulation}
 
-The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the networkx library. The environment variables and each players chosen strategies can be changed in a higher level meta-language. Each strategy is discussed in detail in Appendix \ref{chapter:strategies} as well how a game may be created and simulated from altering the input file.  
+The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the networkx library. The environment variables and each players chosen strategies can be changed in a higher level configure file. Each strategy is discussed in detail in Appendix \ref{chapter:strategies} as well how a game may be created and simulated from altering the input file. Each set of strategies, under certain network dynamics may then be put into the same network to see which are stable and which are not. Similarly the emerging network is studied as successful strategies becomes more numerous at the hand of unsuccessful ones. 
 
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf
