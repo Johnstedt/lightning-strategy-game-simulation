@@ -89,8 +89,6 @@ Although this thesis concerns the routing nodes, the behavior of non-advertised 
 
 The Lightning network consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid nodes be profitable?
 
-does any channel opening algorithm perform better than another and essentially force the network into a scale free hub-spoke network instead of a mesh network?
-
 \newpage
 \onecolumn
 
@@ -116,7 +114,7 @@ To determine the fee price, one could intuitively imagine that and increased fee
 
 Where $\sigma_{sd}$ are all shortest paths from s to d and v is vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
 
-It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest paths are used are assumed the optimal price is given by
+It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest paths are used are assumed the optimal price for one payment size is given by
 
 \[ x_{opt} \textrm{ is the optimal price } iff \]
 
@@ -176,7 +174,15 @@ depends on both edges and vertices.
 
 \subsection{Cost function}
 
-The fee is in part proportional to the size of the payment, and the aforementioned algorithm is only able to find the optimal price for one payment size.  
+As the previous solution naively assumes a fixed payment size, it needs alteration to encompass a payment size distribution.
+The fee is proportional to the size of the payment, $F_B + F_P S$, thus the shortest path may be different for two different payment sizes. 
+The problem is a combinatorial optimization problem,
+
+\[ f(x, y) = \sum_{i \in e}^{max} \]
+
+
+
+The fee is in part proportional to the size of the payment, and the aforementioned algorithm is only able to find the optimal price for one payment size.
 
  
 
