@@ -5,11 +5,8 @@ import simulation
 
 def rebalance_channels(g, day):
 	"""
-	Add different strategies here.
-	First only close and open
+	Rebalance channels by finding a cycle route to oneself.
 	"""
-	# Channel close
-	close = []
 
 	for n in g.nodes:
 		if g.nodes[n]["rebalance_strategy"]["name"] == "sanity_check":
@@ -25,15 +22,24 @@ def rebalance_channels(g, day):
 				else:
 					score, size = get_edge_bias_value(g, cycle, cap, g.nodes[n]["rebalance_strategy"]["scale"])
 
+				if score <= 0:
+					continue
+
 				fee = get_fee(g, cycle, size)
-				print((size * 2 / fee))
+
 				if (size * 2 / fee) > g.nodes[n]["rebalance_strategy"]["ratio"]:
 					print("HAPPENED")
 					simulation.offset_liquidity(g, cycle, size)
 					cycle.remove(source)
 					simulation.pay_routers(g, cycle, day, size)
+					remove_fee(g, n, fee, day)
 
 	return True
+
+
+def remove_profit(g, node, fee, day):
+	g.nodes[node]['profits'][day % 10] -= fee
+	g.nodes[node]['total_profits'] -= fee
 
 
 def get_capacity(g, cycle):
@@ -122,7 +128,7 @@ def get_fee(g, route, size):
 	fee = 0
 	for n in route:
 		if previous is not None:
-			fee += (g.get_edge_data(previous, n)["base_fee_millisatoshi"]) + (g.get_edge_data(previous, n)["fee_per_millionth"] * size)
+			fee = fee + g.get_edge_data(previous, n)["base_fee_millisatoshi"] + (g.get_edge_data(previous, n)["fee_per_millionth"]*size)
 		previous = n
 
 	return fee

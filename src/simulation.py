@@ -15,7 +15,7 @@ import routing
 from collections import OrderedDict
 
 
-def create_node(settings, immunity):
+def create_node(settings, immunity, public=True):
 	rand_id = '%066x' % random.randrange(16 ** 66)
 
 	profit = [settings["funding_strategy"] for n in range(immunity)]
@@ -47,7 +47,8 @@ def create_node(settings, immunity):
 		"base_fee": random.randint(10, 1501),
 		"fee_per_millionth": random.randint(1, 100),
 		"funding": settings["funding_strategy"],
-		"original_funding": settings["funding_strategy"]
+		"original_funding": settings["funding_strategy"],
+		"public": public
 	}
 
 
@@ -88,7 +89,7 @@ def simulate(env):
 
 		network_probability_node_creation(g, env)
 		check_for_bankruptcy(g, env)
-		attachment.manage_channels(g, env)
+		attachment.manage_channels(g, env, day)
 		rebalance.rebalance_channels(g, day)
 
 	print_profit_table(g, env)
@@ -120,13 +121,19 @@ def build_environment(env, g):
 			attachment.attach(g, selected, 5, env)
 			nodes.remove(selected)
 
+	for n in env['private_nodes']:
+		for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
+			node = create_node(n, env['environment']['immunity_period'], public=False)
+			attachment.attach(g, node, 5, env)
+
 	return True
 
 
 def add_survival_history(g, history, day):
 
 	for n in g.nodes:
-		history[g.nodes[n]['name']][day] += 1
+		if g.nodes[n]["public"]:
+			history[g.nodes[n]['name']][day] += 1
 
 
 def route_payments_all_to_all(g, day):
@@ -202,16 +209,34 @@ def network_probability_node_creation(g, env):
 	for node in env["routing_nodes"]:
 		nodes[node["name"]] = 0
 
+	private = OrderedDict()
+	for node in env["private_nodes"]:
+		private[node["name"]] = 0
+
+	public_nodes = 0
 	for n in g.nodes:
-		nodes[g.nodes[n]['name']] += 1
+		if g.nodes[n]["public"]:
+			nodes[g.nodes[n]['name']] += 1
+			public_nodes += 1
+		else:
+			private[g.nodes[n]['name']] += 1
 
 	for node in env["routing_nodes"]:
-		nodes[node["name"]] = nodes[node["name"]] / len(g.nodes)
+		nodes[node["name"]] = nodes[node["name"]] / public_nodes
 
 	settings = numpy.random.choice(env["routing_nodes"],  # Verify this works
 								p=list(nodes.values()))
+
 	node = create_node(settings, env["environment"]["immunity_period"])
 	attachment.attach(g, node, 5, env)
+
+	for n in range(env["environment"]["changed_private_per_step"]):
+		node = create_node(numpy.random.choice(env["private_nodes"], p=[k["initial_distribution"] for k in env["private_nodes"]]), env['environment']['immunity_period'], public=False)
+		attachment.attach(g, node, 5, env)
+
+	rm = numpy.random.choice(g.nodes, env["environment"]["changed_private_per_step"], replace=False)
+	for r in rm:
+		g.remove_node(r)  # TODO NEED PAY BACK CHANNELS
 
 
 def reset_day(g, day):
@@ -224,18 +249,18 @@ def check_for_bankruptcy(g, env):
 	remove = []
 
 	for node in g.nodes:
-
-		if sum(g.nodes[node]['profits']) < g.nodes[node]['original_funding'] / 2 + g.nodes[node]['original_funding'] \
-				* env["environment"]["risk_premium"] / 36.5 + \
-				g.nodes[node]['original_funding'] * env["environment"]["risk_premium"] / 36.5 + \
-				env["environment"]["operational_cost"] / 36.5:
-			print(g.nodes[node]['nodeid'][:10], " bankrupt with strategies: ",
-				g.nodes[node]['name'])
-			remove.append(node)
-			changed = True
+		if g.nodes[node]["public"]:
+			if sum(g.nodes[node]['profits']) < g.nodes[node]['original_funding'] / 2 + g.nodes[node]['original_funding'] \
+					* env["environment"]["risk_premium"] / 36.5 + \
+					g.nodes[node]['original_funding'] * env["environment"]["risk_premium"] / 36.5 + \
+					env["environment"]["operational_cost"] / 36.5:
+				print(g.nodes[node]['nodeid'][:10], " bankrupt with strategies: ",
+					g.nodes[node]['name'])
+				remove.append(node)
+				changed = True
 	if changed:
 		for n in remove:
-			g.remove_node(n)
+			g.remove_node(n)  # TODO NEED PAY BACK CHANNELS
 
 
 def print_alive_nodes(g, env):
@@ -244,7 +269,8 @@ def print_alive_nodes(g, env):
 		nodes[node["name"]] = 0
 
 	for n in g.nodes:
-		nodes[g.nodes[n]['name']] += 1
+		if g.nodes[n]["public"]:
+			nodes[g.nodes[n]['name']] += 1
 
 	s = ""
 	for key in nodes:
@@ -256,7 +282,8 @@ def print_alive_nodes(g, env):
 def print_profit_table(g, env):
 	sorted_profit = []
 	for n in g.nodes:
-		sorted_profit.append(g.nodes[n])
+		if g.nodes[n]["public"]:
+			sorted_profit.append(g.nodes[n])
 
 	sorted_profit = sorted(sorted_profit, key=lambda k: k['total_profits'])
 
@@ -265,8 +292,8 @@ def print_profit_table(g, env):
 		nodes[node["name"]] = 0
 
 	for n in sorted_profit:
-		print(n['name'], " ", n['total_profits'])
-		nodes[n['name']] += n['total_profits']
+			print(n['name'], " ", n['total_profits'])
+			nodes[n['name']] += n['total_profits']
 
 	s = ""
 	for key in nodes:

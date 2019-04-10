@@ -45,9 +45,23 @@
 			"initial_distribution": 0.25
 		}
 	],
+	"private_nodes": [
+		{
+			"name": "give-me-liquidity",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": "close_avg_bankruptcy",
+			"price_strategy": "neutral",
+			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"rebalance_strategy": {"name": "sanity_check"},
+			"funding_strategy": 20000,
+			"allocation_strategy": 200,
+			"initial_distribution": 1
+		}
+	],
 	"environment": {
-		"payments_distribution": "uniform",
+		"payments_distribution": "uniform_all",
 		"initial_nodes": 100,
+		"initial_private_nodes": 100,
 		"payments_per_step": 300,
 		"bankruptcy": 15000,
 		"risk_free_rent": 0.02,
@@ -55,6 +69,7 @@
 		"operational_cost": 2,
 		"immunity_period": 5,
 		"new_nodes_per_step": 1,
+		"changed_private_per_step": 2,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
 		"time_steps": 200,

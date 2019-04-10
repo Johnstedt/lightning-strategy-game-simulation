@@ -4,14 +4,18 @@ import rebalancing_strategies
 import numpy
 
 
-def create_channel(node, destination):
+def create_channel(node, destination, public):
 
-	base, prop = price_strategies.get_price_by_strategy(node['price_strategy'], path=node["price_model"])
+	if not node["public"]:
+		base = 100000000
+		prop = 100000000
+	else:
+		base, prop = price_strategies.get_price_by_strategy(node['price_strategy'], path=node["price_model"])
 
 	return {
 		'base_fee_millisatoshi': base,
 		'satoshis': node['allocation_strategy'],
-		'public': True,
+		'public': public,
 		'destination': destination,
 		'source': node['nodeid'],
 		'fee_per_millionth': prop,
@@ -40,14 +44,14 @@ def barabasi_albert(g, n, m, env):
 			random_strategy(g, n, m, env)
 			return False
 
-		targets = [i[0] for i in random.sample(g.edges, m)]
+		targets = [i[0] for i in random.sample([k for k in g.edges if g.edges[k]["public"]], m)]
 
 		g.add_node(n["nodeid"], **n)
 
-		channels = [create_channel(n, target_id) for target_id in targets]
+		channels = [create_channel(n, target_id, n['public']) for target_id in targets]
 		g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
 
-		channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
+		channels = [create_channel(g.nodes[target_id], n['nodeid'], n['public']) for target_id in targets]
 		g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
 
 		for s in range(m):
@@ -61,14 +65,14 @@ def random_strategy(g, n, m, env):
 	if m >= len(g.nodes):
 		targets = g.nodes()
 	else:
-		targets = random.sample(g.nodes(), m)
+		targets = random.sample([k for k in g.nodes() if g.nodes[k]["public"]], m)
 
 	g.add_node(n["nodeid"], **n)
 
-	channels = [create_channel(n, target_id) for target_id in targets]
+	channels = [create_channel(n, target_id, n['public']) for target_id in targets]
 	g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
 
-	channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
+	channels = [create_channel(g.nodes[target_id], n['nodeid'], n['public']) for target_id in targets]
 	g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
 
 	for s in range(m):
@@ -83,16 +87,16 @@ def hassan_islam_haque(g, n, m, env):
 		random_strategy(g, n, m, env)
 		return False
 
-	neighbor = [i[0] for i in random.sample(g.edges, m)]
+	neighbor = [i[0] for i in random.sample([k for k in g.edges if g.edges[k]["public"]], m)]
 
 	g.add_node(n["nodeid"], **n)
 
-	targets = [random.sample(list(g.successors(nk)), 1)[0] for nk in neighbor]
+	targets = [random.sample([k for k in g.successors(nk) if g.nodes[k]["public"]], 1)[0] for nk in neighbor]
 
-	channels = [create_channel(n, target_id) for target_id in targets]
+	channels = [create_channel(n, target_id, n['public']) for target_id in targets]
 	g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
 
-	channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
+	channels = [create_channel(g.nodes[target_id], n['nodeid'], n['public']) for target_id in targets]
 	g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
 
 	for s in range(m):
@@ -101,25 +105,26 @@ def hassan_islam_haque(g, n, m, env):
 	return True
 
 
-def inverse_barabasi_albert(g, n, m, env):  # TODO how the fuck is this done simple without
+def inverse_barabasi_albert(g, n, m, env):
 
 	if m >= len(g.edges):
 		random_strategy(g, n, m, env)
 		return False
 
-	sum = 0
+	sum_n = 0
 	for new in g.nodes:
-		sum += 1 / len(list(g.edges(new)))
+		if g.nodes[new]["public"] and len(list(g.edges(new))) != 0:
+			sum_n += 1 / len(list(g.edges(new)))
 
-	targets = [i for i in numpy.random.choice(list(g.nodes), m,
-											p=[1/len(list(g.edges(new)))/sum for new in g.nodes])]
+	targets = [i for i in numpy.random.choice([k for k in g.nodes if g.nodes[k]["public"] and len(list(g.edges(k))) != 0], m,
+											p=[1/len(list(g.edges(new)))/sum_n for new in g.nodes if g.nodes[new]["public"] and len(list(g.edges(new))) != 0])]
 
 	g.add_node(n["nodeid"], **n)
 
-	channels = [create_channel(n, target_id) for target_id in targets]
+	channels = [create_channel(n, target_id, n['public']) for target_id in targets]
 	g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
 
-	channels = [create_channel(g.nodes[target_id], n['nodeid']) for target_id in targets]
+	channels = [create_channel(g.nodes[target_id], n['nodeid'], n['public']) for target_id in targets]
 	g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
 
 	for s in range(m):
@@ -147,7 +152,7 @@ def close_channel(g, f, s):
 	return True
 
 
-def manage_channels(g, env):
+def manage_channels(g, env, day):
 	"""
 	Add different strategies here.
 	First only close and open
@@ -172,8 +177,14 @@ def manage_channels(g, env):
 	for n in g.nodes:
 		while g.nodes[n]["funding"] > (2*env['environment']['fee'] + g.nodes[n]["allocation_strategy"]):
 			switch(g.nodes[n]['attachment_strategy'])(g, g.nodes[n], 1, env)
+			remove_profit(g, n, 2*env['environment']['fee'], day)
 
 	return True
+
+
+def remove_profit(g, node, fee, day):
+	g.nodes[node]['profits'][day % 10] -= fee
+	g.nodes[node]['total_profits'] -= fee
 
 
 def switch(policy):
