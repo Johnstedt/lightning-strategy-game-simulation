@@ -336,6 +336,10 @@ All previous models have assumed that degree is relevant\footnote{Which is proba
 
 which is evidently the same as the time biased random model. 
 
+\subsection{Robustness}
+
+\subsection{Average shortest path}
+
 \section{Re-balancing channels}
 
 The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol~[my impl] which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 

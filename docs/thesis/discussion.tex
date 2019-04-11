@@ -1,8 +1,6 @@
 \chapter{Discussion \& Conclusions}
 
-\section{Complexity}
-
-When the network grow it will eventually become to cumbersome for every node to Floyd-Warshall the whole network as this simulation assumes. Approx. will probably be used. Ant routing tables have been suggested but might be problem with lying about connectedness.
+Firstly there is two points that needs te be remarked. 1) The topology and efficiency of the Lightning network will form as a product of profitable behavior, bottom up. It will not form from intervention, where a random mesh network is seen as good and the actors aim to fulfill such a model. 2) The behavior regarded in this thesis leads to a sufficiently robust network with short average paths. Strategies that fulfill a valuable niche in the network will be profitable and the emerging real network will probably be more efficient than any man made model could ever be as nodes struggle to provide liquid paths between paying nodes.
 
 \section{Balanced Channels}
 
@@ -72,12 +70,16 @@ Albert-László Barabási recently remarked that the bottleneck in network theor
 
 \subsection{Game Theory}
 
-Much similar to network theory, Game theory have been difficult to use in empirical context. Especially in EGT as nature seldom have clear pay-off matrices. Even very clear examples, such as with the Bacteriophage shown by Turner and Chao~\cite{turner:chao:prisoners:dilemma, nowak:sigmund:phage}, still contains significant noise. Market data on the other hand, especially prices, is available in droves and it is arguable easier to apply game theory to economics. It usually still require effort to retrieve data, e.g. geo-locations of competing businesses. The Lightning network might give us further insight into regional nuances and due to completeness tie together individual strategy with full market Marshallian dynamics.    
+Much similar to network theory, Game theory have been difficult to use in empirical context. Especially in EGT as nature seldom have clear pay-off matrices. Even very clear examples, such as with the Bacteriophage shown by Turner and Chao~\cite{turner:chao:prisoners:dilemma, nowak:sigmund:phage}, still contains significant noise. Market data on the other hand, especially prices, is available in droves and it is arguable easier to apply game theory to economics. It usually still require effort to retrieve data, e.g. geo-locations of competing businesses. The Lightning network might give us further insight into regional nuances and due to completeness bridge the gap between individual strategy with full market Marshallian dynamics.    
 
-\subsection{Further implementation}
+\subsection{Fee complexity}
 
-The price model will be to expensive to calculate in the future as the network grows. Instead of an exact calculation upper and lower bounds could be calculated 
+The optimal fee price for each edge will most likely be to expensive to calculate in the near future as the network grows. It is not uncertain how much low capacity nodes affect the network and larger operators might be able to simply prune away these nodes before calculation. Another approach is to approximate, calculating the upper and lower bounds with adjustable granularity, akin to tolerance~\cite{goldengorin:jager:tolerance}. 
 
+\subsection{Empirical gathering}
 
+There is many assumptions in this results
+
+(genetic algorithm)
 
 
