@@ -1,11 +1,11 @@
 \chapter{Scaling bitcoin}
 
-There is no secret that the bitcoin blockchain will not be able to scale on its own. When Nakamoto first published the whitepaper on the cryptographic mailing list his first response was in fact that such a solution won't scale very well\cite{donald:scale}. 
+There is no secret that the bitcoin blockchain will not be able to scale on its own. When Nakamoto first published the whitepaper on the cryptographic mailing list his first response was in fact that such a solution won't scale very well~\cite{donald:scale}. 
 
 Andreas Antonopoulos has drawn similarities between the scaling of bitcoin with the scaling of the internet:
 
 \begin{displayquote}
-	"Bitcoin is failing to scale. If we’re really lucky, bitcoin will continue to fail to scale gracefully for 25 years, just like the internet."\cite{antonopoulos:the:internet:of:money}
+	"Bitcoin is failing to scale. If we’re really lucky, bitcoin will continue to fail to scale gracefully for 25 years, just like the internet."~\cite{antonopoulos:the:internet:of:money}
 \end{displayquote}
 
 His quote in many ways are spot on as Usenet used a \textit{Store-and-forward} method for content to reach every server in the network. \textit{Store-and-forward} does not scale very well and is somewhat similar to the base Bitcoin protocol. The internet moved away from \textit{Store-and-forward} to more direct routing and Bitcoin is too, allowing transactions to happen off-chain.
@@ -14,7 +14,7 @@ In this chapter the various scaling alternatives will be discussed.
 
 \section{Block Size limit}
 
-In 2010 Nakamoto reduced the block size limit from 32 to 1 Megabyte as part of two commits. The first commit introduces the new \texttt{BLOCK\_SIZE\_LIMIT} constant\cite{nakamoto:commit:1} and the other commit enforcing the blocks to be under the limit\cite{nakamoto:commit:2}. Nakamoto did not give any explanation as to the reason of this limit. As there was only a few transactions per block at this time a limit reduced the worst case scenario for a DoS attacker filling up the blocks with dummy transactions. 
+In 2010 Nakamoto reduced the block size limit from 32 to 1 Megabyte as part of two commits. The first commit introduces the new \texttt{BLOCK\_SIZE\_LIMIT} constant~\cite{nakamoto:commit:1} and the other commit enforcing the blocks to be under the limit~\cite{nakamoto:commit:2}. Nakamoto did not give any explanation as to the reason of this limit. As there was only a few transactions per block at this time a limit reduced the worst case scenario for a DoS attacker filling up the blocks with dummy transactions. 
 
 Increasing the amount of transactions would also increase the imposing cost for the ecosystem by forms of bandwidth, processing, storage and the speed by which blocks propagate through the network. By imposing a block limit the cost of operating a node would be kept low allowing more peers to be able to participate in the network. 
 
@@ -28,13 +28,13 @@ There has been many proposals to increase the block size. Including a handful of
 
 \begin{itemize}
 	
-	\item \textbf{BIP 100} allows the miner to vote on the block limit by encoding a proposed value in the coinbase unlocking script. A 75\% supermajority may increase the block size limit every 2016 blocks. Each period change is limited to only increase by 5\% from the previous period.\cite{bip:0100:dynamic:block:size}
+	\item \textbf{BIP 100} allows the miner to vote on the block limit by encoding a proposed value in the coinbase unlocking script. A 75\% supermajority may increase the block size limit every 2016 blocks. Each period change is limited to only increase by 5\% from the previous period.~\cite{bip:0100:dynamic:block:size}
 	
-	\item \textbf{BIP 101} proposes an immediate increase to 8 megabyte blocks and continue to double every second year. In the two year periods the size would increase at a linear pace based on the block timestamp.\cite{bip:0101:increase:block:size}
+	\item \textbf{BIP 101} proposes an immediate increase to 8 megabyte blocks and continue to double every second year. In the two year periods the size would increase at a linear pace based on the block timestamp.~\cite{bip:0101:increase:block:size}
 	
-	\item \textbf{BIP 102} is a simple one time increase to 2 megabytes. The BIP would be triggered if 95\% of the latest blocks signaled support for the upgrade.\cite{bip:0102:increase:2mb}
+	\item \textbf{BIP 102} is a simple one time increase to 2 megabytes. The BIP would be triggered if 95\% of the latest blocks signaled support for the upgrade.~\cite{bip:0102:increase:2mb}
 	
-	\item \textbf{BIP 103} aims to increase the block size in accordance with the technology. In practice however it increases the block size with 4.4\% every ~97 day, 17.7\% annually. \cite{bip:0103:increase:with:technology}
+	\item \textbf{BIP 103} aims to increase the block size in accordance with the technology. In practice however it increases the block size with 4.4\% every ~97 day, 17.7\% annually.~\cite{bip:0103:increase:with:technology}
 \end{itemize}
 
 Most of these BIPs are implemented as a hard forks. Older nodes would regard the bigger blocks as being over the limit and thus invalid.
@@ -62,11 +62,11 @@ As figure \ref{fig:xt_nodes} attests, bitcoin XT and classic failed to receive s
 
 The failures of Bitcoin Classic was just the beginning of the scaling debate. The proposal of Segregated Witness\cite{bip:0141:segwit} was met with strong opposition as it was considered an overtly complicated and risky upgrade when the block limit could simply be increased. 
 
-Segregated Witness is in a way an increase in block space as it moves the unlocking script(witness) from the transaction to its own structure. Since each transaction takes up less space, more transactions fit in each block. The upgrade also addresses malleability, which many off-chain solutions require, and aligns economics incentives with resource costs\cite{antonopoulos:segregated:witness:align:economic:incentives}. Although its possible to implement Lightning without a malleability fix, it increases its viability\cite{song:lightning:malleability}.
+Segregated Witness is in a way an increase in block space as it moves the unlocking script(witness) from the transaction to its own structure. Since each transaction takes up less space, more transactions fit in each block. The upgrade also addresses malleability, which many off-chain solutions require, and aligns economics incentives with resource costs~\cite{antonopoulos:segregated:witness:align:economic:incentives}. Although its possible to implement Lightning without a malleability fix, it increases its viability~\cite{song:lightning:malleability}.
 
-The malleability fix also addresses covert \texttt{ASICBOOST} or Antbleed. Covert \texttt{ASICBOOST} utilizes that part of \texttt{SHA256} may be pre-calculated if the last 16 bits remain the same. The last 16 bytes in the bitcoin header include the last 4 bytes of the Merkle root. By finding two Merkle Roots with the same last 4 bytes, allowing for less computation in finding hashes. To find a matching pair of roots, many roots must on average be tried. The space of viable roots is reduces if the transaction witness isn't malleable\cite{song:asicboost} as the witness can't be manipulated to change the transaction and thus the Merkle root. Gregory Maxwell alluded that \texttt{ASICBOOST} had in fact been implemented in ASIC chips and proposed a fix\cite{maxwell:asicboost:fix}. Bitmain, the largest chip manufacture, made a statement 2 days after addressing the accusation\cite{bitmain:response}. There is no way of ultimately proving if covert \texttt{ASICBOOST} was ever used\footnote{In further conversation with Bitmain representative Nishant Sharma at their headquarters in Beijing in December 2017 he stated that they would never use \texttt{ASICBOOST} of moral reasons. \texttt{ASICBOOST} was not longer viable on Bitcoin at that time, but was on Bitcoin cash and other currencies. He also stated that bitmain had been in negotiation to buy the patent from Timo Hanke and Sergio Demian Lerner and had thus filed a patent for \texttt{ASICBOOST} with the Chinese government. The deal ultimately didn't fell through, and while this information is hearsay at best, the patent sparked many rumors at the time and drove opposition and is one reason for the eventual split.}. 
+The malleability fix also addresses covert \texttt{ASICBOOST} or Antbleed. Covert \texttt{ASICBOOST} utilizes that part of \texttt{SHA256} may be pre-calculated if the last 16 bits remain the same. The last 16 bytes in the bitcoin header include the last 4 bytes of the Merkle root. By finding two Merkle Roots with the same last 4 bytes, allowing for less computation in finding hashes. To find a matching pair of roots, many roots must on average be tried. The space of viable roots is reduces if the transaction witness isn't malleable~\cite{song:asicboost} as the witness can't be manipulated to change the transaction and thus the Merkle root. Gregory Maxwell alluded that \texttt{ASICBOOST} had in fact been implemented in ASIC chips and proposed a fix~\cite{maxwell:asicboost:fix}. Bitmain, the largest chip manufacture, made a statement 2 days after addressing the accusation~\cite{bitmain:response}. There is no way of ultimately proving if covert \texttt{ASICBOOST} was ever used\footnote{In further conversation with Bitmain representative Nishant Sharma at their headquarters in Beijing in December 2017 he stated that they would never use \texttt{ASICBOOST} of moral reasons. \texttt{ASICBOOST} was not longer viable on Bitcoin at that time, but was on Bitcoin cash and other currencies. He also stated that bitmain had been in negotiation to buy the patent from Timo Hanke and Sergio Demian Lerner and had thus filed a patent for \texttt{ASICBOOST} with the Chinese government. The deal ultimately didn't fell through, and while this information is hearsay at best, the patent sparked many rumors at the time and drove opposition and is one reason for the eventual split.}. 
 
-Segregated Witness When BIP148\cite{bip:148:uasf:segwit}, a \textit{user-activated-soft-fork} scheduled for 22 August 2017 to activate Segregated Witness, was getting traction among nodes, the opposing party(including aforementioned Bitmain) decided to hard fork bitcoin into two by raising the block size limit. The hard fork took place on the first of August 2017 and created Bitcoin Cash.
+Segregated Witness When~BIP148\cite{bip:148:uasf:segwit}, a \textit{user-activated-soft-fork} scheduled for 22 August 2017 to activate Segregated Witness, was getting traction among nodes, the opposing party(including aforementioned Bitmain) decided to hard fork bitcoin into two by raising the block size limit. The hard fork took place on the first of August 2017 and created Bitcoin Cash.
 
 Bitcoin Cash received significant economic support initially, although significantly below the original chain.
 
@@ -83,18 +83,22 @@ Although support for Bitcoin Cash has dwindled over the following years, it set 
 
 \subsection{The SegWit2x Compromise}
 
-Most forks are simple copies of Bitcoin and may be of little interest here. However SegWit2x carry some historic weight worth noting. 
-SegWit2x was originally a compromise 
+Most other forks are insignificant. However SegWit2x carry some historical weight. SegWit2x was originally a compromise known as the Hong Kong Agreement reached in Hong Kong in February 2016 between many industry representatives and members of the development community~\cite{hong:kong:agreement}. The agreement was somewhat ambiguous leading to fall out and a subsequent New York Agreement were reached at the conference Consensus in May 2017~\cite{new:york:agreement}. Notable absent from the latter agreement were the whole Core development team leading to the \texttt{UASF} and Bitcoin cash fork. Many actors still viewed the New York Agreement as valid after the split and many supported a hard fork to 2MB block limit on the main bitcoin chain in late 2017. The fork was ultimately called off and only a few rogue actors followed through with it. A critical bug in the software led to the forked chain to halt in it's infancy. 
 
+\section{Removing or reducing decentralization}
 
-\section{Removing decentralization}
+Many other crytocurrency systems, which are seen as competing, have reduced decentralization in order to increase throughput. Some may not even be considered \textit{peer-to-peer} but instead rely on a traditional \textit{client-server} architecture which current financial systems are already using. These system easily reach a . Most however use some sort of combination of increased block limit and/or some level of trusted nodes akin to \textit{oracles}.  
 
-\section{Side chain}
+\section{Sidechains}
+
+One proposal involve multiple chains where one could peg bitcoin to an alternate, less secure, chain. Multiple transactions could then take place on the alternate chain and then released back on the main chain. The alternate chains could regularly be thrown away and replaced, removing much of the storage burden of the network.~\cite{blockstream:sidechain}
 
 \section{Off-chain scaling}
 
-(payment channels)
+Off-chain solutions, like the Lightning Network, utilize the contractual nature of transaction. Schemes of transaction can be implemented such as an obligation in form of a transaction may be held privately without broadcasting it. The obligation may then be changed multiple times without the rest of the network knowing and only in worst case, require to broadcast the transaction. 
 
-Payment channel networks may be constructed in many different ways, a few distinct proposals has been suggested. Decker and Wattenhofer suggested a \_\_ in which \_\_ however \_\_ \cite{decker:wattenhofer:duplex}.  
+Most schemes involve payment channels, where two parties locks in funds between each other and then the balance between them can be updated incessantly without using the blockchain. Multiple channels may be aggregated together into a network. Consider a channel between Alice and Bob and a channel between Bob and Carol. If Alice wish to pay Carol, she may update her channel with Bob if and only if Bob updates his channel with Carol.  
+
+Payment channel networks may be constructed in many different ways, a few distinct proposals has been suggested. Decker and Wattenhofer suggested a scheme with Duplex micropayment channels~\cite{decker:wattenhofer:duplex}. The Lightning Network is further discussed in the following chapter. Recently a new scheme was published, the eltoo protocol, which may be integrated into the Lightning stack~\cite{decker:russell:Osuntokun:eltoo}.   
 
 \section{Rational for a small blocks}

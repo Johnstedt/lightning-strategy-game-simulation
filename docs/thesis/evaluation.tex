@@ -340,13 +340,19 @@ which is evidently the same as the time biased random model.
 
 Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves node connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
 
-
-
 \subsection{Average shortest path}
 
+Each additional hop required in a payment path decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. node compatibility and protocols levels below to fail. The average path growths at the same rate as the diameter, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
 
-Random,
-\[ l_{random} = ln(n) / ln(k) \]
+\[ \ell \sim d \approx \dfrac{ln~N}{ln~pN} \]
+
+For Barabási-Albert it is even shorter, with a double logarithmic correction it's considered 'ultrasmall'~\cite{cohen:havlin:ultrasmall},
+
+\[ \ell \sim \dfrac{ln~N}{ln~ln~N} \]
+
+The average path can be gathered empirically with Floyd-Warshall or Johnson,
+
+\[ \ell = \dfrac{\sum_{i \neq j} \sigma_{ij}}{N(N-1)} \]
 
 \section{Re-balancing channels}
 
