@@ -108,7 +108,7 @@ The Lightning network consist of nodes, each utilizing different strategies whos
 
 \section{Optimal fee price}
 
-To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}\cite{freeman:betweenness:centrality} and defined it as
+To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}~\cite{freeman:betweenness:centrality} and defined it as
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
@@ -178,7 +178,9 @@ As the previous solution naively assumes a fixed payment size, it needs alterati
 The fee is proportional to the size of the payment, $F_B + F_P S$, thus the shortest path may be different for two different payment sizes. 
 The problem is a combinatorial optimization problem,
 
-\[ f(x, y) = \sum_{i \in e}^{max} \]
+\[ f(x, y) = \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}\sum_{c \in \sigma_{ab}} 
+	 c_b + c_p\phi  
+\]
 
 
 
@@ -195,7 +197,7 @@ Therefor the policies determining by which preferences each node takes into acco
 
 \subsection{Traditional random models}
 
-Random graphs have been studied extensively, specifically the Erdős–Rényi model\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
+Random graphs have been studied extensively, specifically the Erdős–Rényi model~\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
 Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the degree distribution compared to that of Erdős–Rényi as it's exponential given as
 
@@ -218,7 +220,7 @@ Thus adding an age bias causes the characteristics of the degree distribution to
 		\hspace*{-0.5cm} 
 	\centering
 	\includegraphics[width=9cm]{images/random_topology_degree_distribution.png}
-	\caption{Shows the degree distribution for an Erdős–Rényi graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{blue}{|}) compared to the degree distribution for a Callaway et al. graph(\tikzcircle[red, fill=red]{2pt})  with n = 10,000, $\delta$ = 0.8 and its true distribution given by equation\ref{eq:callaway}(\textcolor{red}{|}).
+	\caption{Shows the degree distribution for an Erdős–Rényi graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{red}{|}) compared to the degree distribution for a Callaway et al. graph(\tikzcircle[blue, fill=blue]{2pt})  with n = 10,000, $\delta$ = 0.8 and its true distribution given by equation\ref{eq:callaway}(\textcolor{blue}{|}).
 	}
 	\label{fig:fee_curve}
 		\hspace*{2mm} 
@@ -237,7 +239,7 @@ As a node may not be viewed as part of LN before edges are made, it's reasonable
 
 \subsection{Scale free models}
 
-In 1999 Barabási and Albert showed that many networks degree distribution follows a power law and that the distribution was independent from scale, thus scale free\cite{barabasi:albert:emergent:scaling}. Scale free networks follows a degree distribution of
+In 1999 Barabási and Albert showed that many networks degree distribution follows a power law and that the distribution was independent from scale, thus scale free~\cite{barabasi:albert:emergent:scaling}. Scale free networks follows a degree distribution of
 
 \begin{equation}
 	 p(k) \propto k^{-\gamma} 
@@ -255,7 +257,7 @@ Such a graph follows the scale free property with a $\gamma_{ba}$ = 2.9 and can 
 	\hspace*{-0.5cm} 
 	\centering
 	\includegraphics[width=9cm]{images/scale_free_degree_distribution.png}
-	\caption{Shows the degree distribution for an Barabási–Albert graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, m = 5 and the scale free\ref{eq:scale:free}(\textcolor{red}{|}) with $\gamma$ = 2.9 compared Erdős–Rényi graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{blue}{|}).
+	\caption{Shows the degree distribution for an Barabási–Albert graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, m = 5 and the scale free\ref{eq:scale:free}(\textcolor{blue}{|}) with $\gamma$ = 2.9 compared Erdős–Rényi graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{red}{|}).
 	}
 	\label{fig:scale_free}
 	\hspace*{2mm} 
@@ -270,7 +272,7 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 	\centering
 	\includegraphics[width=9cm]{images/main-testnet_degree_distribution.png}
 	\caption{Shows the degree distribution for both the Mainnet (\tikzcircle[red, fill=red]{2pt}) and Testnet (\tikzcircle[blue, fill=blue]{2pt})
-		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning node\cite{repository:clightning} on 2019-03-21.
+		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning node~\cite{repository:clightning} on 2019-03-21.
 	}
 	\label{fig:real_network}
 	\hspace*{2mm} 
