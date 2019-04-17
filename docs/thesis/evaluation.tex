@@ -341,7 +341,10 @@ which is evidently the same as the time biased random model.
 \subsection{Robustness}
 
 Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves node connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
-\vspace*{-0.5cm}
+
+The current robustness of mainnet is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
+
+\vspace*{-0.45cm}
 \begin{figure}[!htb]
 	\hspace*{-1cm} 
 	\centering
@@ -358,9 +361,10 @@ Robustness is mainly regarded in terms of connectivity where reduction into sub 
 	\includegraphics[width=9.5cm]{images/robustness_coordinated_mait.png}
 	\caption{... . The data is retrieved running a c-lightning node~\cite{repository:clightning} on 2019-04-17.
 	}
-	\label{fig:accidental_failure}
-	\hspace*{2mm} 
+	\label{fig:coordinated_attack}
+	\hspace*{2mm}
 \end{figure}
+\vspace*{-0.45cm}
 
 \subsection{Average shortest path}
 
@@ -375,6 +379,8 @@ For Barabási-Albert it is even shorter, with a double logarithmic correction it
 The average path can be gathered empirically with Floyd-Warshall or Johnson,
 
 \[ \ell = \dfrac{\sum_{i \neq j} \sigma_{ij}}{N(N-1)} \]
+
+where $\sigma_{ij}$ is the length of the shortest path between $i$ and $j$
 
 \section{Re-balancing channels}
 
