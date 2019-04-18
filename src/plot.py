@@ -1,6 +1,8 @@
 import networkx as nx
+import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 import scipy
 import statistics
 from mpl_toolkits import mplot3d
@@ -101,6 +103,143 @@ def plot_survival_history(histories, references):
 	return True
 
 
+def plot_robustness_random(graphs, it):
+
+	fig1, ax1 = plt.subplots()
+
+	box = []
+
+	for num in range(1, it):
+		current = []
+		for t in range(100):
+			for g in graphs:
+				c = g.copy()
+				for rm in range(int(len(g.nodes)*0.10*num)):
+					node = random.choice(list(c.nodes))
+					c.remove_node(node)
+				giant = max(nx.connected_component_subgraphs(c), key=len)
+				print("NODES length: ", len(c.nodes), " Giant component: ", len(giant.nodes),
+					" kvot: ", len(giant.nodes)/len(c.nodes))
+				current.append(len(giant.nodes)/len(c.nodes))
+		box.append(current)
+
+	flierprops = dict(marker='o', markerfacecolor='black', markersize=3,
+					  linestyle='none', markeredgecolor='black')
+	boxes = sns.boxplot(data=box, flierprops=flierprops)
+
+	for i, b in enumerate(boxes.artists):
+		b.set_edgecolor('black')
+		b.set_facecolor('white')
+
+		# iterate over whiskers and median lines
+		for j in range(6*i, 6*(i+1)):
+			ax1.lines[j].set_color('black')
+
+	ax1.set_ylabel("Fraction of Giant component")
+	ax1.set_xlabel("Percentage of nodes removed")
+	perc = ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%"]
+	ax1.set_xticklabels(perc[:it])
+
+	plt.savefig("plots/robustness_ergos.png")
+
+
+def plot_robustness_coordinated(graphs, it):
+	fig1, ax1 = plt.subplots()
+
+	box = []
+
+	for num in range(1, it):
+		current = []
+
+		for g in graphs:
+			c = g.copy()
+
+			targets = []
+			for n in c.nodes:
+				targets.append((n, len(c.edges(n))))
+
+			targets.sort(key=lambda x: x[1], reverse=True)
+
+			for rm in range(int(len(g.nodes)*0.05*num)):
+				c.remove_node(targets[rm][0])
+
+			giant = max(nx.connected_component_subgraphs(c), key=len)
+			print("NODES length: ", len(c.nodes), " Giant component: ", len(giant.nodes),
+				  " kvot: ", len(giant.nodes)/len(c.nodes))
+			current.append(len(giant.nodes)/len(c.nodes))
+		box.append(current[0])
+
+	flierprops = dict(marker='o', markerfacecolor='black', markersize=3,
+				  linestyle='none', markeredgecolor='black')
+
+	#boxes = sns.boxplot(data=box, flierprops=flierprops)
+	print(box)
+
+	plt.plot(range(len(box)), box, "black")
+	"""	for i, b in enumerate(boxes.artists):
+		b.set_edgecolor('black')
+		b.set_facecolor('white')
+
+		# iterate over whiskers and median lines
+		for j in range(6*i, 6*(i+1)):
+			boxes.lines[j].set_color('black') """
+
+	ax1.set_ylabel("Fraction of Giant component")
+	ax1.set_xlabel("Percentage of nodes removed")
+	perc = ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%"]
+	ax1.set_xticklabels(["0%","5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%"])
+
+	plt.savefig("plots/robustness_coordinated.png")
+	return box
+
+
+def plot_path_length(g):
+
+	fig1, ax1 = plt.subplots()
+	fig1.subplots_adjust(left=0.15)
+	hist = []
+	am = {}
+
+	table = nx.floyd_warshall(g)
+
+	for n in list(table.values()):
+		#print(n.values())
+		for k in list(n.values()):
+			#hist[int(k)] = hist.get(int(k), 0) + 1
+			if k < 10000:
+				if int(k) != 0:
+					hist.append(k)
+					am[int(k)] = am.get(int(k), 0) + 1
+
+	print(len(am.values())-1)
+	plt.hist(hist, len(am.values())-1, facecolor='blue', edgecolor='darkblue', alpha=0.75, align='left')
+	ax1.set_xlabel("Path length")
+	ax1.set_ylabel("Paths")
+	plt.savefig("plots/histogram_shortest path")
+	print("AVERAGE: ", sum(hist)/len(hist))
+
+
+def plot_wealth_distribution(graphs):
+
+	fig1, ax1 = plt.subplots()
+	fig1.subplots_adjust(left=0.15)
+
+	profits = []
+	for g in graphs:
+
+		for n in g.nodes:
+			if g.nodes[n]["public"]:
+				profit = sum(g.nodes[n]["profits"])
+				profits.append(profit)
+
+	profits.sort(reverse=True)
+	ax1.plot(range(len(profits)), profits, "ro")
+
+	ax1.set_ylabel("Profits(satoshi)")
+	ax1.set_xlabel("nodes")
+	plt.savefig("plots/wealth_distribution path")
+
+
 def plot_multiple_histories(histories):
 
 	colors = ['r', 'b', 'g', 'c', 'm', 'y', 'k']
@@ -197,5 +336,25 @@ def write_to_file(graph, name):
 
 
 if __name__ == "__main__":
-	plot_price_dimensions()
+	g = nx.erdos_renyi_graph(1000, 0.004)
+	g2 = nx.erdos_renyi_graph(1000, 0.004)
+	g3 = nx.erdos_renyi_graph(1000, 0.004)
+	g4 = nx.erdos_renyi_graph(1000, 0.004)
+	g5 = nx.erdos_renyi_graph(1000, 0.004)
+	g6 = nx.erdos_renyi_graph(1000, 0.004)
+	g7 = nx.erdos_renyi_graph(1000, 0.004)
+	g8 = nx.erdos_renyi_graph(1000, 0.004)
+	g9 = nx.erdos_renyi_graph(1000, 0.004)
+	g10 = nx.erdos_renyi_graph(1000, 0.004)
+
+	ba = nx.barabasi_albert_graph(800, 2)
+	ba2 = nx.barabasi_albert_graph(1000, 2)
+	ba3 = nx.barabasi_albert_graph(1000, 2)
+	ba4 = nx.barabasi_albert_graph(1000, 2)
+	ba5 = nx.barabasi_albert_graph(1000, 2)
+
+	#plot_robustness_coordinated([g, g2, g3, g4, g5, g6, g7, g8, g9, g10], 5)
+	#plot_robustness_coordinated([ba, ba2, ba3, ba4, ba5])
+	plot_path_length(g)
 	print("Should not be called directly")
+	print(len(g5.edges))

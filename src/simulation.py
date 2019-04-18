@@ -15,7 +15,7 @@ import routing
 from collections import OrderedDict
 
 
-def create_node(settings, immunity, public=True):
+def create_node(settings, immunity, day, public=True):
 	rand_id = '%066x' % random.randrange(16 ** 66)
 
 	profit = [settings["funding_strategy"] for n in range(immunity)]
@@ -48,7 +48,8 @@ def create_node(settings, immunity, public=True):
 		"fee_per_millionth": random.randint(1, 100),
 		"funding": settings["funding_strategy"],
 		"original_funding": settings["funding_strategy"],
-		"public": public
+		"public": public,
+		"born": day
 	}
 
 
@@ -87,7 +88,7 @@ def simulate(env):
 		for j in range(env['environment']['payments_per_step']):
 			route_payments_all_to_all(g, day)
 
-		network_probability_node_creation(g, env)
+		network_probability_node_creation(g, env, day)
 		check_for_bankruptcy(g, env)
 		attachment.manage_channels(g, env, day)
 		rebalance.rebalance_channels(g, day)
@@ -107,14 +108,14 @@ def build_environment(env, g):
 		for n in range(0, env['environment']['initial_nodes']):
 			settings = numpy.random.choice(env['routing_nodes'],
 											p=[i['initial_distribution'] for i in env['routing_nodes']])
-			node = create_node(settings, env['environment']['start_buf'])
+			node = create_node(settings, env['environment']['start_buf'], 0)
 			attachment.attach(g, node, 5, env)
 
 	else:   # Exact
 		nodes = []
 		for n in env['routing_nodes']:
 			for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
-				nodes.append(create_node(n, env['environment']['immunity_period']))
+				nodes.append(create_node(n, env['environment']['immunity_period'], 0))
 
 		while len(nodes) > 0:
 			selected = random.choice(nodes)
@@ -123,7 +124,7 @@ def build_environment(env, g):
 
 	for n in env['private_nodes']:
 		for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
-			node = create_node(n, env['environment']['immunity_period'], public=False)
+			node = create_node(n, env['environment']['immunity_period'], 0, public=False)
 			attachment.attach(g, node, 5, env)
 
 	return True
@@ -203,7 +204,7 @@ def create_liquid_route(g, source, target, liquidity):
 	return nodes
 
 
-def network_probability_node_creation(g, env):
+def network_probability_node_creation(g, env, day):
 
 	nodes = OrderedDict()
 	for node in env["routing_nodes"]:
@@ -227,11 +228,11 @@ def network_probability_node_creation(g, env):
 	settings = numpy.random.choice(env["routing_nodes"],  # Verify this works
 								p=list(nodes.values()))
 
-	node = create_node(settings, env["environment"]["immunity_period"])
+	node = create_node(settings, env["environment"]["immunity_period"], day)
 	attachment.attach(g, node, 5, env)
 
 	for n in range(env["environment"]["changed_private_per_step"]):
-		node = create_node(numpy.random.choice(env["private_nodes"], p=[k["initial_distribution"] for k in env["private_nodes"]]), env['environment']['immunity_period'], public=False)
+		node = create_node(numpy.random.choice(env["private_nodes"], p=[k["initial_distribution"] for k in env["private_nodes"]]), env['environment']['immunity_period'], day, public=False)
 		attachment.attach(g, node, 5, env)
 
 	rm = numpy.random.choice(g.nodes, env["environment"]["changed_private_per_step"], replace=False)

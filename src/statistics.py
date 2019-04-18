@@ -10,7 +10,7 @@ def median(l):
 	if len(l) % 2 == 0:
 		return (sorted(l)[int(len(l)/2)] + sorted(l)[int(len(l)/2)-1]) / 2
 
-	return sorted(l)[int((len(l)-1)/2) ]
+	return sorted(l)[int((len(l)-1)/2)]
 
 
 def variance(l):
