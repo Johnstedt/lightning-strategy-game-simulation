@@ -16,14 +16,14 @@ The Lightning Network may be modeled as a directional Graph $G$ with vertices re
 	\hspace*{2mm}
 \end{figure}
 
-Modeling the network as a graph allows the use of graph theory. Thus routing, concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The topology of both testnet and mainnet is visualized in Figure \ref{fig:topology}.
+Modeling the network as a graph allows the use of graph theory. Thus routing, concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The topology of both Testnet and Mainnet is visualized in Figure \ref{fig:topology}.
 
 \section{Fee as a competitive equilibrium}
 
-It may be useful to view the fee market as existing under normal free market pressures and apply the conventional long run demand and supply curve\cite{boulding:evolutionary:economy} to the fee market. 
+It may be useful to view the fee market as existing under normal free market pressures and apply the conventional long run demand and supply curve~\cite{boulding:evolutionary:economy} to the fee market. 
 
 \begin{figure}[!htb]
-	\hspace*{-0.3cm} 
+	\hspace*{-0.3cm}
 	\centering
 	\includegraphics[width=11cm]{images/equilibrium_sized2.png}
 	\caption{ The fee market as viewed according to standard price theory. Both by single pair and all pairs in aggregate. 
@@ -38,7 +38,7 @@ The fee market may also be seen in its aggregate, where the axis represents the 
 
 It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
-The cost of procuring a shortest path between s and d might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes.
+The cost of procuring a shortest path between $s$ and $d$ might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes.
 
 \section{Fee floor}
 
@@ -49,12 +49,15 @@ The fee price, assuming rational actors, can only fall to a level where the oper
 Note that the operational costs are independent of liquidity while the security risk premium and risk-free-returns are dependent.
 
 \subsection{Security Risk premium}
-
+(not done)
 \subsection{Time value of money}
+(not done)
+\subsection{Operational cost}
+(not done)
 
 \section{Routing strategies under Game Theory}
 
-There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory (EGT).
+There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory(EGT).
 
 In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those to strategies. 
 
@@ -99,7 +102,7 @@ The Lightning network consist of nodes, each utilizing different strategies whos
 	\vspace*{-0.4cm} 
 	\includegraphics[width=13.6cm]{graphs/mainnet_force3.png}
 	\caption{\textit{
-			Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi\cite{repository:gephi}.}}
+			Shows testnet above and mainnet below as of 2019-02-25. Node size corresponds to degree, larger degrees to larger size. Positioning is a mix between Force Atlas and Fruchterman Raingold. Network data retrieved by running a c-lightning node and visualized with Gephi~\cite{repository:gephi}.}}
 	\label{fig:topology}
 	\hspace*{2mm} 	
 \end{figure}
@@ -181,17 +184,18 @@ The problem is a combinatorial optimization problem,
 \[ f(x, y) = \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}\sum_{c \in \sigma_{ab}} 
 	 c_b + c_p\phi  
 \]
-
-
+(Equation obviously not done)
 
 The fee is in part proportional to the size of the payment, and the aforementioned algorithm is only able to find the optimal price for one payment size.
 
- 
+(cost function range plot)
+
+(Convert to probabilistic model )
 
 \section{Topology and Preferential Attachment}
 
 Setting fee price is only one aspect of a routing node, maybe more importantly is that of opening and closing channels.
-As the protocol now stands\footnote{Is very plausible that that BIP66 may be activated allowing multi-sourced channels\cite{bip:0118:sighash:noinput}} it only allows for single source funding of channels. There is a non negligible cost to opening channels and it would be very beneficial for a node if other nodes opened channels with it instead of the other way around. This is also a prerequisite to earn profit as otherwise the node may only earn back its own funding. 
+As the protocol now stands\footnote{Is very plausible that that BIP66 may be activated allowing multi-sourced channels~\cite{bip:0118:sighash:noinput}} it only allows for single source funding of channels. There is a non negligible cost to opening channels and it would be very beneficial for a node if other nodes opened channels with it instead of the other way around. This is also a prerequisite to earn profit as otherwise the node may only earn back its own funding. 
 
 Therefor the policies determining by which preferences each node takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest path and robustness in case of node failures.
 
@@ -199,7 +203,7 @@ Therefor the policies determining by which preferences each node takes into acco
 
 Random graphs have been studied extensively, specifically the Erdős–Rényi model~\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
-Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the degree distribution compared to that of Erdős–Rényi as it's exponential given as
+Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the \gls{degree distribution} compared to that of Erdős–Rényi as it's exponential given as
 
 \begin{equation}
 	p(k) = \dfrac{(2\delta)^k}{(1 + 2\delta)^{k+1}} 
@@ -214,7 +218,7 @@ compared to Erdős–Rényi which is binomial
 
 as follows from definition as ${n-1 \choose k}$ are all possible combinations of k edges,  $p^k$ the probability of any combination taking place and $p^k(1-p)^{n-1-k}$ to exclude combinations of larger degree $k$.
 
-Thus adding an age bias causes the characteristics of the degree distribution to change as seen in Figure L.
+Thus adding an age bias causes the characteristics of the \gls{degree distribution} to change as seen in Figure \ref{fig:callaway:erdos}.
 
 \begin{figure}[!htb]
 		\hspace*{-0.5cm} 
@@ -222,7 +226,7 @@ Thus adding an age bias causes the characteristics of the degree distribution to
 	\includegraphics[width=9cm]{images/random_topology_degree_distribution.png}
 	\caption{Shows the degree distribution for an Erdős–Rényi graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{red}{|}) compared to the degree distribution for a Callaway et al. graph(\tikzcircle[blue, fill=blue]{2pt})  with n = 10,000, $\delta$ = 0.8 and its true distribution given by equation\ref{eq:callaway}(\textcolor{blue}{|}).
 	}
-	\label{fig:fee_curve}
+	\label{fig:callaway:erdos}
 		\hspace*{2mm} 
 \end{figure}
 
@@ -239,7 +243,7 @@ As a node may not be viewed as part of LN before edges are made, it's reasonable
 
 \subsection{Scale free models}
 
-In 1999 Barabási and Albert showed that many networks degree distribution follows a power law and that the distribution was independent from scale, thus scale free~\cite{barabasi:albert:emergent:scaling}. Scale free networks follows a degree distribution of
+In 1999 Barabási and Albert showed that many networks \gls{degree distribution} follows a power law and that the distribution was independent from scale, thus scale free~\cite{barabasi:albert:emergent:scaling}. Scale free networks follows a degree distribution of
 
 \begin{equation}
 	 p(k) \propto k^{-\gamma} 
@@ -249,7 +253,7 @@ In 1999 Barabási and Albert showed that many networks degree distribution follo
 and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Effect}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible}, after Robert K. Merton~\cite{merton:matthew:effect} }. 
 A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex may be said to have a preferred attachment and the probability of a vertex receiving an edge from the new vertex:
 
-\[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j}  \]
+\[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j} \]
 
 Such a graph follows the scale free property with a $\gamma_{ba}$ = 2.9 and can be seen in Figure \ref{fig:scale_free}
 \newpage
@@ -275,12 +279,12 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning node~\cite{repository:clightning} on 2019-03-21.
 	}
 	\label{fig:real_network}
-	\hspace*{2mm} 
+	\hspace*{2mm}
 \end{figure}
 % Mainnet 4322 nodes and 21258 edges
 % Testnet 2027 nodes, 8712 edges  
 
-It should again be stated that the Lightning Network is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the degree distribution may indicate very little of future states. 
+It should again be stated that the Lightning Network is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
 
 \subsection{Mediation-driven attachment}
 
@@ -288,7 +292,7 @@ Rather than explicitly attaching with a degree bias as with the Barabási-Albert
 
 \[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
 
-They also show that it will lead to a scale free network, however the degree distribution $\gamma$ is dependent on $m$ which differ from Barabási-Albert.
+They also show that it will lead to a scale free network, however the \gls{degree distribution} $\gamma$ is dependent on $m$ which differ from Barabási-Albert.
 
 \subsection{Inverse Barabási-Albert}
 
@@ -342,7 +346,7 @@ which is evidently the same as the time biased random model.
 
 Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves node connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
 
-The current robustness of mainnet is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
+The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
 
 \vspace*{-0.45cm}
 \begin{figure}[!htb]
@@ -384,7 +388,7 @@ where $\sigma_{ij}$ is the length of the shortest path between $i$ and $j$
 
 \section{Re-balancing channels}
 
-The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol~[my impl] which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 
+The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol~[my impl ] which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 
 
 \subsection{Linear displacement}
 \label{sec:linear:displacement}
@@ -415,13 +419,11 @@ given a scalar $s$ by which the bias can by adjusted.
 
 Each node can define how high the utility value must be to consider to re-balancing the channel by routing a payment to oneself.
 
-
 \section{Funding, timing and allocation strategies}
 
 \section{Simulation}
 
 The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the networkx library. The environment variables and each players chosen strategies can be changed in a higher level configure file. Each strategy is discussed in detail in Appendix \ref{chapter:strategies} as well how a game may be created and simulated from altering the input file. Each set of strategies, under certain network dynamics may then be put into the same network to see which are stable and which are not. Similarly the emerging network is studied as successful strategies becomes more numerous at the hand of unsuccessful ones. 
-
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf
 

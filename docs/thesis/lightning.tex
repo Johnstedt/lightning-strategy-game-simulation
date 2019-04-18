@@ -1,9 +1,9 @@
 \chapter{The Lightning Network}
 \label{sec:lightning:network}
 
-The Lightning Network is a network of micro-payment channels on top of the Bitcoin Network. The network was first conceived and defined in 2014\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade\cite{bip:0141:segwit} and got activated through a \textit{user-activated-soft-fork} in mid 2017\cite{bip:148:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts may be valid for a single locking script. 
+The \gls{Lightning Network} is a network of micro-payment \gls{channel}s on top of the Bitcoin Network. The network was first conceived and defined in 2014~\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade~\cite{bip:0141:segwit} and got activated through a \textit{user-activated-soft-fork} in mid 2017~\cite{bip:148:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts may be valid for a single locking script. 
 
-The network protocol have been defined\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes\cite{repository:lnd}\cite{repository:eclair}\cite{repository:clightning}\cite{repository:lit}.
+The network protocol have been defined~\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes~\cite{repository:lnd, repository:eclair, repository:clightning, repository:lit}.
 
 \section{Payment channels}
 
@@ -14,7 +14,7 @@ Initially each party have a signed transaction splitting the funds to their orig
 
 \subsection{Funding Transaction}
 
-A payment channel is funded by a funding transaction defined in the lightning paper by following steps\cite{poon:dryja:lightning:network}:
+A payment channel is funded by a funding transaction defined in the lightning paper by following steps~\cite{poon:dryja:lightning:network}:
 
 \begin{enumerate}
 	\item  Create the parent (Funding Transaction)
@@ -26,7 +26,7 @@ A payment channel is funded by a funding transaction defined in the lightning pa
 	\item  Broadcast the parent on the blockchain
 \end{enumerate}
 
-It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
+It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118~\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
 
 \subsection{Commitment Transaction}
 
@@ -57,7 +57,7 @@ Remember that the commitment transactions is reversed for the other party. This 
 
 In order to update the channel balance a new pair of commitment transactions is created. The previous commitment transactions is invalidated by both signing a Breach Remedy Transaction(BRT) spending from their own previous commitment transactions RSMC output and handing it over to the other party. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
 
-It is necessary for each party to monitor the blockchain for old commitment transactions and to broadcast the Breach Remedy Transaction in case it happens. If the Breach Remedy Transaction is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and may be spent, settling the incorrect channel balance is settled and valid on the blockchain.
+It is necessary for each party to monitor the \gls{blockchain} for old commitment transactions and to broadcast the Breach Remedy Transaction in case it happens. If the Breach Remedy Transaction is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and may be spent, settling the incorrect channel balance is settled and valid on the blockchain.
 
 \subsection{Alice and Bob opens a channel}
 
@@ -187,7 +187,7 @@ The $HTLC_{A1}$ seen in figure \ref{fig:alice:HTLC} can only be broadcast by Ali
 \end{enumerate}
 
 The order of the two last clauses is reversed for Bob's $HTLC_{B1}$ as if Bob can prove knowledge of $R$ the output is spent to a new transaction $ST$ for disputation.
-\newpage
+
 \begin{figure}[hbt!]
 	
 	\centering

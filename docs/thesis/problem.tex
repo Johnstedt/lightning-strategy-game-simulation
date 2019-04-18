@@ -18,21 +18,22 @@ This thesis aim to address following three questions:
 	\item When should a manual rebalancing of the channels occur, as opposed to
 		incentivized rebalancing using discounts?
     \end{enumerate}
-
+	(These are probably to specific to cover this thesis, will change.)
+	
 \section{Related work}
     \label{sec:related_work}
 
-	Little to nothing in the literature that addresses the Lightning Network Routing Strategies has been found. René Pickardt has made some early attempts to find suitable channel parties with traditional graph heuristics but is yet incomplete and unpublished~\cite{repository:rene:pickard}. Bitmex made an empirical study where different fees were set on mainnet channels and corresponding returns where retrieved~\cite{bitmex:fee}\footnote{Note that this study was published 27th of Mars, 2019, mid-thesis.} . Further conversation with people in the community confirms that this problem set is known yet largely unexplored.
+	Little to nothing in the literature that addresses the Lightning Network Routing Strategies has been found. René Pickardt has made some early attempts to find suitable channel parties with traditional graph heuristics but is yet incomplete and unpublished~\cite{repository:rene:pickard}. Bitmex made an empirical study where different fees were set on Mainnet channels and corresponding returns where retrieved~\cite{bitmex:fee}\footnote{Note that this study was published 27th of Mars, 2019, mid-thesis.} . Further conversation with people in the community confirms that this problem set is known yet largely unexplored.
 	
 	The actual routing in LN has been researched~\cite{distasi:avallone:cononico:routing} and implementations are currently in use~\cite{repository:clightning, repository:lnd, repository:eclair, repository:lit}. Further efficient sharing of routing tables have been proposed~\cite{gunspan:marco:ant}.
 	
 	A similar problem at first glance, the estimation of the on-chain Bitcoin Network Fee has been covered extensively~\cite{mosterland:transaction:fee, houy:transaction:fee}. However it's not applicable, nor is it even similar as a problem set. The Bitcoin Fee problem is far simpler as the competing transaction fees(mem-pool) are known at all times and estimating a fee too low can be corrected by \textit{fee bumping}\footnote{Broadcasting a new transaction spending the same UTXO with a higher fee.} or \textit{child-pay-for-parent}\footnote{Using the unconfirmed parent UTXO in a new transaction, a miner must include the parent tx to be able to mine the child tx and receive the child tx fee.} implementations.
 	
-	As the Lightning Network is indeed a network and many problems are yet another incarnation of already solved graph problems. A nodes position in a network has been studied and specifically the measurement of Betweenness Centrality, as introduced by Freeman in 1977~\cite{brandes:betweenness:centrality:algorithm}, lays a sound basis for this thesis. Calculating paths in graphs is as old as the computing field itself with Floyd-Warshall, Johnson~\cite{johnson:shortest:path:sparse:network} and Dijkstras algorithms all being appropriate here. The attributes of the network as policies emerges have consequences on throughput and robustness have also been extensively researched in the field of topology. Especially that of scale free networks by Barabasi and Albert~\cite{barabasi:albert:emergent:scaling} is of concern in here.
+	As the Lightning Network is indeed a network and many problems are yet another incarnation of already solved graph problems. A nodes position in a network has been studied and specifically the measurement of Betweenness Centrality, as introduced by Freeman in 1977~\cite{brandes:betweenness:centrality:algorithm}, lays a sound basis for fee estimation. Calculating paths in graphs is as old as the computing field itself with Floyd-Warshall, Johnson~\cite{johnson:shortest:path:sparse:network} and Dijkstras algorithms all being appropriate here. The attributes of the network as strategies emerges have consequences on throughput and robustness have also been researched in the field of topology. Especially that of scale free networks by Barabasi and Albert~\cite{barabasi:albert:emergent:scaling} is of concern in here.
 	
-	Emergence of equilibria as the product of policies of competing actors is neither new or rare in the fields of Evolutionary Biology and Economics. Ideas as the Standard Price Theory, Evolutionary Stable Strategies and more widely Game Theory has aided in the formulation of the thesis and construction of the simulations.
+	Emergence of equilibria as the product of strategies of competing actors is neither new or rare in the fields of Evolutionary Biology nor Economics. Ideas as the Standard Price Theory, Evolutionary Stable Strategies and more widely Game Theory has aided in the formulation of the thesis and construction of the simulations.
 	
-	Lastly, bitcoin and off-chain proposals have opened a plethora of possible research topics in which plentiful are ongoing and active.  
+	Lastly, \gls{bitcoin} and off-chain proposals have opened a plethora of possible research topics in which plentiful are ongoing and active.  
 	
 %	Problems dealing with competing interests are many in the bitcoin domain. Game Theory has mostly been 
 %	applied to \textit{mining}. E.g. How electricity prices affect mining\cite{singh:dwivedi:strivastava:energy:consumption:mining} and How the introduction of uncle and 
@@ -40,15 +41,15 @@ This thesis aim to address following three questions:
 	
 \section{Structure}
 
-This thesis is divided into 8 chapters, including this one. The first four chapters gives a wide overview of Bitcoin and the Lightning Network. Chapters 6 and 7 aims to answer the thesis question by formulating, evaluating and simulating routing policies. The last chapter 8 discusses the result and conclusions are drawn and elaborating on future work.
+This thesis is divided into 8 chapters, including this one. The first three chapters gives a wide overview of money, Bitcoin and the Lightning Network. Chapters 6 and 7 aims to answer the thesis question by formulating, evaluating and simulating routing strategies. The last chapter 8 discusses the results, conclusions are drawn and elaborates on future work.
 
 \begin{enumerate}
 	\item \textbf{Introduction} introduces the thesis.
 	\item \textbf{Macroeconomics} gives a wide background to currencies and systems built on trust. 
-	\item \textbf{The Bitcoin Network} chapter introduces the basic bitcoin architecture, answers how trust is solved and describes bitcoin script as it allows further development as a base protocol.
-	\item \textbf{Scaling Bitcoin} describes historical attempts to scale bitcoin and the merit of a wide array of scaling solutions.
+	\item \textbf{The Bitcoin Network} chapter introduces the basic \gls{bitcoin} architecture, answers how trust is solved and describes Bitcoin script as it allows further development no top of the base protocol.
+	\item \textbf{Scaling Bitcoin} describes historical attempts to scale Bitcoin and the merit of a wide array of scaling solutions.
 	\item \textbf{The Lightning Network} chapter introduces the most fundamental parts of the Lightning protocol.
-	\item \textbf{Evaluation} reduces the Lightning Network to a manageable problem set, formulates policies and measurements how these policies may be evaluated.
-	\item \textbf{Results} shows the simulated results of the policies and their effect on network as a whole in terms of throughput, efficiency and robustness.
-	\item \textbf{Discussion and Conclusions} Processes the results, draws conclusions and ties them into the wider ecosystem. The consequences and viability of the Lightning Network is elaborated and future work discussed. 
+	\item \textbf{Evaluation} reduces the Lightning Network to a manageable problem set, formulates strategies and measurements and suggests how these strategies may be evaluated.
+	\item \textbf{Results} shows the simulated results of the strategies and their effect on network as a whole in terms of throughput, efficiency and robustness.
+	\item \textbf{Discussion and Conclusions} Processes the results, draws conclusions and ties them into the wider ecosystem. The consequences and viability of the Lightning Network is elaborated and future work discussed.
 \end{enumerate}
