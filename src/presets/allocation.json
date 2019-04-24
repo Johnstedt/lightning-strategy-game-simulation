@@ -7,8 +7,8 @@
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "sanity_check"},
-			"funding_strategy": 20000,
-			"allocation_strategy": 1200,
+			"funding_strategy": 50000000,
+			"allocation_strategy": 15000000,
 			"initial_distribution": 0.25
 		},
 		{
@@ -18,8 +18,8 @@
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "linear_displacement", "ratio": 1000},
-			"funding_strategy": 20000,
-			"allocation_strategy": 600,
+			"funding_strategy": 50000000,
+			"allocation_strategy": 10000000,
 			"initial_distribution": 0.25
 		},
 		{
@@ -29,8 +29,8 @@
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "edge_bias_displacement", "ratio": 1000, "scale": 2},
-			"funding_strategy": 20000,
-			"allocation_strategy": 400,
+			"funding_strategy": 50000000,
+			"allocation_strategy": 4000000,
 			"initial_distribution": 0.25
 		},
 		{
@@ -40,8 +40,8 @@
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "sanity_check"},
-			"funding_strategy": 20000,
-			"allocation_strategy": 200,
+			"funding_strategy": 50000000,
+			"allocation_strategy": 3000000,
 			"initial_distribution": 0.25
 		}
 	],
@@ -53,27 +53,27 @@
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "sanity_check"},
-			"funding_strategy": 20000,
-			"allocation_strategy": 200,
+			"funding_strategy": 50000000,
+			"allocation_strategy": 10000000,
 			"initial_distribution": 1
 		}
 	],
 	"environment": {
 		"payments_distribution": "uniform_all",
 		"initial_nodes": 100,
+		"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
 		"initial_private_nodes": 100,
 		"payments_per_step": 300,
-		"bankruptcy": 15000,
 		"risk_free_rent": 0.02,
 		"risk_premium": 0.02,
-		"operational_cost": 2,
+		"operational_cost": 200000,
 		"immunity_period": 5,
 		"new_nodes_per_step": 1,
 		"changed_private_per_step": 2,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
 		"time_steps": 20,
-		"fee": 500,
+		"fee": 10000,
 		"initial_mode": "exact"
 	}
 }

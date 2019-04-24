@@ -21,7 +21,7 @@ def create_channel(node, destination, public):
 		'fee_per_millionth': prop,
 		'active': True,
 
-		'last_10_fees': [n / (node["original_funding"]/5000) for n in node["profits"]],
+		'last_10_fees': [n * (node["allocation_strategy"]/node["original_funding"]) for n in node["profits"]],
 
 		#'last_update': 1550232803,
 		#'delay': 144,
@@ -40,7 +40,7 @@ def attach(g, n, m, env):
 
 def barabasi_albert(g, n, m, env):
 
-		if m >= len(g.edges):
+		if m >= len([k for k in g.edges if g.edges[k]["public"]]):
 			random_strategy(g, n, m, env)
 			return False
 
@@ -167,10 +167,10 @@ def manage_channels(g, env, day):
 		if g.get_edge_data(e[0], e[1])["satoshis"] == 0:
 			close.append((e[0], e[1]))
 		elif g.nodes[e[0]]["timing_strategy"]["name"] == "close_avg_bankruptcy":
-			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < env["environment"]["bankruptcy"] / g.nodes[e[0]]["original_funding"]:
+			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < get_bankruptcy(g.nodes[e[0]], env) / g.nodes[e[0]]["original_funding"]:
 				close.append((e[0], e[1]))
 		else:
-			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < env["environment"]["bankruptcy"] / g.nodes[e[0]]["original_funding"] * g.nodes[e[0]]["timing_strategy"]["scale"]:
+			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < get_bankruptcy(g.nodes[e[0]], env) / g.nodes[e[0]]["original_funding"] * g.nodes[e[0]]["timing_strategy"]["scale"]:
 				close.append((e[0], e[1]))
 
 	for f, s in close:
@@ -183,6 +183,11 @@ def manage_channels(g, env, day):
 			remove_profit(g, n, 2*env['environment']['fee'], day)
 
 	return True
+
+
+def get_bankruptcy(node, env):
+
+	return node['original_funding'] / 2 + node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + env["environment"]["operational_cost"] / 36.5
 
 
 def remove_profit(g, node, fee, day):

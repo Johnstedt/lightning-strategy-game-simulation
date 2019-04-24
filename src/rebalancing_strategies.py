@@ -27,12 +27,14 @@ def rebalance_channels(g, day):
 
 				fee = get_fee(g, cycle, size)
 
+				print((size * 2 / fee))
+
 				if (size * 2 / fee) > g.nodes[n]["rebalance_strategy"]["ratio"]:
 					print("HAPPENED")
 					simulation.offset_liquidity(g, cycle, size)
-					cycle.remove(source)
+					cycle.remove(cycle[0])
 					simulation.pay_routers(g, cycle, day, size)
-					remove_fee(g, n, fee, day)
+					remove_profit(g, n, fee, day)
 
 	return True
 
@@ -128,7 +130,7 @@ def get_fee(g, route, size):
 	fee = 0
 	for n in route:
 		if previous is not None:
-			fee = fee + g.get_edge_data(previous, n)["base_fee_millisatoshi"] + (g.get_edge_data(previous, n)["fee_per_millionth"]*size)
+			fee = fee + g.get_edge_data(previous, n)["base_fee_millisatoshi"]/1000 + (g.get_edge_data(previous, n)["fee_per_millionth"]*size/1000000)
 		previous = n
 
 	return fee

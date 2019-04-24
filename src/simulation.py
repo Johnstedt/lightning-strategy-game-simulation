@@ -86,7 +86,7 @@ def simulate(env):
 		add_survival_history(g, history, day)
 		reset_day(g, day)
 		for j in range(env['environment']['payments_per_step']):
-			route_payments_all_to_all(g, day)
+			route_payments_all_to_all(g, env, day)
 
 		network_probability_node_creation(g, env, day)
 		check_for_bankruptcy(g, env)
@@ -137,9 +137,13 @@ def add_survival_history(g, history, day):
 			history[g.nodes[n]['name']][day] += 1
 
 
-def route_payments_all_to_all(g, day):
+def route_payments_all_to_all(g, env, day):
 
-	size = random.randint(1, 100)  # TODO set to sensible value
+	if env["environment"]["payment_distribution"]["type"] == "random":
+		size = random.randint(env["environment"]["payment_distribution"]["interval"]["low"],
+				env["environment"]["payment_distribution"]["interval"]["high"])
+	else:
+		size = random.randint(1, 100)
 
 	source = 0
 	dest = 0
