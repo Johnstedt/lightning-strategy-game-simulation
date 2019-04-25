@@ -109,7 +109,7 @@ def build_environment(env, g):
 			settings = numpy.random.choice(env['routing_nodes'],
 											p=[i['initial_distribution'] for i in env['routing_nodes']])
 			node = create_node(settings, env['environment']['start_buf'], 0)
-			attachment.attach(g, node, 5, env)
+			attachment.attach(g, node, 5, env, 0)
 
 	else:   # Exact
 		nodes = []
@@ -119,13 +119,14 @@ def build_environment(env, g):
 
 		while len(nodes) > 0:
 			selected = random.choice(nodes)
-			attachment.attach(g, selected, 5, env)
+			attachment.attach(g, selected, 5, env, 0)
 			nodes.remove(selected)
 
 	for n in env['private_nodes']:
-		for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
-			node = create_node(n, env['environment']['immunity_period'], 0, public=False)
-			attachment.attach(g, node, 5, env)
+		if env['environment']['initial_private_nodes'] != 0:
+			for i in range(int(env['environment']['initial_nodes'] * n['initial_distribution'])):
+				node = create_node(n, env['environment']['immunity_period'], 0, public=False)
+				attachment.attach(g, node, 5, env, 0)
 
 	return True
 
@@ -187,13 +188,13 @@ def pay_routers(g, routers, day, size):
 	for n in routers:
 		if previous is not None:
 			g.nodes[previous]['profits'][day % 10] += (
-				g.get_edge_data(previous, n)["base_fee_millisatoshi"]) + (g.get_edge_data(previous, n)["fee_per_millionth"] * size)
+				g.get_edge_data(previous, n)["base_fee_millisatoshi"])/1000 + (g.get_edge_data(previous, n)["fee_per_millionth"] * size/1000000)
 
 			g.get_edge_data(previous, n)["last_10_fees"][day % 10] += \
-				(g.get_edge_data(previous, n)["base_fee_millisatoshi"]) + (g.get_edge_data(previous, n)["fee_per_millionth"] * size)
+				(g.get_edge_data(previous, n)["base_fee_millisatoshi"])/1000 + (g.get_edge_data(previous, n)["fee_per_millionth"] * size/1000000)
 
 			g.nodes[previous]['total_profits'] += (
-				g.get_edge_data(previous, n)["base_fee_millisatoshi"]) + (g.get_edge_data(previous, n)["fee_per_millionth"] * size)
+				g.get_edge_data(previous, n)["base_fee_millisatoshi"])/1000 + (g.get_edge_data(previous, n)["fee_per_millionth"] * size/1000000)
 
 		previous = n
 
@@ -233,15 +234,17 @@ def network_probability_node_creation(g, env, day):
 								p=list(nodes.values()))
 
 	node = create_node(settings, env["environment"]["immunity_period"], day)
-	attachment.attach(g, node, 5, env)
+	attachment.attach(g, node, 5, env, day)
 
 	for n in range(env["environment"]["changed_private_per_step"]):
-		node = create_node(numpy.random.choice(env["private_nodes"], p=[k["initial_distribution"] for k in env["private_nodes"]]), env['environment']['immunity_period'], day, public=False)
-		attachment.attach(g, node, 5, env)
+		if env["environment"]["changed_private_per_step"] != 0:
+			node = create_node(numpy.random.choice(env["private_nodes"], p=[k["initial_distribution"] for k in env["private_nodes"]]), env['environment']['immunity_period'], day, public=False)
+			attachment.attach(g, node, 5, env, day)
 
 	rm = numpy.random.choice(g.nodes, env["environment"]["changed_private_per_step"], replace=False)
 	for r in rm:
-		g.remove_node(r)  # TODO NEED PAY BACK CHANNELS
+		close_channels(g, r)
+		g.remove_node(r)
 
 
 def reset_day(g, day):
@@ -265,7 +268,18 @@ def check_for_bankruptcy(g, env):
 				changed = True
 	if changed:
 		for n in remove:
-			g.remove_node(n)  # TODO NEED PAY BACK CHANNELS
+			close_channels(g, n)
+			g.remove_node(n)
+
+
+def close_channels(g, node):
+
+	nodes = []
+	for n in g.neighbors(node):
+		nodes.append(n)
+
+	for n in nodes:
+		attachment.close_channel(g, node, n)
 
 
 def print_alive_nodes(g, env):

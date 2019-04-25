@@ -27,9 +27,8 @@ def rebalance_channels(g, day):
 
 				fee = get_fee(g, cycle, size)
 
-				print((size * 2 / fee))
-
 				if (size * 2 / fee) > g.nodes[n]["rebalance_strategy"]["ratio"]:
+					print((size * 2 / fee))
 					print("HAPPENED")
 					simulation.offset_liquidity(g, cycle, size)
 					cycle.remove(cycle[0])

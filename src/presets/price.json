@@ -1,29 +1,47 @@
 {
 	"routing_nodes": [
+
 		{
 			"name": "random",
-			"attachment_strategy": "random",
-			"timing_strategy": "sanity_check",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": {"name": "close_avg_bankruptcy"},
 			"price_strategy": "random",
-			"price_model": "price_models/test_open_close.json",
-			"rebalancing_strategy": "sanity_check",
-			"funding_strategy": "medium",
+			"price_model": "price_models/barabasi.json",
+			"rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+			"funding_strategy": 50000000,
+			"allocation_strategy": 10000000,
 			"initial_distribution": 1
 		}
-
+	],
+	"private_nodes": [
+		{
+			"name": "give-me-liquidity",
+			"attachment_strategy": "barabasi_albert",
+			"timing_strategy": {"name": "close_avg_bankruptcy"},
+			"price_strategy": "random",
+			"price_model": "price_models/barabasi.json",
+			"rebalance_strategy": {"name": "sanity_check"},
+			"funding_strategy": 50000000,
+			"allocation_strategy": 10000000,
+			"initial_distribution": 1
+		}
 	],
 	"environment": {
-		"payments_distribution": "uniform",
-		"weighted_payment": false,
+		"payments_distribution": "uniform_all",
 		"initial_nodes": 100,
-		"payments_per_step": 400,
-		"bankruptcy": 15000,
-		"start_buf": 17000,
+		"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
+		"initial_private_nodes": 0,
+		"payments_per_step": 2500,
+		"risk_free_rent": 0.01,
+		"risk_premium": 0.01,
+		"operational_cost": 20000,
+		"immunity_period": 5,
 		"new_nodes_per_step": 1,
+		"changed_private_per_step": 0,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
-		"time_steps": 500,
-		"fee": 500,
+		"time_steps": 50,
+		"fee": 10000,
 		"initial_mode": "exact"
 	}
 }

@@ -32,16 +32,16 @@ def create_channel(node, destination, public):
 	}
 
 
-def attach(g, n, m, env):
-	switch(n['attachment_strategy'])(g, n, m, env)
+def attach(g, n, m, env, day):
+	switch(n['attachment_strategy'])(g, n, m, env, day)
 
 	return True
 
 
-def barabasi_albert(g, n, m, env):
+def barabasi_albert(g, n, m, env, day):
 
 		if m >= len([k for k in g.edges if g.edges[k]["public"]]):
-			random_strategy(g, n, m, env)
+			random_strategy(g, n, m, env, day)
 			return False
 
 		targets = [i[0] for i in random.sample([k for k in g.edges if g.edges[k]["public"]], m)]
@@ -56,11 +56,12 @@ def barabasi_albert(g, n, m, env):
 
 		for s in range(m):
 			reduce_funding(g, n["nodeid"], env)
+			remove_profit(g, n["nodeid"], env['environment']['fee'], day)
 
 		return True
 
 
-def random_strategy(g, n, m, env):
+def random_strategy(g, n, m, env, day):
 
 	if m >= len(g.nodes):
 		targets = g.nodes()
@@ -77,14 +78,15 @@ def random_strategy(g, n, m, env):
 
 	for s in range(m):
 		reduce_funding(g, n["nodeid"], env)
+		remove_profit(g, n["nodeid"], env['environment']['fee'], day)
 
 	return True
 
 
-def hassan_islam_haque(g, n, m, env):
+def hassan_islam_haque(g, n, m, env, day):
 
 	if m >= len(g.edges):
-		random_strategy(g, n, m, env)
+		random_strategy(g, n, m, env, day)
 		return False
 
 	neighbor = [i[0] for i in random.sample([k for k in g.edges if g.edges[k]["public"]], m)]
@@ -101,14 +103,15 @@ def hassan_islam_haque(g, n, m, env):
 
 	for s in range(m):
 		reduce_funding(g, n["nodeid"], env)
+		remove_profit(g, n["nodeid"], env['environment']['fee'], day)
 
 	return True
 
 
-def inverse_barabasi_albert(g, n, m, env):
+def inverse_barabasi_albert(g, n, m, env, day):
 
 	if m >= len(g.edges):
-		random_strategy(g, n, m, env)
+		random_strategy(g, n, m, env, day)
 		return False
 
 	sum_n = 0
@@ -129,6 +132,7 @@ def inverse_barabasi_albert(g, n, m, env):
 
 	for s in range(m):
 		reduce_funding(g, n["nodeid"], env)
+		remove_profit(g, n["nodeid"], env['environment']['fee'], day)
 
 	return True
 
@@ -179,7 +183,7 @@ def manage_channels(g, env, day):
 	# Open channel
 	for n in g.nodes:
 		while g.nodes[n]["funding"] > (2*env['environment']['fee'] + g.nodes[n]["allocation_strategy"]):
-			switch(g.nodes[n]['attachment_strategy'])(g, g.nodes[n], 1, env)
+			switch(g.nodes[n]['attachment_strategy'])(g, g.nodes[n], 1, env, day)
 			remove_profit(g, n, 2*env['environment']['fee'], day)
 
 	return True

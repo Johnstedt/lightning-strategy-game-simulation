@@ -12,7 +12,10 @@ def create_price_model():
 
 	env = json.loads(open("presets/price.json", "r").read())
 
-	for i in range(10):
+	low = env["environment"]["payment_distribution"]["interval"]["low"]
+	high = env["environment"]["payment_distribution"]["interval"]["high"]
+
+	for i in range(1):
 
 		print("SIMULATION: ", i)
 
@@ -25,10 +28,15 @@ def create_price_model():
 
 		for p in range(1, 100, 10):
 			sum_over_volume = []
-			for transaction_size in range(10, 100, 1):
+			for transaction_size in range(low, high, int(high-low/100)):
 				for e in g.edges:
 					data = g.get_edge_data(e[0], e[1])
 					g.remove_edge(e[0], e[1])
+					print("---")
+					print(data["base_fee_millisatoshi"] + (data["fee_per_millionth"] * transaction_size))
+					print(data["base_fee_millisatoshi"])
+					print(data["fee_per_millionth"])
+					print(transaction_size)
 					data["price"] = data["base_fee_millisatoshi"] + (data["fee_per_millionth"] * transaction_size)
 					g.add_edge(e[0], e[1], **data)
 
@@ -70,7 +78,7 @@ def create_price_model():
 			"proportional_price": list(range(1, 100, 10)),
 			"proportional_probability": normalize_list(prop_curve)
 		}
-		with open('price_models/test_open_close.json', 'w') as fp:
+		with open('price_models/barabasi.json', 'w') as fp:
 			json.dump(model, fp, indent=4)
 
 		env["routing_nodes"][0]["price_strategy"] = "neutral"
@@ -160,11 +168,15 @@ def fast_price_function(g, e, proportional, algorithm='johnson'):
 		for destination in all_pair_shortest_path[source]:
 			# SOURCE TO V TO DESTINATION
 			if source != destination != e[0][0]:
+				print("-----")
+				print(source)
+				print(destination)
+				print(all_pair_shortest_path[source][destination])
 				diff = (all_pair_shortest_path[source][e[0][0]] + edge_to_all[destination]) - all_pair_shortest_path[source][destination]
 				if diff < 0:  # TODO: WHAT TO DO WITH TIES?
 					path_price_difference.append(-diff)
 
-	fee_range = range(1, 4000, 30)
+	fee_range = range(10000, 1500000, 10000)
 	plot_list = []
 
 	e_data["price"] = temp_price
@@ -200,7 +212,7 @@ def normalize_list(l):
 def get_price_by_strategy(strategy, path=""):
 
 	if strategy == "random":
-		return random.randint(10, 1501), random.randint(1, 100)
+		return random.randint(10000, 1500000), random.randint(1000, 100000)
 	elif path != "":
 		model = js_r(path)
 		base = numpy.random.choice(model['base_price'],
