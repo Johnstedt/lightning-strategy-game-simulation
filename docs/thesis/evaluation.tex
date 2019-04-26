@@ -38,7 +38,7 @@ The fee market may also be seen in its aggregate, where the axis represents the 
 
 It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
-The cost of procuring a shortest path between $s$ and $d$ might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes.
+The cost of procuring a shortest path between $s$ and $d$ might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes and still procuring sufficient high fees.
 
 \section{Fee floor}
 
@@ -53,13 +53,14 @@ Note that the operational costs are independent of liquidity while the security 
 \subsection{Time value of money}
 (not done)
 \subsection{Operational cost}
-(not done)
+
+The operational cost, i.e. electricity and the human labor needed to operate the node. Note that with this definition operational security is excluded as it should be reflected in the Security Risk Premium.  
 
 \section{Routing strategies under Game Theory}
 
 There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory(EGT).
 
-In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those to strategies. 
+In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
 
 Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no node can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
