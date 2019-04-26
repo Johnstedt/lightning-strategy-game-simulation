@@ -1,18 +1,18 @@
 {
 	"routing_nodes": [
 		{
-			"name": "xl",
-			"attachment_strategy": "barabasi_albert",
+			"name": "rnd",
+			"attachment_strategy": "random",
 			"timing_strategy": {"name": "close_avg_bankruptcy"},
-			"price_strategy": "neutral",
-			"price_model": "price_models/approx_best_uniform_distribution.json",
+			"price_strategy": "random",
+			"price_model": "---",
 			"rebalance_strategy": {"name": "sanity_check"},
-			"funding_strategy": 50000000,
+			"funding_strategy": 70000000,
 			"allocation_strategy": 15000000,
 			"initial_distribution": 0.25
 		},
 		{
-			"name": "anit",
+			"name": "inverse",
 			"attachment_strategy": "inverse_barabasi_albert",
 			"timing_strategy": {"name": "close_avg_bankruptcy"},
 			"price_strategy": "neutral",
@@ -25,22 +25,22 @@
 		{
 			"name": "hassan",
 			"attachment_strategy": "hassan_islam_haque",
-			"timing_strategy": {"name": "close_avg_bankruptcy"},
+			"timing_strategy": {"name": "sanity_check"},
 			"price_strategy": "neutral",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
-			"rebalance_strategy": {"name": "edge_bias_displacement", "ratio": 100000, "scale": 2},
-			"funding_strategy": 50000000,
+			"rebalance_strategy": {"name": "edge_bias_displacement", "ratio": 500000, "scale": 2},
+			"funding_strategy": 30000000,
 			"allocation_strategy": 4000000,
 			"initial_distribution": 0.25
 		},
 		{
-			"name": "s",
+			"name": "matthew",
 			"attachment_strategy": "barabasi_albert",
 			"timing_strategy": {"name": "close_avg_bankruptcy_aggressiveness", "scale": 1.2},
-			"price_strategy": "neutral",
+			"price_strategy": "low",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "sanity_check"},
-			"funding_strategy": 50000000,
+			"funding_strategy": 20000000,
 			"allocation_strategy": 3000000,
 			"initial_distribution": 0.25
 		}
@@ -50,7 +50,7 @@
 			"name": "give-me-liquidity",
 			"attachment_strategy": "barabasi_albert",
 			"timing_strategy": {"name": "close_avg_bankruptcy"},
-			"price_strategy": "neutral",
+			"price_strategy": "high",
 			"price_model": "price_models/approx_best_uniform_distribution.json",
 			"rebalance_strategy": {"name": "sanity_check"},
 			"funding_strategy": 50000000,
