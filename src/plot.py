@@ -302,7 +302,7 @@ def plot_price_dimensions(dim):
 	ax = plt.axes(projection='3d')
 
 	Z = np.array(dim)
-	X, Y = np.meshgrid(range(1, 4000, 30), range(1, 100, 10))
+	X, Y = np.meshgrid(range(10000, 1500000, 10000), range(1, 100, 10))
 
 	#ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='bone', edgecolor='none')
 	ax.contour3D(X, Y, Z, 50, cmap='binary')
