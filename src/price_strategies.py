@@ -26,17 +26,17 @@ def create_price_model():
 
 		selected_edge = betweenness_centrality(g)
 
-		for p in range(10000, 1000000, 100000):
+		for p in range(10000, 700000, 100000):
 			sum_over_volume = []
 			for transaction_size in range(low, high, int((high-low)/100)):
 				for e in g.edges:
 					data = g.get_edge_data(e[0], e[1])
 					g.remove_edge(e[0], e[1])
-					print("---")
-					print(data["base_fee_millisatoshi"] + (data["fee_per_millionth"] * transaction_size))
-					print(data["base_fee_millisatoshi"])
-					print(data["fee_per_millionth"])
-					print(transaction_size)
+				#	print("---")
+				#	print(data["base_fee_millisatoshi"] + (data["fee_per_millionth"] * transaction_size))
+				#	print(data["base_fee_millisatoshi"])
+				#	print(data["fee_per_millionth"])
+				#	print(transaction_size)
 					data["price"] = int(data["base_fee_millisatoshi"]/1000 + (data["fee_per_millionth"] * transaction_size/1000000))
 					g.add_edge(e[0], e[1], **data)
 
@@ -52,8 +52,6 @@ def create_price_model():
 					sum_over_volume = [x + y for x, y in zip(sum_over_volume, fast_price_function(g, selected_edge, (p * transaction_size)))]
 
 			price.append(sum_over_volume)
-
-		plot.plot_price_dimensions(price)
 
 		base, prop = retrieve_optimal_price(price)
 
@@ -72,6 +70,9 @@ def create_price_model():
 		print(prop_curve)
 		print("Normalize")
 		print(normalize_list(prop_curve))
+
+		plot.plot_price_dimensions(price, base_curve, prop_curve)
+
 		model = {
 			"base_price": list(range(10000, 1500000, 10000)),
 			"base_probability": normalize_list(base_curve),
@@ -168,15 +169,15 @@ def fast_price_function(g, e, proportional, algorithm='johnson'):
 		for destination in all_pair_shortest_path[source]:
 			# SOURCE TO V TO DESTINATION
 			if source != destination != e[0][0]:
-				print("-----")
-				print(source)
-				print(destination)
-				print(all_pair_shortest_path[source][destination])
+				#print("-----")
+				#print(source)
+				#print(destination)
+				#print(all_pair_shortest_path[source][destination])
 				diff = (all_pair_shortest_path[source][e[0][0]] + edge_to_all[destination]) - all_pair_shortest_path[source][destination]
 				if diff < 0:  # TODO: WHAT TO DO WITH TIES?
 					path_price_difference.append(-diff)
 
-	fee_range = range(10, 1500, 10)
+	fee_range = range(10, 1350, 10)
 	plot_list = []
 
 	e_data["price"] = temp_price
@@ -184,7 +185,7 @@ def fast_price_function(g, e, proportional, algorithm='johnson'):
 		g.add_edge(add[0], add[1], **edges_data[i])
 
 	for r in fee_range:
-		plot_list.append(len([p for p in path_price_difference if p >= r]) * r * proportional)
+		plot_list.append(len([p for p in path_price_difference if p >= r]) * r * proportional / 1000)
 	#plot.plot_fee_curve(fee_range, plot_list)
 
 	return plot_list

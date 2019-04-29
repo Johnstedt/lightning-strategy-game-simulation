@@ -1,6 +1,6 @@
 \chapter{Evaluation}
 
-With the eventual growth of the Lightning Network a fee market for channel liquidity will emerge. How routing nodes 
+With the eventual growth of the Lightning Network a fee market for channel liquidity will emerge. In this chapter the dynamics by which this fee market operates are sought. Strategies and routing node behavior are suggested in an effort to create a simulation where strategies can be tested against each other. 
 
 \section{Lightning network as a graph}
 
@@ -91,7 +91,7 @@ Although this thesis concerns the routing nodes, the behavior of non-advertised 
 
 \subsection{Emerging strategies}
 
-The Lightning network consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid nodes be profitable?
+The \gls{Lightning Network} consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid nodes be profitable?
 
 \newpage
 \onecolumn
@@ -185,13 +185,27 @@ The problem is a combinatorial optimization problem,
 \[ f(x, y) = \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}\sum_{c \in \sigma_{ab}} 
 	 c_b + c_p\phi  
 \]
-(Equation obviously not done)
 
-The fee is in part proportional to the size of the payment, and the aforementioned algorithm is only able to find the optimal price for one payment size.
+The function over $F_B$, $F_P$ follows the same pattern as over $F_B$ and is shown in Figure \ref{fig:cost:function:space}
 
-(cost function range plot)
+\begin{figure}[!htb]
+	\vspace*{-0.0cm}
+	\hspace*{-0.8cm} 
+	\centering
+	\includegraphics[width=9cm]{plots/price.png}
+	\caption{Shows the relative revenue for a well connected edge over base and proportional fee when all other for a well connected edge in a generated graph. Assuming a uniform payment size distribution over 2,000 Satoshi - 2,000,000 Satoshi. }
+	\label{fig:cost:function:space}
+	\hspace*{2mm} 
+\end{figure}
 
-(Convert to probabilistic model )
+The combinatorial optimization problem may be solved similarly as before but with a modified Floyd-Warshall. Instead of the weights being integers, the weights are linear cost functions. For each new path the cumulative cost functions of edges in the paths are compared. If both $m$ and $k$ are greater than any previous found path it can be thrown away. If either $m$ or $k$ is greater their intersection can be stored as an index. If the intersections are stored in order only a logarithm of previously found paths need to be compared in the worst case. This finds all the shortest paths for each node pair over all transaction sizes. The paths may then be adjusted over intersection distance and payment size frequency, giving the optimal price.
+
+(suggest better solutions)
+
+\subsection{Convert to probabilistic model}
+
+As it's too cumbersome to calculate the optimal price for all edges in simulation purposes. The price range given for an edge of well connected node used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
+
 
 \section{Topology and Preferential Attachment}
 
@@ -251,13 +265,13 @@ In 1999 Barabási and Albert showed that many networks \gls{degree distribution}
 	\label{eq:scale:free}
 \end{equation}
 
-and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Effect}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible}, after Robert K. Merton~\cite{merton:matthew:effect} }. 
+and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Effect}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible}, after remark by Robert K. Merton~\cite{merton:matthew:effect}. }. 
 A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex may be said to have a preferred attachment and the probability of a vertex receiving an edge from the new vertex:
 
 \[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j} \]
 
 Such a graph follows the scale free property with a $\gamma_{ba}$ = 2.9 and can be seen in Figure \ref{fig:scale_free}
-\newpage
+
 \begin{figure}[!htb]
 	\hspace*{-0.5cm} 
 	\centering
@@ -285,7 +299,7 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 % Mainnet 4322 nodes and 21258 edges
 % Testnet 2027 nodes, 8712 edges  
 
-It should again be stated that the Lightning Network is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
+It should again be stated that the \gls{Lightning Network} is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
 
 \subsection{Mediation-driven attachment}
 
@@ -337,7 +351,7 @@ The $\eta_i$ can of course be a combination of heuristics $\eta_i = \phi_{i1} * 
 
 \subsection{Non degree fitness models}
 
-All previous models have assumed that degree is relevant\footnote{Which is probable, it may though be useful to express it as any other heuristic.}. However it doesn't need to be expressed so explicitly, following from the Lognormal  Fitness Attachment (LNFA)~\cite{bell:logonormal},
+All previous models have assumed that degree is relevant\footnote{Which is probable, it may though be useful to express it as any other heuristic.}. However it doesn't need to be expressed so explicitly, following from the Lognormal Fitness Attachment (LNFA)~\cite{bell:logonormal},
 
 \[ \Pi(i) = \dfrac{\prod_{k=1}\phi_{ik}}{\sum_{j=1}^n\prod_{k=1} \phi_{jk}} = \dfrac{\eta_i}{\sum_{j=1}^{n} \eta_j} \]
 

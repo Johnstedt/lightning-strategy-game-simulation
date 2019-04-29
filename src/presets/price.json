@@ -31,7 +31,7 @@
 		"initial_nodes": 100,
 		"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
 		"initial_private_nodes": 0,
-		"payments_per_step": 2500,
+		"payments_per_step": 2000,
 		"risk_free_rent": 0.01,
 		"risk_premium": 0.01,
 		"operational_cost": 20000,
@@ -40,7 +40,7 @@
 		"changed_private_per_step": 0,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
-		"time_steps": 50,
+		"time_steps": 100,
 		"fee": 10000,
 		"initial_mode": "exact"
 	}

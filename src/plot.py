@@ -295,25 +295,55 @@ def plot_multiple_histories(histories):
 	plt.savefig("plots/histories_deviation.png")
 
 
-def plot_price_dimensions(dim):
+def plot_price_dimensions(dim, base, prop):
 
 	print(dim)
 	fig = plt.figure()
 	ax = plt.axes(projection='3d')
 
 	Z = np.array(dim)
-	X, Y = np.meshgrid(range(10000, 1500000, 10000), range(1, 100, 10))
+	X, Y = np.meshgrid(range(10000, 1350000, 10000), range(10000, 700000, 100000))
+
+	# Set up the axes with gridspec
+	#fig = plt.figure(figsize=(6, 6))
+	#grid = plt.GridSpec(4, 4, hspace=0.2, wspace=0.2)
 
 	#ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='bone', edgecolor='none')
-	ax.contour3D(X, Y, Z, 50, cmap='binary')
-	ax.set_xlabel('$F_{base}$')
-	ax.set_ylabel('$F_{proportional}$')
-	ax.set_zlabel('Profit')
+	#ax.contour3D(X, Y, Z, 50, cmap='viridis')
 
+	#main_ax = fig.add_subplot(grid[:-1, 1:], projection='3d')
+	ax.set_xlabel('$F_{base}(mS)$')
+	ax.set_ylabel('$F_{proportional}(\mu S)$')
+	ax.set_zlabel('Revenue(kS)')
+	#y_hist = fig.add_subplot(grid[:-1, 0], sharey=main_ax)
+	#x_hist = fig.add_subplot(grid[-1, 1:], sharex=main_ax)
+
+	#plt.show()
 	plt.savefig("plots/price_dimensional_con.png")
+
+	ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
+	                cmap='viridis', edgecolor='none')
+
+	print("BASE")
+	print(base)
+
+	#x_hist.plot(list(range(10000, 1350000, 10000)), base)
+
+	#x_hist.invert_yaxis()
+
+	print("PROP")
+	print(prop)
+	print(list(range(10000, 700000, 100000)))
+	#y_hist.plot(list(range(10000, 700000, 100000)), prop)
+	#plt.show()
+	#y_hist.invert_xaxis()
+
+	plt.show()
+
 	ax.view_init(60, 35)
 	plt.savefig("plots/price_dimensional_bird_con.png")
 	ax.plot_wireframe(X, Y, Z, color="black")
+	plt.show()
 	plt.savefig("plots/price_dimensional_wire.png")
 
 

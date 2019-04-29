@@ -3,7 +3,7 @@
 \section{Background}
     \label{sec:background}
 
-	( When a majority of the text is written, this will be filled in. )
+\gls{bitcoin} is a peer-to-peer electronic cash system. 
 
 \section{Aim}
     \label{sec:aim}
@@ -19,6 +19,15 @@ This thesis aim to address following three questions:
 		incentivized rebalancing using discounts?
     \end{enumerate}
 	(These are probably to specific to cover this thesis, will change.)
+	
+	 \begin{enumerate}
+		\item How should the routing node set the channel fee price?
+		\item When should a new channel be opened, and which node should the new
+		channel connect to in order to incentivize routing through the node?
+		\item How much capital should be allocated to each channel?
+		\item When should a channel be re-balanced by finding a circular route?
+		\item Is it beneficial to have a well funded node, and to what extent is capital decisive?
+	\end{enumerate}
 	
 \section{Related work}
     \label{sec:related_work}
@@ -41,14 +50,14 @@ This thesis aim to address following three questions:
 	
 \section{Structure}
 
-This thesis is divided into 8 chapters, including this one. The first three chapters gives a wide overview of money, Bitcoin and the Lightning Network. Chapters 6 and 7 aims to answer the thesis question by formulating, evaluating and simulating routing strategies. The last chapter 8 discusses the results, conclusions are drawn and elaborates on future work.
+This thesis is divided into 8 chapters, including this one. The first three chapters gives a wide overview of money, Bitcoin and the \gls{Lightning Network}. Chapters 6 and 7 aims to answer the thesis question by formulating, evaluating and simulating routing strategies. The last chapter 8 discusses the results, conclusions are drawn and elaborates on future work.
 
 \begin{enumerate}
 	\item \textbf{Introduction} introduces the thesis.
 	\item \textbf{Macroeconomics} gives a wide background to currencies and systems built on trust. 
 	\item \textbf{The Bitcoin Network} chapter introduces the basic \gls{bitcoin} architecture, answers how trust is solved and describes Bitcoin script as it allows further development no top of the base protocol.
 	\item \textbf{Scaling Bitcoin} describes historical attempts to scale Bitcoin and the merit of a wide array of scaling solutions.
-	\item \textbf{The Lightning Network} chapter introduces the most fundamental parts of the Lightning protocol.
+	\item \textbf{The \gls{Lightning Network}} chapter introduces the most fundamental parts of the Lightning protocol.
 	\item \textbf{Evaluation} reduces the Lightning Network to a manageable problem set, formulates strategies and measurements and suggests how these strategies may be evaluated.
 	\item \textbf{Results} shows the simulated results of the strategies and their effect on network as a whole in terms of throughput, efficiency and robustness.
 	\item \textbf{Discussion and Conclusions} Processes the results, draws conclusions and ties them into the wider ecosystem. The consequences and viability of the Lightning Network is elaborated and future work discussed.
