@@ -219,7 +219,7 @@ def plot_path_length(g):
 	print("AVERAGE: ", sum(hist)/len(hist))
 
 
-def plot_wealth_distribution(graphs):
+def plot_wealth_distribution(graphs, directory):
 
 	fig1, ax1 = plt.subplots()
 	fig1.subplots_adjust(left=0.15)
@@ -237,10 +237,10 @@ def plot_wealth_distribution(graphs):
 
 	ax1.set_ylabel("Profits(satoshi)")
 	ax1.set_xlabel("nodes")
-	plt.savefig("plots/wealth_distribution path")
+	plt.savefig("plots/{}/wealth_distribution path".format(directory))
 
 
-def plot_multiple_histories(histories):
+def plot_multiple_histories(histories, directory):
 
 	colors = ['r', 'b', 'g', 'c', 'm', 'y', 'k']
 	colors_b = ['r--', 'b--', 'g--', 'c--', 'm--', 'y--', 'k--']
@@ -292,7 +292,7 @@ def plot_multiple_histories(histories):
 		p_color += 1
 
 	ax.legend()
-	plt.savefig("plots/histories_deviation.png")
+	plt.savefig("plots/{}/histories_deviation.png".format(directory))
 
 
 def plot_price_dimensions(dim, base, prop):
@@ -338,12 +338,12 @@ def plot_price_dimensions(dim, base, prop):
 	#plt.show()
 	#y_hist.invert_xaxis()
 
-	plt.show()
+	#plt.show()
 
 	ax.view_init(60, 35)
 	plt.savefig("plots/price_dimensional_bird_con.png")
 	ax.plot_wireframe(X, Y, Z, color="black")
-	plt.show()
+	#plt.show()
 	plt.savefig("plots/price_dimensional_wire.png")
 
 

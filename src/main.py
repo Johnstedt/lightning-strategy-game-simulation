@@ -1,9 +1,10 @@
 import plot
 import simulation
 import json
+import os
 
 
-def simulations():
+def simulations(directory):
 
 	histories = []
 	graphs = []
@@ -15,9 +16,10 @@ def simulations():
 		histories.append(h)
 		graphs.append(g)
 
-	plot.plot_multiple_histories(histories)
-	plot.plot_wealth_distribution(graphs)
+	os.mkdir("plots/{}".format(directory))
+	plot.plot_multiple_histories(histories, directory)
+	plot.plot_wealth_distribution(graphs, directory)
 
 
 if __name__ == "__main__":
-	simulations()
+	simulations("new_sim")

@@ -6,7 +6,7 @@
 			"attachment_strategy": "barabasi_albert",
 			"timing_strategy": {"name": "close_avg_bankruptcy"},
 			"price_strategy": "random",
-			"price_model": "price_models/barabasi.json",
+			"price_model": "price_models/barabasi_5_cycle.json",
 			"rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
 			"funding_strategy": 50000000,
 			"allocation_strategy": 10000000,
@@ -31,7 +31,7 @@
 		"initial_nodes": 100,
 		"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
 		"initial_private_nodes": 0,
-		"payments_per_step": 2000,
+		"payments_per_step": 2500,
 		"risk_free_rent": 0.01,
 		"risk_premium": 0.01,
 		"operational_cost": 20000,
@@ -40,7 +40,7 @@
 		"changed_private_per_step": 0,
 		"new_nodes_policy": "mirror",
 		"new_node_quantity": "percentage",
-		"time_steps": 100,
+		"time_steps": 150,
 		"fee": 10000,
 		"initial_mode": "exact"
 	}

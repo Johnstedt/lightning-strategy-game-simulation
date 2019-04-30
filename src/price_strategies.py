@@ -15,7 +15,7 @@ def create_price_model():
 	low = env["environment"]["payment_distribution"]["interval"]["low"]
 	high = env["environment"]["payment_distribution"]["interval"]["high"]
 
-	for i in range(1):
+	for i in range(5):
 
 		print("SIMULATION: ", i)
 
@@ -74,12 +74,12 @@ def create_price_model():
 		plot.plot_price_dimensions(price, base_curve, prop_curve)
 
 		model = {
-			"base_price": list(range(10000, 1500000, 10000)),
+			"base_price": list(range(10000, 1350000, 10000)),
 			"base_probability": normalize_list(base_curve),
-			"proportional_price": list(range(10000, 1000000, 100000)),
+			"proportional_price": list(range(10000, 700000, 100000)),
 			"proportional_probability": normalize_list(prop_curve)
 		}
-		with open('price_models/barabasi.json', 'w') as fp:
+		with open('price_models/barabasi_5_cycle.json', 'w') as fp:
 			json.dump(model, fp, indent=4)
 
 		env["routing_nodes"][0]["price_strategy"] = "neutral"
