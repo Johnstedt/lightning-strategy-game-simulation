@@ -178,19 +178,36 @@ depends on both edges and vertices.
 
 \subsection{Cost function}
 
-As the previous solution naively assumes a fixed payment size, it needs alteration to encompass a payment size distribution.
+As the previous solution naively assumes a fixed payment size, it's altered to encompass a payment size distribution.
 The fee is proportional to the size of the payment, $F_B + F_P S$, thus the shortest path may be different for two different payment sizes. 
-The problem is a combinatorial optimization problem,
+The problem is thus a combinatorial optimization problem,
 
-\[ f(x, y) = \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}\sum_{c \in \sigma_{ab}} 
-	 c_b + c_p\phi  
-\]
+\begin{equation*}
+\hspace*{-0.5cm}	\max_{ x,y \in \mathbb{Z} } \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}
+	\begin{cases}
+	\Sigma_{abe}(x, y, \phi) & \Sigma_{abe}(x, y, \phi) < \sigma_{ab}(\phi)  \\
+	0 & \Sigma_{abe}(x, y, \phi) > \sigma_{ab}(\phi) \\
+	\dfrac{\Sigma_{abe}(x, y, \phi)}{\overline{\overline{\sigma_{ab}}} + 1} & \Sigma_{abe}(x, y, \phi) = \sigma_{ab}(\phi)  \\
+	\end{cases}
+\end{equation*}
 
-The function over $F_B$, $F_P$ follows the same pattern as over $F_B$ and is shown in Figure \ref{fig:cost:function:space}
+where $\Sigma_{abe}(x, y, \phi)$, and $\sigma_{ab}(\phi)$ is given by
+
+\begin{equation*}	
+	\Sigma_{abe}(x, y, \phi) = \Bigg( \sum_{c \in \sigma_{ae_s},\sigma_{e_db}} c_b + c_p\phi \Bigg) +
+	x + y\phi 
+\end{equation*}
+\begin{equation*}
+	\sigma_{ab}(\phi) = \Bigg( \sum_{c \in \sigma_{ab}} c_b + c_p\phi \Bigg)
+\end{equation*}
+
+where $\rho(\phi)$ is the fraction of payments size $\phi$. $e_s$, $e_d$ is edge source and destination nodes. $\sigma_{ab}$ is the edge set of the shortest path without going through $e$. $\overline{\overline{\sigma_{ab}}}$ is the number of paths equally short with the shortest path.
+
+The function over $F_B$, $F_P$ follows the same pattern as over $F$ and is shown in Figure \ref{fig:cost:function:space}.
 
 \begin{figure}[!htb]
 	\vspace*{-0.0cm}
-	\hspace*{-0.8cm} 
+	\hspace*{0cm} 
 	\centering
 	\includegraphics[width=9cm]{plots/price.png}
 	\caption{Shows the relative revenue for a well connected edge over base and proportional fee when all other for a well connected edge in a generated graph. Assuming a uniform payment size distribution over 2,000 Satoshi - 2,000,000 Satoshi. }

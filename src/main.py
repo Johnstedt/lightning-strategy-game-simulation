@@ -9,9 +9,9 @@ def simulations(directory):
 	histories = []
 	graphs = []
 
-	env = json.loads(open("presets/allocation.json", "r").read())
+	env = json.loads(open("presets/price_simulation.json", "r").read())
 
-	for i in range(3):
+	for i in range(10):
 		h, g = simulation.simulate(env)
 		histories.append(h)
 		graphs.append(g)
@@ -22,4 +22,4 @@ def simulations(directory):
 
 
 if __name__ == "__main__":
-	simulations("new_sim")
+	simulations("price_simulation")

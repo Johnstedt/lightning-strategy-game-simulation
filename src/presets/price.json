@@ -1,47 +1,79 @@
 {
-	"routing_nodes": [
-
-		{
-			"name": "random",
-			"attachment_strategy": "barabasi_albert",
-			"timing_strategy": {"name": "close_avg_bankruptcy"},
-			"price_strategy": "random",
-			"price_model": "price_models/barabasi_5_cycle.json",
-			"rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
-			"funding_strategy": 50000000,
-			"allocation_strategy": 10000000,
-			"initial_distribution": 1
-		}
-	],
-	"private_nodes": [
-		{
-			"name": "give-me-liquidity",
-			"attachment_strategy": "barabasi_albert",
-			"timing_strategy": {"name": "close_avg_bankruptcy"},
-			"price_strategy": "random",
-			"price_model": "price_models/barabasi.json",
-			"rebalance_strategy": {"name": "sanity_check"},
-			"funding_strategy": 50000000,
-			"allocation_strategy": 10000000,
-			"initial_distribution": 1
-		}
-	],
-	"environment": {
-		"payments_distribution": "uniform_all",
-		"initial_nodes": 100,
-		"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
-		"initial_private_nodes": 0,
-		"payments_per_step": 2500,
-		"risk_free_rent": 0.01,
-		"risk_premium": 0.01,
-		"operational_cost": 20000,
-		"immunity_period": 5,
-		"new_nodes_per_step": 1,
-		"changed_private_per_step": 0,
-		"new_nodes_policy": "mirror",
-		"new_node_quantity": "percentage",
-		"time_steps": 150,
-		"fee": 10000,
-		"initial_mode": "exact"
-	}
+  "routing_nodes": [
+    {
+      "name": "rnd",
+      "attachment_strategy": "random",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "random",
+      "price_model": "---",
+      "rebalance_strategy": {"name": "sanity_check"},
+      "funding_strategy": 70000000,
+      "allocation_strategy": 15000000,
+      "initial_distribution": 0.25
+    },
+    {
+      "name": "inverse",
+      "attachment_strategy": "inverse_barabasi_albert",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "neutral",
+      "price_model": "price_models/approx_best_uniform_distribution.json",
+      "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+      "funding_strategy": 50000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 0.25
+    },
+    {
+      "name": "hassan",
+      "attachment_strategy": "hassan_islam_haque",
+      "timing_strategy": {"name": "sanity_check"},
+      "price_strategy": "neutral",
+      "price_model": "price_models/approx_best_uniform_distribution.json",
+      "rebalance_strategy": {"name": "edge_bias_displacement", "ratio": 500000, "scale": 2},
+      "funding_strategy": 30000000,
+      "allocation_strategy": 4000000,
+      "initial_distribution": 0.25
+    },
+    {
+      "name": "matthew",
+      "attachment_strategy": "barabasi_albert",
+      "timing_strategy": {"name": "close_avg_bankruptcy_aggressiveness", "scale": 1.2},
+      "price_strategy": "low",
+      "price_model": "price_models/approx_best_uniform_distribution.json",
+      "rebalance_strategy": {"name": "sanity_check"},
+      "funding_strategy": 20000000,
+      "allocation_strategy": 3000000,
+      "initial_distribution": 0.25
+    }
+  ],
+  "private_nodes": [
+    {
+      "name": "give-me-liquidity",
+      "attachment_strategy": "barabasi_albert",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "high",
+      "price_model": "price_models/approx_best_uniform_distribution.json",
+      "rebalance_strategy": {"name": "sanity_check"},
+      "funding_strategy": 50000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 1
+    }
+  ],
+  "environment": {
+    "payments_distribution": "uniform_all",
+    "initial_nodes": 100,
+    "payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
+    "initial_private_nodes": 50,
+    "payments_per_step": 2500,
+    "risk_free_rent": 0.01,
+    "risk_premium": 0.01,
+    "operational_cost": 20000,
+    "immunity_period": 5,
+    "new_nodes_per_step": 1,
+    "changed_private_per_step": 2,
+    "new_nodes_policy": "mirror",
+    "new_node_quantity": "percentage",
+    "time_steps": 20,
+    "fee": 10000,
+    "initial_mode": "exact"
+  }
 }
