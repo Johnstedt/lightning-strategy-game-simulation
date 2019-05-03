@@ -185,16 +185,16 @@ The problem is thus a combinatorial optimization problem,
 \begin{equation*}
 \hspace*{-0.5cm}	\max_{ x,y \in \mathbb{Z} } \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}
 	\begin{cases}
-	\Sigma_{abe}(x, y, \phi) & \Sigma_{abe}(x, y, \phi) < \sigma_{ab}(\phi)  \\
-	0 & \Sigma_{abe}(x, y, \phi) > \sigma_{ab}(\phi) \\
-	\dfrac{\Sigma_{abe}(x, y, \phi)}{\overline{\overline{\sigma_{ab}}} + 1} & \Sigma_{abe}(x, y, \phi) = \sigma_{ab}(\phi)  \\
+	\Omega_{abe}(x, y, \phi) & \Omega_{abe}(x, y, \phi) < \sigma_{ab}(\phi)  \\
+	0 & \Omega_{abe}(x, y, \phi) > \sigma_{ab}(\phi) \\
+	\dfrac{\Omega_{abe}(x, y, \phi)}{\overline{\overline{\sigma_{ab}}} + 1} & \Omega_{abe}(x, y, \phi) = \sigma_{ab}(\phi)  \\
 	\end{cases}
 \end{equation*}
 
-where $\Sigma_{abe}(x, y, \phi)$, and $\sigma_{ab}(\phi)$ is given by
+where $\Omega_{abe}(x, y, \phi)$, and $\sigma_{ab}(\phi)$ is given by
 
 \begin{equation*}	
-	\Sigma_{abe}(x, y, \phi) = \Bigg( \sum_{c \in \sigma_{ae_s},\sigma_{e_db}} c_b + c_p\phi \Bigg) +
+	\Omega_{abe}(x, y, \phi) = \Bigg( \sum_{c \in \sigma_{ae_s},\sigma_{e_db}} c_b + c_p\phi \Bigg) +
 	x + y\phi 
 \end{equation*}
 \begin{equation*}
@@ -203,7 +203,7 @@ where $\Sigma_{abe}(x, y, \phi)$, and $\sigma_{ab}(\phi)$ is given by
 
 where $\rho(\phi)$ is the fraction of payments size $\phi$. $e_s$, $e_d$ is edge source and destination nodes. $\sigma_{ab}$ is the edge set of the shortest path without going through $e$. $\overline{\overline{\sigma_{ab}}}$ is the number of paths equally short with the shortest path.
 
-The function over $F_B$, $F_P$ follows the same pattern as over $F$ and is shown in Figure \ref{fig:cost:function:space}.
+The function over $F_B$, $F_P$ in $f(x,y)$ follows the same pattern as over $F$ and is shown in Figure \ref{fig:cost:function:space}.
 
 \begin{figure}[!htb]
 	\vspace*{-0.0cm}
@@ -217,11 +217,11 @@ The function over $F_B$, $F_P$ follows the same pattern as over $F$ and is shown
 
 The combinatorial optimization problem may be solved similarly as before but with a modified Floyd-Warshall. Instead of the weights being integers, the weights are linear cost functions. For each new path the cumulative cost functions of edges in the paths are compared. If both $m$ and $k$ are greater than any previous found path it can be thrown away. If either $m$ or $k$ is greater their intersection can be stored as an index. If the intersections are stored in order only a logarithm of previously found paths need to be compared in the worst case. This finds all the shortest paths for each node pair over all transaction sizes. The paths may then be adjusted over intersection distance and payment size frequency, giving the optimal price.
 
-(suggest better solutions)
+This is however still a NP-hard problem and network growth will eventually make an exact solution infeasible. 
 
 \subsection{Convert to probabilistic model}
 
-As it's too cumbersome to calculate the optimal price for all edges in simulation purposes. The price range given for an edge of well connected node used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
+As it is too cumbersome to calculate the optimal price for all edges in simulation purposes. The price range given for an edge of well connected node used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
 
 
 \section{Topology and Preferential Attachment}
