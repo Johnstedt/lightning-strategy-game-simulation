@@ -191,7 +191,7 @@ def manage_channels(g, env, day):
 
 def get_bankruptcy(node, env):
 
-	return node['original_funding'] / 2 + node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + env["environment"]["operational_cost"] / 36.5
+	return node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + env["environment"]["operational_cost"] / 36.5
 
 
 def remove_profit(g, node, fee, day):

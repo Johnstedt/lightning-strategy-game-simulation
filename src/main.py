@@ -9,17 +9,31 @@ def simulations(directory):
 	histories = []
 	graphs = []
 
-	env = json.loads(open("presets/price_simulation.json", "r").read())
+	env = json.loads(open("presets/{}.json".format(directory), "r").read())
 
 	for i in range(10):
 		h, g = simulation.simulate(env)
 		histories.append(h)
 		graphs.append(g)
 
-	os.mkdir("plots/{}".format(directory))
+	if not os.path.exists("plots/{}".format(directory)):
+		os.mkdir("plots/{}".format(directory))
 	plot.plot_multiple_histories(histories, directory)
 	plot.plot_wealth_distribution(graphs, directory)
+	plot.plot_wealth_distribution_in(graphs, directory)
+
+	plot.plot_path_length(graphs[0], directory)
+
+	undirected = []
+
+	for gs in graphs:
+		undirected.append(gs.to_undirected())
+
+	plot.plot_robustness_random(undirected, 10, directory)
+	plot.plot_robustness_coordinated(undirected, 7, directory)
 
 
 if __name__ == "__main__":
-	simulations("price_simulation")
+	simulations("barabasi_random")
+
+

@@ -258,7 +258,7 @@ def check_for_bankruptcy(g, env):
 
 	for node in g.nodes:
 		if g.nodes[node]["public"]:
-			if sum(g.nodes[node]['profits']) < g.nodes[node]['original_funding'] / 2 + g.nodes[node]['original_funding'] \
+			if sum(g.nodes[node]['profits']) < g.nodes[node]['original_funding'] \
 					* env["environment"]["risk_premium"] / 36.5 + \
 					g.nodes[node]['original_funding'] * env["environment"]["risk_premium"] / 36.5 + \
 					env["environment"]["operational_cost"] / 36.5:
@@ -295,7 +295,7 @@ def print_alive_nodes(g, env):
 	for key in nodes:
 		s = s + key + ': ' + str(nodes[key]) + '\n'
 
-	print(s)
+	#print(s)
 
 
 def print_profit_table(g, env):
@@ -316,8 +316,8 @@ def print_profit_table(g, env):
 
 	s = ""
 	for key in nodes:
-		print(key)
-		print(str(nodes[key]))
+		#print(key)
+		#print(str(nodes[key]))
 
 		s = s + key + ': ' + str(nodes[key]) + '\n'
 

@@ -3,31 +3,24 @@
 \section{Background}
     \label{sec:background}
 
-\gls{bitcoin} is a peer-to-peer electronic cash system. 
+Cinnober is a provider of IT solutions to the infrastructure providers of the global financial industry, including exchanges and clearing houses. Cinnober has solutions from price discovery, trading, clearing to settlement of financial securities.
+
+\gls{bitcoin} is a peer-to-peer electronic cash system~\cite{nakamoto:bitcoin}. The decentralized nature of the system limits the verification to the weakest node - consequently limiting the transaction capacity. 
+
+Multiple solutions to reduce the burden on the Bitcoin nodes have been suggested~\cite{decker:wattenhofer:duplex, decker:russell:Osuntokun:eltoo, poon:dryja:lightning:network, blockstream:sidechain}. Where the solution receiving most attention is the \gls{Lightning Network} relying on payment channels.
+
+In a payment channel, bitcoin is committed by a Bitcoin transaction and locked up between two parties. Once the transaction is registered, parties in the channel with positive balance may send it to the other party without the need to create a new transaction on the Bitcoin layer. The channel is strictly bidirectional and have a fixed capacity. Each party may settle the channel balance at any point by creating a closing Bitcoin transaction, settling the balance. Usage of payment channels may be very convenient with parties that transact often. 
+
+Many payment channels can be aggregated into a network. There is an ongoing effort to build such a network named The Lightning Network. Where a party without a direct channel to another party could route through multiple channels if enough liquidity exists between them. If such a scheme becomes viable in practice;  only a small fraction of all transactions would need to be settled on the Bitcoin blockchain. Thus increasing the capacity significantly.
+
+How the routing nodes should operate is still vastly unexplored. The node provides liquidity to payment and procures fees whenever his channels are used in a payment route. It is likely that a market for liquid channels will emerge, however strategically well allocated liquidity may earn much more than poorly allocated liquidity. The nodes may chose who to open channels with, what fee to set, how much liquidity should be locked up on each channel and when to re-balance channels.
+
+A simulation environment was implemented, along with operational strategies. Implemented strategies was then be simulated to see how well they perform against each other.
 
 \section{Aim}
     \label{sec:aim}
 
-This thesis aim to address following three questions:
-
-    \begin{enumerate}
-	\item What is the fair discount for a transaction that balances the channel, as
-		opposed to an unbalancing one?
-	\item When should a new channel be opened, and which node should the new
-		channel connect to in order to incentivize routing through the node?
-	\item When should a manual rebalancing of the channels occur, as opposed to
-		incentivized rebalancing using discounts?
-    \end{enumerate}
-	(These are probably to specific to cover this thesis, will change.)
-	
-	 \begin{enumerate}
-		\item How should the routing node set the channel fee price?
-		\item When should a new channel be opened, and which node should the new
-		channel connect to in order to incentivize routing through the node?
-		\item How much capital should be allocated to each channel?
-		\item When should a channel be re-balanced by finding a circular route?
-		\item Is it beneficial to have a well funded node, and to what extent is capital decisive?
-	\end{enumerate}
+This thesis aim to address following two questions:
 
 	\begin{enumerate}
 		\item How should a \gls{Lightning Network} routing node behave to maximize earnings?

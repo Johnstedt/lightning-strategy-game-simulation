@@ -1,7 +1,7 @@
 \chapter{Strategy Guide}
 \label{chapter:strategies}
 
-
+This appendix contains a short summary of each implemented strategy and tunable environment variable. For examples of how simulations may be created a set of configured presets, used to generate the results, are available at \texttt{https://github.com/Johnstedt/lightning-strategy-game-simulation/tree/master/src/presets}.
 
 \section{Simulation Environment}
 
@@ -20,7 +20,9 @@ The Fee Strategy determine which fee($F_B$, $F_P$) to set to each channel.
 
 Sets the base- and proportional fee randomly given intervals. This is used as a sanity check benchmark for the other strategies.
 
-\subsection*{title}
+\subsection*{probability\_model \texttt{path-to-json}}
+
+Each edge price is set following a json with four attributes. An array of the range of base fees accompanied another array with the probability for each price. Similarly an array of the range of proportional fees and an array with their probability. These models may be generated with \texttt{price\_strategies.py}, with simulates a simulation and selects a central edge, calculates the optimal fee curve from chapter 6, and creates a model with probability correlating with expected relative profit. The price model may be used in a new simulation generating a new model. This process can be repeated many times.  
 
 \section*{Preferential Attachment Strategies}
 

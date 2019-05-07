@@ -49,9 +49,15 @@ The fee price, assuming rational actors, can only fall to a level where the oper
 Note that the operational costs are independent of liquidity while the security risk premium and risk-free-returns are dependent.
 
 \subsection{Security Risk premium}
-(not done)
+
+Operating a routing node requires the keys to be "hot", i.e. to be active and used on a live system. This carries a risk, especially considering that the capacity is willingly broadcast, creating a honey pot for attackers. The pseudo-anonymous architecture leaves little to no legal reproach and the bitcoin is most likely gone forever.
+
+As theft seldom happens it's not obvious how it should be account for. It is essentially a Credit Event, e.g Bankruptcy. Credit Default Swaps (CDS) is type of  insurance where the seller pays the buyer in case the Credit Event takes place. The buyer in turn pays a premium, usually monthly. If such an instrument were created, the routing node could buy protection and account the monthly premium as the risk cost. 
+
 \subsection{Time value of money}
-(not done)
+
+
+
 \subsection{Operational cost}
 
 The operational cost, i.e. electricity and the human labor needed to operate the node. Note that with this definition operational security is excluded as it should be reflected in the Security Risk Premium.  
@@ -67,7 +73,7 @@ Although Lightning nodes doesn't pass on genes, successful strategies are more l
 To evaluate strategies, the game is divided into six categories.
 
 \begin{enumerate}
-	\item \textbf{Fee}, Determine the fee on the outgoing
+	\item \textbf{Fee}, Determine the fee on the outgoing edge of the channel.
 	\item \textbf{Preferential Attachment}, Determine which nodes to open channels with.
 	\item \textbf{Timing}, When to open and close channels.
 	\item \textbf{Allocation}, How much capital should be allocated for each channel.
@@ -221,8 +227,9 @@ This is however still a NP-hard problem and network growth will eventually make 
 
 \subsection{Convert to probabilistic model}
 
-As it is too cumbersome to calculate the optimal price for all edges in simulation purposes. The price range given for an edge of well connected node used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
+It is cumbersome to calculate the optimal price for all edges; for simulation purposes it is completely infeasible. 
 
+The price range given for an edge of well connected node used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
 
 \section{Topology and Preferential Attachment}
 
@@ -338,7 +345,7 @@ where $\Pi(i)$ is the probability that node $i$ is selected with degree $k_i$
 
 \subsection{Fitness models}
 
-Fitness heuristics added Bianconi-Barabasi~\cite{bianconi:barabasi:fitness:network}.
+Node attachment may be influenced by fitness heuristics not intrinsic to the topology. E.g. Google overtook incumbent search engines having larger degree. The Bianconi-Barabasi model~\cite{bianconi:barabasi:fitness:network} was created to account for external heuristics.
 
 \[ \Pi(i) = \dfrac{\eta_ik_i}{\sum_{j=1}^{n}\eta_jk_j}\ \]
 
@@ -416,7 +423,7 @@ The average path can be gathered empirically with Floyd-Warshall or Johnson,
 
 \[ \ell = \dfrac{\sum_{i \neq j} \sigma_{ij}}{N(N-1)} \]
 
-where $\sigma_{ij}$ is the length of the shortest path between $i$ and $j$
+where $\sigma_{ij}$ is the length of the shortest path between $i$ and $j$.
 
 \section{Re-balancing channels}
 
@@ -432,7 +439,7 @@ If all increments towards the middle of the channel is considered equally valuab
 \dfrac{2|(B_{2M} - B_{2S})|}{f_c(|B_{2M} - B_{2S}|)}  & otherwise
 \end{cases} \]
 
-where $B_{1S}$, $B_{2S}$ are the states of the out and in channels and $B_{1M}$, $B_{2M}$ their middles and $f$ is the total fee for the cycle $c$. 
+where $B_{1S}$, $B_{2S}$ are the states of the out and in channels and $B_{1M}$, $B_{2M}$ their middles and $f$ is the total fee for cycle $c$. 
 
 \[f_c(L) = \sum_{i=1}^{n} B_i + P_iL \]
 
@@ -451,11 +458,15 @@ given a scalar $s$ by which the bias can by adjusted.
 
 Each node can define how high the utility value must be to consider to re-balancing the channel by routing a payment to oneself.
 
-\section{Funding, timing and allocation strategies}
+\section{Funding and allocation strategies}
 
 \section{Simulation}
 
-The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the networkx library. The environment variables and each players chosen strategies can be changed in a higher level configure file. Each strategy is discussed in detail in Appendix \ref{chapter:strategies} as well how a game may be created and simulated from altering the input file. Each set of strategies, under certain network dynamics may then be put into the same network to see which are stable and which are not. Similarly the emerging network is studied as successful strategies becomes more numerous at the hand of unsuccessful ones. 
+The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the networkx library.
+
+The environment variables are tunable,  
+
+and each players chosen strategies can be changed in a higher level configure file. Each strategy is discussed in detail in Appendix \ref{chapter:strategies} as well how a game may be created and simulated from altering the input file. Each set of strategies, under certain network dynamics may then be put into the same network to see which are stable and which are not. Similarly the emerging network is studied as successful strategies becomes more numerous at the hand of unsuccessful ones. 
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf
 

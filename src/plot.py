@@ -103,7 +103,7 @@ def plot_survival_history(histories, references):
 	return True
 
 
-def plot_robustness_random(graphs, it):
+def plot_robustness_random(graphs, it, directory):
 
 	fig1, ax1 = plt.subplots()
 
@@ -118,8 +118,8 @@ def plot_robustness_random(graphs, it):
 					node = random.choice(list(c.nodes))
 					c.remove_node(node)
 				giant = max(nx.connected_component_subgraphs(c), key=len)
-				print("NODES length: ", len(c.nodes), " Giant component: ", len(giant.nodes),
-					" kvot: ", len(giant.nodes)/len(c.nodes))
+			#	print("NODES length: ", len(c.nodes), " Giant component: ", len(giant.nodes),
+			#		" kvot: ", len(giant.nodes)/len(c.nodes))
 				current.append(len(giant.nodes)/len(c.nodes))
 		box.append(current)
 
@@ -140,10 +140,10 @@ def plot_robustness_random(graphs, it):
 	perc = ["10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%"]
 	ax1.set_xticklabels(perc[:it])
 
-	plt.savefig("plots/robustness_ergos.png")
+	plt.savefig("plots/{}/robustness_random.png".format(directory))
 
 
-def plot_robustness_coordinated(graphs, it):
+def plot_robustness_coordinated(graphs, it, directory):
 	fig1, ax1 = plt.subplots()
 
 	box = []
@@ -189,11 +189,11 @@ def plot_robustness_coordinated(graphs, it):
 	perc = ["5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%"]
 	ax1.set_xticklabels(["0%","5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%"])
 
-	plt.savefig("plots/robustness_coordinated.png")
+	plt.savefig("plots/{}/robustness_coordinated.png".format(directory))
 	return box
 
 
-def plot_path_length(g):
+def plot_path_length(g, directory):
 
 	fig1, ax1 = plt.subplots()
 	fig1.subplots_adjust(left=0.15)
@@ -211,33 +211,98 @@ def plot_path_length(g):
 					hist.append(k)
 					am[int(k)] = am.get(int(k), 0) + 1
 
-	print(len(am.values())-1)
 	plt.hist(hist, len(am.values())-1, facecolor='blue', edgecolor='darkblue', alpha=0.75, align='left')
 	ax1.set_xlabel("Path length")
 	ax1.set_ylabel("Paths")
-	plt.savefig("plots/histogram_shortest path")
+	plt.savefig("plots/{}/histogram_shortest_path".format(directory))
 	print("AVERAGE: ", sum(hist)/len(hist))
 
 
 def plot_wealth_distribution(graphs, directory):
 
 	fig1, ax1 = plt.subplots()
-	fig1.subplots_adjust(left=0.15)
+	# fig1.subplots_adjust(left=0.15)
 
-	profits = []
+	colors = ['ro', 'bo', 'go', 'co', 'mo', 'yo', 'ko']
+
+	profits = {}
+
 	for g in graphs:
 
 		for n in g.nodes:
 			if g.nodes[n]["public"]:
 				profit = sum(g.nodes[n]["profits"])
-				profits.append(profit)
+				if g.nodes[n]['name'] not in profits:
+					profits[g.nodes[n]['name']] = []
+				profits[g.nodes[n]['name']].append(profit)
 
-	profits.sort(reverse=True)
-	ax1.plot(range(len(profits)), profits, "ro")
+	i = 0
+	for n in profits:
+		profits[n].sort(reverse=True)
+		ax1.plot(range(len(profits[n])), profits[n], colors[i], label=n)
+		i += 1
 
 	ax1.set_ylabel("Profits(satoshi)")
-	ax1.set_xlabel("nodes")
-	plt.savefig("plots/{}/wealth_distribution path".format(directory))
+	ax1.set_xlabel("Nodes")
+	ax1.legend()
+	plt.savefig("plots/{}/wealth_distribution_path".format(directory))
+
+
+def plot_wealth_distribution_in(graphs, directory):
+
+	fig1, ax1 = plt.subplots()
+	# fig1.subplots_adjust(left=0.15)
+
+	colors = ['ro', 'bo', 'go', 'co', 'mo', 'yo', 'ko']
+
+	profits = {}
+	color = []
+
+	j = 0
+	for g in graphs:
+		for n in g.nodes:
+			if g.nodes[n]["public"]:
+				profit = sum(g.nodes[n]["profits"])
+				if g.nodes[n]['name'] not in profits:
+					profits[g.nodes[n]['name']] = j
+					j += 1
+				color.append((profit, g.nodes[n]['name']))
+
+#	color = normalize_list(color)
+	color.sort(reverse=True, key=lambda x: x[0])
+
+	i = 0
+
+	used = []
+
+	for c in color:
+		if c[1] not in used:
+			ax1.plot(i, c[0], colors[profits[c[1]]], label=c[1])
+			used.append(c[1])
+		else:
+			ax1.plot(i, c[0], colors[profits[c[1]]])
+		i += 1
+
+	#x = np.arange(len(color))
+	#ax1.plot(x, pareto(x, 1, 1.1), label="Pareto")
+
+	print("total: ", sum([x for (x, y) in color]))
+	print("top 20: ", sum([x for (x, y) in color][:int(len(color)*0.2)]))
+	print("fraction:", sum([x for (x, y) in color][:int(len(color)*0.2)]) / sum([x for (x, y) in color]))
+
+	f = open("plots/{}/matthew_principle_fraction".format(directory), "w+")
+	f.write("total: {}".format(sum([x for (x, y) in color])))
+	f.write("top 20: {}".format(sum([x for (x, y) in color][:int(len(color)*0.2)])))
+	f.write("fraction: {}".format(sum([x for (x, y) in color][:int(len(color)*0.2)]) / sum([x for (x, y) in color])))
+
+	for name in profits.keys():
+		print("NAOM: ", name)
+		f.write("Strategy: {}, average earnings: {} ".format(name, sum([x for (x, y) in color if y == name]) / len([x for (x, y) in color if y == name])))
+
+	ax1.set_ylabel("Profits(satoshi)")
+	ax1.set_xlabel("Nodes")
+	ax1.legend()
+	plt.savefig("plots/{}/wealth_distribution_same".format(directory))
 
 
 def plot_multiple_histories(histories, directory):
@@ -249,7 +314,7 @@ def plot_multiple_histories(histories, directory):
 	ax.set_xlabel("$Days$")
 	ax.set_ylabel("$Average Population$")
 
-	print(histories)
+	#print(histories)
 
 	datasets = [[[0]*len(histories) for _ in range(len(next(iter(histories[0].values()))))] for _ in range(len(histories[0]))]
 	labels = []
@@ -266,7 +331,7 @@ def plot_multiple_histories(histories, directory):
 			i += 1
 		history += 1
 
-	print(datasets)
+	#print(datasets)
 
 	""" fig1, ax1 = plt.subplots()
 	ax1.set_title('Box Plot')
@@ -349,6 +414,16 @@ def plot_price_dimensions(dim, base, prop):
 
 def f(x, y):
 	return np.sin(np.sqrt(x ** 2 + y ** 2))
+
+
+def pareto(x, k, a):
+	return a * k**a / (x**a+1)
+
+
+def normalize_list(l):
+	max_val = max([x for (x, y) in l])
+	min_val = min([x for (x, y) in l])
+	return [((x - min_val) / (max_val - min_val), y) for (x, y) in l]
 
 
 def plot_fee_curve(fee, profits):
