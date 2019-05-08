@@ -1,6 +1,6 @@
 \chapter{Evaluation}
 
-With the eventual growth of the Lightning Network a fee market for channel liquidity will emerge. In this chapter the dynamics by which this fee market operates are sought. Strategies and routing node behavior are suggested in an effort to create a simulation where strategies can be tested against each other. 
+With the eventual growth of the Lightning Network a fee market for channel liquidity will emerge. In this chapter the dynamics by which this fee market operates are sought. Strategies and routing \gls{node} behavior are suggested in an effort to create a simulation where strategies can be tested against each other. 
 
 \section{Lightning network as a graph}
 
@@ -34,7 +34,7 @@ It may be useful to view the fee market as existing under normal free market pre
 
 The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
 
-The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing nodes joining if its a profitable venture or leaving if its a unprofitable one. Here again driving prices towards equilibrium. 
+The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing \gls{node}s joining if its a profitable venture or leaving if its a unprofitable one. Here again driving prices towards equilibrium. 
 
 It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
@@ -42,7 +42,7 @@ The cost of procuring a shortest path between $s$ and $d$ might not be equal for
 
 \section{Fee floor}
 
-The fee price, assuming rational actors, can only fall to a level where the operators are able to sustain their operation. The fees received must compensate for the \textit{time-value-of-money}, the security risk of having liquidity on a connected public node and the operational cost of running and managing the software. Bhatia has proposed a standardized reference rate as Lightning Network Reference Rate(LNRR) similar to LIBOR, OIS and SOFR~\cite{bhatia:time:value}. Operational cost isn't included in LNRR as with managed funds a  operational fee is removed after the returns are calculated. The competition of fees drives down the price until a certain point, a floor, where there is better returns elsewhere. Therefor a the fee has a floor at
+The fee price, assuming rational actors, can only fall to a level where the operators are able to sustain their operation. The fees received must compensate for the \textit{time-value-of-money}, the security risk of having liquidity on a connected public \gls{node} and the operational cost of running and managing the software. Bhatia has proposed a standardized reference rate as Lightning Network Reference Rate(LNRR) similar to LIBOR\footnote{London Interbank Offered Rate.}, OIS\footnote{Overnight indexed swap.} and SOFR\footnote{Secured Overnight Financing Rate.}~\cite{bhatia:time:value}. Operational cost isn't included in LNRR as with managed funds a  operational fee is removed after the returns are calculated. The competition of fees drives down the price until a certain point, a floor, where there is better returns elsewhere. Therefor a the fee has a floor at
 
 \[ F_{floor} = C_{op} + C_{risk-prem} + C_{risk-free-rent} \]
 
@@ -56,11 +56,11 @@ As theft seldom happens it's not obvious how it should be account for. It is ess
 
 \subsection{Time value of money}
 
-
+The routing nodes channels require funds to be locked up to be able to route. As such there is an opportunity cost as the funds could be invested elsewhere. In most cases this is equivalent to the Risk Free Interest Rate.
 
 \subsection{Operational cost}
 
-The operational cost, i.e. electricity and the human labor needed to operate the node. Note that with this definition operational security is excluded as it should be reflected in the Security Risk Premium.  
+The operational cost, i.e. electricity and the human labor needed to operate the \gls{node}. Note that with this definition operational security is excluded as it should be reflected in the Security Risk Premium.  
 
 \section{Routing strategies under Game Theory}
 
@@ -68,7 +68,7 @@ There are clearly marked dynamics at play here. Node operator have many differen
 
 In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
 
-Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no node can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
+Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
 To evaluate strategies, the game is divided into six categories.
 
@@ -81,7 +81,7 @@ To evaluate strategies, the game is divided into six categories.
 	\item \textbf{Re-balance}, When and how aggressively should a node re-balance its channels. 
 \end{enumerate}
 
-Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing node may then choose a strategy per category, it is sufficient to only consider pure strategies. 
+Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing \gls{node} may then choose a strategy per category, it is sufficient to only consider pure strategies. 
 
 \subsection{Mixing strategies}
 
@@ -93,11 +93,11 @@ However, the strategies success is dependent on the graph state and thus previou
 
 The network is not only made up of actors, or players, trying to maximize profit. But also, of course, of nodes wanting to utilize the network as a payment medium. Since routing requires a bit of commitment, regular users can open private channels and not broadcast these to the rest of the network. These non-advertised nodes have other priorities than profit, as it doesn't receive any fees, like having highly liquid paths to many nodes. It may also be worth deviating from the shortest payment paths to increase privacy and paying a higher fee than necessary.
 
-Although this thesis concerns the routing nodes, the behavior of non-advertised affect the routing nodes. If non-advertised nodes prefer to open channels with high capacity nodes, in attempt to receive high liquid paths, it would be preferred to have high capacity for a routing node.  
+Although this thesis concerns the routing \gls{node}s, the behavior of non-advertised affect the routing nodes. If non-advertised nodes prefer to open channels with high capacity nodes, in attempt to receive high liquid paths, it would be preferred to have high capacity for a routing node.  
 
 \subsection{Emerging strategies}
 
-The \gls{Lightning Network} consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid nodes be profitable?
+The \gls{Lightning Network} consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid \gls{node}s be profitable?
 
 \newpage
 \onecolumn
@@ -207,7 +207,7 @@ where $\Omega_{abe}(x, y, \phi)$, and $\sigma_{ab}(\phi)$ is given by
 	\sigma_{ab}(\phi) = \Bigg( \sum_{c \in \sigma_{ab}} c_b + c_p\phi \Bigg)
 \end{equation*}
 
-where $\rho(\phi)$ is the fraction of payments size $\phi$. $e_s$, $e_d$ is edge source and destination nodes. $\sigma_{ab}$ is the edge set of the shortest path without going through $e$. $\overline{\overline{\sigma_{ab}}}$ is the number of paths equally short with the shortest path.
+where $\rho(\phi)$ is the fraction of payments size $\phi$. $e_s$, $e_d$ is edge source and destination \gls{node}s. $\sigma_{ab}$ is the edge set of the shortest path without going through $e$. $\overline{\overline{\sigma_{ab}}}$ is the number of paths equally short with the shortest path.
 
 The function over $F_B$, $F_P$ in $f(x,y)$ follows the same pattern as over $F$ and is shown in Figure \ref{fig:cost:function:space}.
 
@@ -221,7 +221,7 @@ The function over $F_B$, $F_P$ in $f(x,y)$ follows the same pattern as over $F$ 
 	\hspace*{2mm} 
 \end{figure}
 
-The combinatorial optimization problem may be solved similarly as before but with a modified Floyd-Warshall. Instead of the weights being integers, the weights are linear cost functions. For each new path the cumulative cost functions of edges in the paths are compared. If both $m$ and $k$ are greater than any previous found path it can be thrown away. If either $m$ or $k$ is greater their intersection can be stored as an index. If the intersections are stored in order only a logarithm of previously found paths need to be compared in the worst case. This finds all the shortest paths for each node pair over all transaction sizes. The paths may then be adjusted over intersection distance and payment size frequency, giving the optimal price.
+The combinatorial optimization problem may be solved similarly as before but with a modified Floyd-Warshall. Instead of the weights being integers, the weights are linear cost functions. For each new path the cumulative cost functions of edges in the paths are compared. If both $m$ and $k$ are greater than any previous found path it can be thrown away. If either $m$ or $k$ is greater their intersection can be stored as an index. If the intersections are stored in order only a logarithm of previously found paths need to be compared in the worst case. This finds all the shortest paths for each \gls{node} pair over all transaction sizes. The paths may then be adjusted over intersection distance and payment size frequency, giving the optimal price.
 
 This is however still a NP-hard problem and network growth will eventually make an exact solution infeasible. 
 
@@ -229,14 +229,14 @@ This is however still a NP-hard problem and network growth will eventually make 
 
 It is cumbersome to calculate the optimal price for all edges; for simulation purposes it is completely infeasible. 
 
-The price range given for an edge of well connected node used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
+The price range given for an edge of well connected \gls{node} used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
 
 \section{Topology and Preferential Attachment}
 
-Setting fee price is only one aspect of a routing node, maybe more importantly is that of opening and closing channels.
-As the protocol now stands\footnote{Is very plausible that that BIP66 may be activated allowing multi-sourced channels~\cite{bip:0118:sighash:noinput}} it only allows for single source funding of channels. There is a non negligible cost to opening channels and it would be very beneficial for a node if other nodes opened channels with it instead of the other way around. This is also a prerequisite to earn profit as otherwise the node may only earn back its own funding. 
+Setting fee price is only one aspect of a routing \gls{node}, maybe more importantly is that of opening and closing channels.
+As the protocol now stands\footnote{Is very plausible that that BIP66 may be activated allowing multi-sourced channels~\cite{bip:0118:sighash:noinput}} it only allows for single source funding of channels. There is a non negligible cost to opening channels and it would be very beneficial for a node if other nodes opened channels with it instead of the other way around. This is also a prerequisite to earn profit as otherwise the \gls{node} may only earn back its own funding. 
 
-Therefor the policies determining by which preferences each node takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest path and robustness in case of node failures.
+Therefor the policies determining by which preferences each \gls{node} takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest path and robustness in case of node failures.
 
 \subsection{Traditional random models}
 
@@ -270,7 +270,7 @@ Thus adding an age bias causes the characteristics of the \gls{degree distributi
 \end{figure}
 
 A more appropriate random model may be to consider $G_{n,m}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices and creates and edges when t < n. The probability of any previous vertex $i$ being selected is thus $p_i = \dfrac{m}{t_i}$. 
-As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a node creates edges as part of joining the network.
+As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a \gls{node} creates edges as part of joining the network.
 
 %[p(k) =  \begin{cases}
 %& \prod_{i=1}^{k} 1 - \sum_{j=1}^{n-1} m \dfrac{1}{n^2},~\text{if}~m<k\\
@@ -315,7 +315,7 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 	\centering
 	\includegraphics[width=9cm]{images/main-testnet_degree_distribution.png}
 	\caption{Shows the degree distribution for both the Mainnet (\tikzcircle[red, fill=red]{2pt}) and Testnet (\tikzcircle[blue, fill=blue]{2pt})
-		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning node~\cite{repository:clightning} on 2019-03-21.
+		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning \gls{node}~\cite{repository:clightning} on 2019-03-21.
 	}
 	\label{fig:real_network}
 	\hspace*{2mm}
@@ -323,11 +323,11 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 % Mainnet 4322 nodes and 21258 edges
 % Testnet 2027 nodes, 8712 edges  
 
-It should again be stated that the \gls{Lightning Network} is still in a very early state of it's development and most of the nodes and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
+It should again be stated that the \gls{Lightning Network} is still in a very early state of it's development and most of the \gls{node}s and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
 
 \subsection{Mediation-driven attachment}
 
-Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator node. Consider a node $i$ which degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly,
+Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator \gls{node}. Consider a node $i$ which degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly,
 
 \[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
 
@@ -337,7 +337,7 @@ They also show that it will lead to a scale free network, however the \gls{degre
 
 %https://www.ncbi.nlm.nih.gov/pubmed/23005719
 
-It may seem ridiculous that selecting nodes with low degree would be successful, however doing the opposite to the majority may be very promising. As these niche routes have considerably less competition, especially considering a node created at a large $t$ . If differentiation is a good strategy, this may capture it. The selection probability follows as, 
+It may seem ridiculous that selecting nodes with low degree would be successful, however doing the opposite to the majority may be very promising. As these niche routes have considerably less competition, especially considering a \gls{node} created at a large $t$ . If differentiation is a good strategy, this may capture it. The selection probability follows as, 
 
 \[ \Pi(i) =  \dfrac{\dfrac{1}{k_i}}{\sum_{j}^{n} \dfrac{1}{k_j}} \]
 
@@ -355,7 +355,7 @@ By regarding the attachment probability growth over time,
 
 they are able to show that not all fitness distributions $\rho(\eta)$ results in a scale free network.
 
-As there are many possible node heuristics beyond degree, e.g. capacity, availability and fee, these heuristics could be blend into the attachment models. 
+As there are many possible \gls{node} heuristics beyond degree, e.g. capacity, availability and fee, these heuristics could be blend into the attachment models. 
 
 Although Bianconi and Barabasi only studied fitness with the Barabási-Albert preferential attachment, it can however be added to the other models as well.
 
@@ -383,7 +383,7 @@ which is evidently the same as the time biased random model.
 
 \subsection{Robustness}
 
-Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves node connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
+Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves \gls{node} connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
 
 The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
 
@@ -407,11 +407,11 @@ The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure}
 	\label{fig:coordinated_attack}
 	\hspace*{2mm}
 \end{figure}
-\vspace*{-0.45cm}
+%\vspace*{-0.45cm}
 
 \subsection{Average shortest path}
 
-Each additional hop required in a payment path decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. node compatibility and protocols levels below to fail. The average path growths at the same rate as the diameter, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
+Each additional hop required in a payment path decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. \gls{node} compatibility and protocols levels below to fail. The average path growths at the same rate as the diameter, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
 
 \[ \ell \sim d \approx \dfrac{ln~N}{ln~pN} \]
 
@@ -443,7 +443,7 @@ where $B_{1S}$, $B_{2S}$ are the states of the out and in channels and $B_{1M}$,
 
 \[f_c(L) = \sum_{i=1}^{n} B_i + P_iL \]
 
-with $B_i$ is the base fee, $P_i$ is the proportional fee for node $i$ in path $c$.
+with $B_i$ is the base fee, $P_i$ is the proportional fee for \gls{node} $i$ in path $c$.
 
 \subsection{Edge biased displacement}
 \label{sec:edge:bias:displacement}
@@ -456,13 +456,13 @@ given a scalar $s$ by which the bias can by adjusted.
 
 \subsection{Utility strategy scalar}
 
-Each node can define how high the utility value must be to consider to re-balancing the channel by routing a payment to oneself.
+Each \gls{node} can define how high the utility value must be to consider to re-balancing the channel by routing a payment to oneself.
 
 \section{Funding and allocation strategies}
 
 \section{Simulation}
 
-The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the networkx library.
+The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the Networkx library.
 
 The environment variables are tunable,  
 

@@ -1,11 +1,11 @@
 \chapter{The Bitcoin Network}
 	\label{sec:bitcoin}
 
-\gls{bitcoin} is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in October 2008~\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of nodes and the system's native currency. The network and protocol is usually refereed to with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While it's convention to not capitalize currencies in the English language, it's not widely followed in mainstream or semi-mainstream outlets. Also the plural form of currencies is equivalent to the singular. The convention will be followed in this report.}
+\gls{bitcoin} is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in October 2008~\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of \gls{node}s and the system's native currency. The network and protocol is usually refereed to with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While it's convention to not capitalize currencies in the English language, it's not widely followed in mainstream or semi-mainstream outlets. Also the plural form of currencies is equivalent to the singular. The convention will be followed in this report.}
 
 \section{Digital Signatures}
 
-Part of the solution is provided by one way asymmetric encryption utilizing the \texttt{secp256k1} elliptic curve. Asymmetric encryption or public-key encryption allows the generation of key pairs with the ability to derive a public key from a private key without the ability to derive the private key from the public key and the ability to prove ownership of the private key through signatures without disclosing the private key. Ownership and expenditure of bitcoin is proved by signing a previous transaction output payable to the public key derived bitcoin address\footnote{A bitcoin address is derived from the public key by hashing the public key with both \texttt{SHA256} and \texttt{RIPEMD160}} with the accompanying private key.\footnote{This part of the solution has been suggested many times before, earliest 1983~\cite{chaum:blind:signatures}}
+Part of the solution is provided by one way asymmetric encryption utilizing the \texttt{secp256k1} elliptic curve. Asymmetric encryption or public-key encryption allows the generation of key pairs with the ability to derive a public key from a private key without the ability to derive the private key from the public key and the ability to prove ownership of the private key through signatures without disclosing the private key. Ownership and expenditure of bitcoin is proved by signing a previous transaction output payable to the public key derived bitcoin address\footnote{A bitcoin address is derived from the public key by \gls{hash}ing the public key with both \texttt{SHA256} and \texttt{RIPEMD160}} with the accompanying private key.\footnote{This part of the solution has been suggested many times before, earliest 1983~\cite{chaum:blind:signatures}}
 
 \begin{figure}[!htb]
 
@@ -21,11 +21,11 @@ Bitcoin is essentially a long ledger of inputs and outputs. Note that the whole 
 
 \section{The Double-Spending problem}
 
-While digital signatures are able prove ownership of bitcoin, there is nothing to stop the owner of an amount of bitcoin to sign two different transactions spending the same transaction output and broadcasting them to different parts of the network. This is called the double-spending problem which is a variation of the more general Byzantine's General Problem.
+While digital signatures are able prove ownership of bitcoin, there is nothing to stop the owner of an amount of bitcoin to sign two different transactions spending the same transaction output and broadcasting them to different parts of the network. This is called the double-spending problem which is a variation of the more general Byzantine Generals Problem~\cite{lamport:shostak:byzantine:generals}.
 
 %\subsection{Proof-of-Work}
 
-The network reaches a coherent global view over the transaction history by a method known as \textit{Proof-of-work}. The Bitcoin \textit{Proof-of-work} algorithm is very similar to that of hashcash as it uses a hash-based cost function which requires a probabilistic amount of work and the proof of the work fixed cost to verify~\cite{back:hashcash}\footnote{It's similar to hashcash in both being hash-based with a cost function that is non-interactive, publicly auditable, trapdoor-free and have an unbounded probabilistic cost~\cite{back:hashcash}.
+The network reaches a coherent global view over the transaction history by a method known as \textit{Proof-of-work}. The Bitcoin \textit{Proof-of-work} algorithm is very similar to that of hashcash as it uses a hash-based cost function which requires a probabilistic amount of work and the proof of the work fixed cost to verify~\cite{back:hashcash}\footnote{It's similar to hashcash in both being \gls{hash}-based with a cost function that is non-interactive, publicly auditable, trapdoor-free and have an unbounded probabilistic cost~\cite{back:hashcash}.
 \gls{bitcoin} uses the double \texttt{SHA256} hash function.}.
 
 The \textit{Proof-of-work} algorithm is directly tied into the bitcoin transaction history data structure composite of a chain of blocks as seen in figure \ref{fig:blockchain}.
@@ -54,7 +54,7 @@ The 'work' part of the algorithm is to find a sufficiently small hash over the b
 	
 \end{figure}
 
-The content in the block header is practically immutable since a change would make the hash invalid. The transactions are not in the header but are still immutable by the use of a Merkle tree(see fig \ref{fig:merkle:tree}). A Merkle tree is a binary tree in which the parent is the hash of its two children. The root hash of the tree is included in the header and if any transaction were to change it would also cause the root hash to change rendering each transaction immutable by implication. \gls{bitcoin} uses the double \texttt{SHA256} as the Merkle tree hash function.
+The content in the block header is practically immutable since a change would make the \gls{hash} invalid. The transactions are not in the header but are still immutable by the use of a Merkle tree(see fig \ref{fig:merkle:tree}). A Merkle tree is a binary tree in which the parent is the hash of its two children. The root hash of the tree is included in the header and if any transaction were to change it would also cause the root hash to change rendering each transaction immutable by implication. \gls{bitcoin} uses the double \texttt{SHA256} as the Merkle tree hash function.
 
 \subsection{Incentive}
 
@@ -84,7 +84,7 @@ The two scripts added together forms a predicate. If the predicate is true the t
 
 \subsection{Pay to Public Key Hash}
 
-The Pay-to-Public-key-hash or P2PKH for short was the standard script for a long time. It allows only the owner of 
+The Pay-to-Public-key-\gls{hash} or P2PKH for short was the standard script for a long time. It allows only the owner of 
 the private key to the public key to spend the output.
 
 \begin{figure}[!hbt]
@@ -102,7 +102,7 @@ the private key to the public key to spend the output.
 	\label{fig:P2PKH}
 \end{figure}
 
-The P2PKH pushes the signature produced by the private key and the public key to the stack. The public key gets duplicated and the top one gets hashed. The \texttt{OP\_HASH160} is a double hash and first hashes the key with \texttt{SHA256} and then \texttt{RIPEMD160}. This is done to hide the public key until expenditure which may be useful if, for example, the ECDSA would break and private keys could be reversed. In the early days of the network this obfuscation technique wasn't used, for example the first transaction between Nakamoto and Finney did not hide the public key~\cite{nakamoto:finney:tx}. The \texttt{OP\_EQUALVERIFY} pops the two public key hashes and terminates the script with false if they are not equal. The \texttt{OP\_CHECKSIG} verifies that the signature is indeed a match with the public key and returns true. 
+The P2PKH pushes the signature produced by the private key and the public key to the stack. The public key gets duplicated and the top one gets hashed. The \texttt{OP\_HASH160} is a double \gls{hash} and first hashes the key with \texttt{SHA256} and then \texttt{RIPEMD160}. This is done to hide the public key until expenditure which may be useful if, for example, the ECDSA would break and private keys could be reversed. In the early days of the network this obfuscation technique wasn't used, for example the first transaction between Nakamoto and Finney did not hide the public key~\cite{nakamoto:finney:tx}. The \texttt{OP\_EQUALVERIFY} pops the two public key hashes and terminates the script with false if they are not equal. The \texttt{OP\_CHECKSIG} verifies that the signature is indeed a match with the public key and returns true. 
 
 \subsection{Pay to Script Hash}
 
@@ -120,7 +120,7 @@ The Pay-to-Script-Hash or P2SH is a more flexible transaction than the P2PKH and
    <@\texttt{\textcolor{black}{lock}}@>
 	\end{lstlisting}
 	
-	\caption{\textit{ Showing a multisig transaction which require to two signatures out of three to be spent. Note the \texttt{0} in the unlock script, it's there due to a bug with \texttt{OP\_CHECKMULTISIG} which pops an extra item from the stack. If not for the \texttt{0} it would try to pop an empty stack. The dummy value must be a \texttt{0} with BIP 147 compliant node implementations~\cite{bip:0147:dummy:zero}.
+	\caption{\textit{ Showing a multisig transaction which require to two signatures out of three to be spent. Note the \texttt{0} in the unlock script, it's there due to a bug with \texttt{OP\_CHECKMULTISIG} which pops an extra item from the stack. If not for the \texttt{0} it would try to pop an empty stack. The dummy value must be a \texttt{0} with BIP 147 compliant \gls{node} implementations~\cite{bip:0147:dummy:zero}.
 	}}
 	\label{fig:cumbersome:script}
 \end{figure} 
@@ -149,7 +149,7 @@ Converting to a P2SH transaction does two things:
 
 	\item It shifts the fee burden from the sender to the recipient. The locking script is shorter, the unlocking script is longer.
 	
-	\item All unspent UTXOs must be kept in the RAM of the node, shifting the burden, thus reducing the node RAM load.
+	\item All unspent UTXOs must be kept in the RAM of the \gls{node}, shifting the burden, thus reducing the \gls{node} RAM load.
 	
 \end{itemize}
 
@@ -197,8 +197,8 @@ The Lightning Network utilize many complex transactions and more will be seen in
 
 \section{Network}
 
-The \gls{bitcoin} network consists of nodes complying with the consensus protocol. In the beginning only the reference implementation available but with the growth of popularity others have implemented independent implementations~\cite{repository:bitcoin, repository:btcd, repository:neutrino}. For the most part,  they validate and propagate transactions and blocks.
+The \gls{bitcoin} network consists of \gls{node}s complying with the consensus protocol. In the beginning only the reference implementation available but with the growth of popularity others have implemented independent implementations~\cite{repository:bitcoin, repository:btcd, repository:neutrino}. For the most part,  they validate and propagate transactions and blocks.
 
 The mining component of nodes has mostly been decoupled from ordinary nodes with the advent of ASIC\footnote{Application Specific Integrated Circuit, in this case hardware that is built only to run \texttt{SHA256}.}. Mining nodes still do everything as an ordinary node does as it needs the transaction history to construct valid block. Non mining nodes validates and propagates blocks and transactions across the network. It allows some benefits in constructing transactions but mainly allows the operator to validate that the network operates as expected instead of trusting that it does.
 
-Construction of transactions does not require running a node and many bitcoin wallets do not operate as a node.
+Construction of transactions does not require running a node and many bitcoin wallets do not operate as a \gls{node}.

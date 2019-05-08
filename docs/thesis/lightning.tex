@@ -7,7 +7,7 @@ The network protocol have been defined~\cite{repository:lightning:rfc} with four
 
 \section{Payment channels}
 
-The Lightning network consists of many payment channels between both routing and non-routing nodes.
+The Lightning network consists of many payment channels between both routing and non-routing \gls{node}s.
 A payment channels is a essentially a transaction containing funds locked up on the bitcoin network. It requires signatures from both parties to be able to spend the transaction and cease the channel.
 
 Initially each party have a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the initial split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
@@ -26,7 +26,7 @@ A payment channel is funded by a funding transaction defined in the lightning pa
 	\item  Broadcast the parent on the blockchain
 \end{enumerate}
 
-It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118~\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction hash of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
+It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118~\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction \gls{hash} of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
 
 \subsection{Commitment Transaction}
 
@@ -114,11 +114,11 @@ It's possible to close a channel by broadcasting either of the latest $CT$s. How
 
 \section{Network wide payments}
 
-By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel to transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle nodes as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(HTLC) for each of the channels in the route.
+By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel to transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle \gls{node}s as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(HTLC) for each of the channels in the route.
 
 \subsection{Hashed Timelock Contract}
 
-A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a hash in a designated time period. 
+A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a \gls{hash} in a designated time period. 
 
 \begin{figure}[hbt!]
 	\centering
@@ -274,7 +274,7 @@ Note that key generation and disclosure may be used for $HTLC$ in the same manne
 
 With properly funded channels and Hashed Timelock Contracts in place network wide payments utilizing multiple channels is possible.
 The network uses a Gossip protocol\footnote{as per BOLT\#7 routing-gossip in Lightning RFC\cite{repository:lightning:rfc}} where
-public channels are broadcast. Each node may then find a path through multiple channels and construct a chain of $HTLC$s with decreasing time locks.
+public channels are broadcast. Each \gls{node} may then find a path through multiple channels and construct a chain of $HTLC$s with decreasing time locks.
 
 Alice wants to pay David but have no direct path to Carol. She finds a route via Bob and Carol to David as seen in figure \ref{fig:multihop}.
 
@@ -295,8 +295,8 @@ After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $
 
 \section{Routing fee}
 
-The routing nodes receives a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in microsatoshi (\textbf{μS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
+The routing \gls{node}s receives a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in microsatoshi (\textbf{μS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
 
 \[ F_{P} = F_{B} + (AF * F_{R} / 1000000) \]
 
-This fee structured is problematic as it doesn't discriminate for channel balance. As this fee structure is very integral to this thesis a proposal to change the protocol regarding this fee structure is made. The proposal is explained in the following chapter and the full proposal is appended in Appendix A. 
+This fee structured does not discriminate for channel balance and it is difficult to 'discount' transactions that 'balance' the network. Reasons for this is given in Chapter 8.  

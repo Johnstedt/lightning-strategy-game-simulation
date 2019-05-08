@@ -1,12 +1,14 @@
 \chapter{Discussion \& Conclusions}
 
-First, there is two points that should be remarked.
+First, there is three points that should be remarked.
  
-1) The topology and efficiency of the \gls{Lightning Network} will form as a product of profitable behavior, bottom up. It will not form from intervention, where a random mesh network is seen as good and the actors aim to fulfill such a model.
+1) The topology and efficiency of the \gls{Lightning Network} will form as a product of profitable behavior, bottom up. It will not form from intervention, where a random mesh network is seen as preferable and the actors aim to fulfill such a model.
  
-2) The behavior regarded in this thesis leads to a sufficiently robust network with short average paths. Strategies that fulfill a valuable niche in the network will be profitable and the emerging real network will probably be more efficient than any man made model could ever be as nodes struggle in the most Darwinian sense to provide liquid paths between paying nodes.
+2) The behavior regarded in this thesis leads to a sufficiently robust network with short average paths. Strategies that fulfill valuable niches in the network will be profitable and the emerging real network will most likely be more efficient than any conceived model as nodes struggle in the most Darwinian sense to provide liquid paths between paying nodes.
 
-\section{Bias}
+3) The revenue distribution is exponential above the 'bankruptcy' level due to inherent properties of networks. This holds true even if all nodes utilize the same strategies and are equally funded. It has been the narrative that the market dynamics would force down the fees towards the operational costs\footnote{Including \textit{time-value-of-money} and the \textit{security-risk-premium}.} - leading to low margins for \gls{node} operators with little overall upside. This is only partially true in that routing fees will be competitive but not that it will lead to a low margin business.  
+
+\section{Limitations with simulation}
 
 
 
@@ -56,7 +58,7 @@ The fees for $P_1$, $P_2$ would be very different with this brackets method.
 
 Here the fees are much larger for the payment that unbalances the channel than the payment that balances it. 
 
-However there are some clear problems with this approach. Every new payment would require each node on the path to rebroadcast the new balance to all other nodes\footnote{As brought up by Andrea Rapitzu.~\cite{raspitzu:fee}}. Which would scale even worse than the Bitcoin bottom layer in message passing. There would also be privacy issues as any observant node could track the payments through balance updates\footnote{As brought up by ZmnSCPxj.~\cite{ZmnSCPxj:fee}}.
+However there are some clear problems with this approach. Every new payment would require each \gls{node} on the path to rebroadcast the new balance to all other nodes\footnote{As brought up by Andrea Rapitzu.~\cite{raspitzu:fee}}. Which would scale even worse than the Bitcoin bottom layer in message passing. There would also be privacy issues as any observant node could track the payments through balance updates\footnote{As brought up by ZmnSCPxj.~\cite{ZmnSCPxj:fee}}.
 
 There is thus no clear way to 'discount' routing in a balancing direction.
 
@@ -70,7 +72,7 @@ Future work might be interesting in many different directions.
 
 As the lightning network protocol is still under development and small changes in the Bitcoin protocol may change the dynamics of which the nodes operate. E.g. It seem probably that funding channels by both parties will be available in the near future. \\
 
-It is difficult to say how universal these results are although surely many strategies suggested herein will still be successful with protocol changes. Each strategy is also dependent on what every other node in the network does. As the network grow - strategies and behavior will change. Thus the practicality of the results of these simulations are very context dependent, with introduction of new strategies, protocol changes etc. will require this model to be gradually updated to remain relevant.  
+It is difficult to say how universal these results are although surely many strategies suggested herein will still be successful with protocol changes. Each strategy is also dependent on what every other \gls{node} in the network does. As the network grow - strategies and behavior will change. Thus the practicality of the results of these simulations are very context dependent, with introduction of new strategies, protocol changes etc. will require this model to be gradually updated to remain relevant.  
 
 \subsection{Network theory}
 
@@ -82,7 +84,7 @@ Much similar to Network Theory, Game theory have been difficult to use in empiri
 
 \subsection{Fee complexity}
 
-The optimal fee price for each edge will most likely be to expensive to calculate in the near future as the network grows. It is not uncertain how much low capacity nodes affect the network and larger operators might be able to simply prune away these nodes before calculation. Another approach is to approximate, calculating the upper and lower bounds with adjustable granularity, akin to tolerance~\cite{goldengorin:jager:tolerance}. 
+The optimal fee price for each edge will most likely be to expensive to calculate in the near future as the network grows. It is not uncertain how much low capacity \gls{node}s affect the network and larger operators might be able to simply prune away these nodes before calculation. Another approach is to approximate, calculating the upper and lower bounds with adjustable granularity, akin to tolerance~\cite{goldengorin:jager:tolerance}. 
 
 \subsection{Empirical gathering}
 
