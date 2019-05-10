@@ -3,14 +3,14 @@
 
 The \gls{Lightning Network} is a network of micro-payment \gls{channel}s on top of the Bitcoin Network. The network was first conceived and defined in 2014~\cite{poon:dryja:lightning:network}, became viable with the segregated witness upgrade~\cite{bip:0141:segwit} and got activated through a \textit{user-activated-soft-fork} in mid 2017~\cite{bip:148:uasf:segwit}. The upgrade moves(segregates) the unlocking script(witness) from the transaction which fixes transaction malleability since multiple unlocking scripts may be valid for a single locking script. 
 
-The network protocol have been defined~\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes~\cite{repository:lnd, repository:eclair, repository:clightning, repository:lit}.
+The network protocol has been defined~\cite{repository:lightning:rfc} with four independent actors implementing protocol compliant nodes~\cite{repository:lnd, repository:eclair, repository:clightning, repository:lit}.
 
 \section{Payment channels}
 
-The Lightning network consists of many payment channels between both routing and non-routing \gls{node}s.
+The Lightning Network consists of many payment channels between both routing and non-routing \gls{node}s.
 A payment channels is a essentially a transaction containing funds locked up on the bitcoin network. It requires signatures from both parties to be able to spend the transaction and cease the channel.
 
-Initially each party have a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the initial split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
+Initially each party has a signed transaction splitting the funds to their original committed amount\footnote{In the RFC each channel is funded by only one party so the initial split is always all to one party.}. The parties can then agree on a different balance signing a new transaction invalidating the previous spending transaction essentially allowing for infinite transactions inside the channel without any burden on the bitcoin network.
 
 \subsection{Funding Transaction}
 
@@ -26,7 +26,7 @@ A payment channel is funded by a funding transaction defined in the lightning pa
 	\item  Broadcast the parent on the blockchain
 \end{enumerate}
 
-It is critical that the signatures of the spending transaction is exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118~\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction \gls{hash} of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
+It is critical that the signatures of the spending transaction are exchanged before the funding transaction otherwise the funds could be held hostage by an uncooperative partner\footnote{This is possible with the \texttt{SIGHASH\_NOINPUT} transaction defined in BIP118~\cite{bip:0118:sighash:noinput} which decouples the signature from the specific transaction \gls{hash} of the output. This is not yet activated and only single source funding is currently available}. By exchanging the spending transaction first either party could broadcast it to retrieve the initial funds.
 
 \subsection{Commitment Transaction}
 
@@ -102,7 +102,7 @@ Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used t
 	\label{fig:RSMC}
 \end{figure}
 
-If we consider a Revocable Sequence Maturity Contract seen in figure \ref{fig:RSMC}, it is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$ Alice need only to disclose the private key corresponding to her revocation public key to Bob for Bob to be able to revoke a violation. 
+Consider a Revocable Sequence Maturity Contract seen in Figure \ref{fig:RSMC}. It is constructed by Alice and she used Bob's master public key to derive Bob's revocation public key in some prearranged manner. To invalidate the $CT$, Alice need only to disclose the private key corresponding to her revocation public key for Bob to be able to revoke a violati`([])on. 
 
 \subsection{Derived revocation address}
 
@@ -142,7 +142,7 @@ A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice 
 A $HTLC$ can be seen in figure \ref{fig:HTLC} and contains two validation paths. 
 
 \begin{enumerate}
-	\item If Bob have the knowledge of R that produces $H_{R}$ he can validate the first path. (Execution)
+	\item If Bob has the knowledge of R that produces $H_{R}$ he can validate the first path. (Execution)
 	\item If Bob fails to prove knowledge of preimage R, Alice may validate the second path after the designated time period has passed. (Timeout)
 \end{enumerate}
 
@@ -178,7 +178,7 @@ Instead the timeout / execution path to oneself is spent into new transactions w
 	\label{fig:alice:HTLC}
 \end{figure}
 
-The $HTLC_{A1}$ seen in figure \ref{fig:alice:HTLC} can only be broadcast by Alice and contains three validation paths:
+The $HTLC_{A1}$ seen in Figure \ref{fig:alice:HTLC} can only be broadcast by Alice and contains three validation paths:
 
 \begin{enumerate}
 	\item Bob can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
@@ -215,7 +215,7 @@ The order of the two last clauses is reversed for Bob's $HTLC_{B1}$ as if Bob ca
 	\label{fig:bob:HTLC}
 \end{figure}
 
-The $HTLC_{B1}$ seen in figure \ref{fig:bob:HTLC} thus contain:
+The $HTLC_{B1}$ seen in Figure \ref{fig:bob:HTLC} thus contain:
 
 \begin{enumerate}
 	\item Alice can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
@@ -223,7 +223,7 @@ The $HTLC_{B1}$ seen in figure \ref{fig:bob:HTLC} thus contain:
 	\item After the designated time Alice can spend the output.
 \end{enumerate}
 
-The new transactions by which both the second clauses spends to is constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $HTLC_{B1}$ in figure \ref{fig:timeout:tx}.
+The new transactions by which both the second clauses spends to is constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $HTLC_{B1}$ in Figure \ref{fig:timeout:tx}.
 
 \begin{figure}[hbt!]
 	
@@ -276,7 +276,7 @@ With properly funded channels and Hashed Timelock Contracts in place network wid
 The network uses a Gossip protocol\footnote{as per BOLT\#7 routing-gossip in Lightning RFC\cite{repository:lightning:rfc}} where
 public channels are broadcast. Each \gls{node} may then find a path through multiple channels and construct a chain of $HTLC$s with decreasing time locks.
 
-Alice wants to pay David but have no direct path to Carol. She finds a route via Bob and Carol to David as seen in figure \ref{fig:multihop}.
+Alice wants to pay David but have no direct path to Carol. She finds a route via Bob and Carol to David as seen in Figure \ref{fig:multihop}.
 
 \begin{figure}[!htb]
 
@@ -291,11 +291,11 @@ Alice wants to pay David but have no direct path to Carol. She finds a route via
 \end{figure}
 
 Alice and David agree on size of the payment and David constructs R and shares $H_{R}$ with Alice. Alice then uses $H_{R}$ to construct a $HTLC_{1}$.
-After Alice have created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn may then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks was improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob paying Carol but without getting payed by Alice. [RFC source of actual time step here?]
+After Alice has created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $HTLC_{2}$ with a $TL_{2}$ < $TL_{1}$ as the only way Carol could redeem $HTLC_{2}$ is by disclosing R to Bob. Bob in turn may then disclose R to Alice and redeem $HTLC_{1}$. If the timelocks were improperly set as $TL_{2}$ > $TL_{1}$ the $HTLC_{1}$ may be invalid by the time Carol redeem $HTLC_{2}$ leaving Bob paying Carol but without getting payed by Alice. [RFC source of actual time step here?]
 
 \section{Routing fee}
 
-The routing \gls{node}s receives a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in microsatoshi (\textbf{μS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
+The routing \gls{node}s receive a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in microsatoshi (\textbf{μS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
 
 \[ F_{P} = F_{B} + (AF * F_{R} / 1000000) \]
 

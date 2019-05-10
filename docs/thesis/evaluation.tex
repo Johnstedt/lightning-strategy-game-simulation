@@ -16,7 +16,7 @@ The Lightning Network may be modeled as a directional Graph $G$ with vertices re
 	\hspace*{2mm}
 \end{figure}
 
-Modeling the network as a graph allows the use of graph theory. Thus routing, concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The topology of both Testnet and Mainnet is visualized in Figure \ref{fig:topology}.
+Modeling the network as a graph allows the use of graph theory. Thus, routing concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The topology of both Testnet and Mainnet are visualized in Figure \ref{fig:topology}.
 
 \section{Fee as a competitive equilibrium}
 
@@ -32,7 +32,7 @@ It may be useful to view the fee market as existing under normal free market pre
 		\hspace*{2mm} 	
 \end{figure}
 
-The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
+Consider Figure \ref{fig:equilibrium}. The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
 
 The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing \gls{node}s joining if its a profitable venture or leaving if its a unprofitable one. Here again driving prices towards equilibrium. 
 
@@ -66,9 +66,9 @@ The operational cost, i.e. electricity and the human labor needed to operate the
 
 There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory(EGT).
 
-In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is an state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
+In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is a state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
 
-Although Lightning nodes doesn't pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
+Although Lightning nodes do not pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
 To evaluate strategies, the game is divided into six categories.
 
@@ -87,7 +87,7 @@ Most categories are quite distinct and natural to separate but there is some amb
 
 Mixing of strategies, e.g behaving 'aggressive' 70\% of the time and 'coy' 30\% of the time, is perfectly reasonable to assume. However convergence to a mixture is equivalent to the population mixture of pure strategies. Any equilibrium with only pure strategies could thus be transposed in to a mixed strategy~\cite{easly:kleinberg:network:crowds:markets}. This conveniently reduces the complexity of the simulation without compromising the results. 
 
-However, the strategies success is dependent on the graph state and thus previously played strategies, this is not the case here. 
+However, the strategies success are dependent on the graph state and thus previously played strategies, this is not the case here. 
 
 \subsection{Non-advertised nodes}
 
@@ -97,7 +97,7 @@ Although this thesis concerns the routing \gls{node}s, the behavior of non-adver
 
 \subsection{Emerging strategies}
 
-The \gls{Lightning Network} consist of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid \gls{node}s be profitable?
+The \gls{Lightning Network} consists of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid \gls{node}s be profitable?
 
 \newpage
 \onecolumn
@@ -122,7 +122,7 @@ To determine the fee price, one could intuitively imagine that and increased fee
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
-Where $\sigma_{sd}$ are all shortest paths from s to d and v is vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
+where $\sigma_{sd}$ are all shortest paths from s to d and v is vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
 
 It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest paths are used are assumed the optimal price for one payment size is given by
 

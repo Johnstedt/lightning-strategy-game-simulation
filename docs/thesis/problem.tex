@@ -20,13 +20,14 @@ A simulation environment was implemented, along with operational strategies. Imp
 \section{Aim}
     \label{sec:aim}
 
-This thesis aim to address following two questions:
+This thesis aims to address following two questions:
 
 	\begin{enumerate}
 		\item How should a \gls{Lightning Network} routing node behave to maximize earnings?
 	
 		\item What network topology will the \gls{Lightning Network} converge towards as routing nodes becomes increasingly efficient?
 		
+		\item Is routing a profitable venture? ..
 		%\item What network topology will the \gls{Lightning Network} converge towards as routing nodes becomes increasingly efficient in terms of degree distribution, robustness and diameter?
 		
 	\end{enumerate}
@@ -38,11 +39,11 @@ This thesis aim to address following two questions:
 	
 	The actual routing in LN has been researched~\cite{distasi:avallone:cononico:routing} and implementations are currently in use~\cite{repository:clightning, repository:lnd, repository:eclair, repository:lit}. Further efficient sharing of routing tables have been proposed~\cite{gunspan:marco:ant}.
 	
-	A similar problem at first glance, the estimation of the on-chain Bitcoin Network Fee has been covered extensively~\cite{mosterland:transaction:fee, houy:transaction:fee}. However it's not applicable, nor is it even similar as a problem set. The Bitcoin Fee problem is far simpler as the competing transaction fees(mem-pool) are known at all times and estimating a fee too low can be corrected by \textit{fee bumping}\footnote{Broadcasting a new transaction spending the same UTXO with a higher fee.} or \textit{child-pay-for-parent}\footnote{Using the unconfirmed parent UTXO in a new transaction, a miner must include the parent tx to be able to mine the child tx and receive the child tx fee.} implementations.
+	A similar problem at first glance, the estimation of the on-chain Bitcoin Network Fee has been covered extensively~\cite{mosterland:transaction:fee, houy:transaction:fee}. However it's neither applicable, nor is it even similar as a problem set. The Bitcoin Fee problem is far simpler as the competing transaction fees(mem-pool) are known at all times and estimating a fee too low can be corrected by \textit{fee bumping}\footnote{Broadcasting a new transaction spending the same UTXO with a higher fee.} or \textit{child-pay-for-parent}\footnote{Using the unconfirmed parent UTXO in a new transaction, a miner must include the parent tx to be able to mine the child tx and receive the child tx fee.} implementations.
 	
-	As the Lightning Network is indeed a network and many problems are yet another incarnation of already solved graph problems. A nodes position in a network has been studied and specifically the measurement of Betweenness Centrality, as introduced by Freeman in 1977~\cite{brandes:betweenness:centrality:algorithm}, lays a sound basis for fee estimation. Calculating paths in graphs is as old as the computing field itself with Floyd-Warshall, Johnson~\cite{johnson:shortest:path:sparse:network} and Dijkstras algorithms all being appropriate here. The attributes of the network as strategies emerges have consequences on throughput and robustness have also been researched in the field of topology. Especially that of scale free networks by Barabasi and Albert~\cite{barabasi:albert:emergent:scaling} is of concern in here.
+	As the Lightning Network is indeed a network and many problems are yet another incarnation of already solved graph problems. A nodes position in a network has been studied and specifically the measurement of Betweenness Centrality, as introduced by Freeman in 1977~\cite{brandes:betweenness:centrality:algorithm}, lays a sound basis for fee estimation. Calculating paths in graphs are as old as the computing field itself with Floyd-Warshall, Johnson~\cite{johnson:shortest:path:sparse:network} and Dijkstras algorithms all being appropriate here. The attributes of the network as strategies emerge have consequences on throughput and robustness have also been researched in the field of topology. Especially that of scale free networks by Barabasi and Albert~\cite{barabasi:albert:emergent:scaling} is of concern here.
 	
-	Emergence of equilibria as the product of strategies of competing actors is neither new or rare in the fields of Evolutionary Biology nor Economics. Ideas as the Standard Price Theory, Evolutionary Stable Strategies and more widely Game Theory has aided in the formulation of the thesis and construction of the simulations.
+	Emergence of equilibria as the product of strategies of competing actors is neither new or rare in the fields of evolutionary biology nor Economics. Ideas as the Standard Price Theory, Evolutionary Stable Strategies and more widely Game Theory has aided in the formulation of the thesis and construction of the simulations.
 	
 	Lastly, \gls{bitcoin} and off-chain proposals have opened a plethora of possible research topics in which plentiful are ongoing and active.  
 	
@@ -52,15 +53,15 @@ This thesis aim to address following two questions:
 	
 \section{Structure}
 
-This thesis is divided into 8 chapters, including this one. The first three chapters gives a wide overview of money, Bitcoin and the \gls{Lightning Network}. Chapters 6 and 7 aims to answer the thesis question by formulating, evaluating and simulating routing strategies. The last chapter 8 discusses the results, conclusions are drawn and elaborates on future work.
+This thesis is divided into eight chapters, including this one. The first three chapters give a wide overview of money, Bitcoin and the \gls{Lightning Network}. Chapters 6 and 7 aim to answer the thesis question by formulating, evaluating and simulating routing strategies. The last chapter 8 discusses the results, draws conclusions and elaborates on future work.
 
 \begin{enumerate}
 	\item \textbf{Introduction} introduces the thesis.
 	\item \textbf{Macroeconomics} gives a wide background to currencies and systems built on trust. 
-	\item \textbf{The Bitcoin Network} chapter introduces the basic \gls{bitcoin} architecture, answers how trust is solved and describes Bitcoin script as it allows further development no top of the base protocol.
+	\item \textbf{The Bitcoin Network} chapter introduces the basic \gls{bitcoin} architecture and answers how trust is solved and describes Bitcoin script as it allows further development no top of the base protocol.
 	\item \textbf{Scaling Bitcoin} describes historical attempts to scale Bitcoin and the merit of a wide array of scaling solutions.
-	\item \textbf{The \gls{Lightning Network}} chapter introduces the most fundamental parts of the Lightning protocol.
+	\item \textbf{The \gls{Lightning Network}} chapter introduces the most fundamental parts of the Lightning Network protocol.
 	\item \textbf{Evaluation} reduces the Lightning Network to a manageable problem set, formulates strategies and measurements and suggests how these strategies may be evaluated.
-	\item \textbf{Results} shows the simulated results of the strategies and their effect on network as a whole in terms of throughput, efficiency and robustness.
-	\item \textbf{Discussion and Conclusions} Processes the results, draws conclusions and ties them into the wider ecosystem. The consequences and viability of the Lightning Network is elaborated and future work discussed.
+	\item \textbf{Results} show the simulated results of the strategies and their effect on network as a whole in terms of throughput, efficiency and robustness.
+	\item \textbf{Discussion and Conclusions} processes the results, draws conclusions and ties them into the wider ecosystem. The consequences and viability of the Lightning Network are elaborated and future work is discussed.
 \end{enumerate}

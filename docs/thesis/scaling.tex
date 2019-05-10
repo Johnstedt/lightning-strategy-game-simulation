@@ -51,7 +51,7 @@ One of the earliest attempts to increase the block size was when node Bitcoin XT
 	\hspace*{-0.7cm} 
 	\centering
 	\includegraphics[width=8cm]{external/Bitcoin_XT_Nodes.png}
-	\caption{\textit{Historic Bitcoin XT node count. As of 2019-02-25 only 3 nodes are still active. Data retrieved from coin.dance~\cite{coin:dance}.}}
+	\caption{\textit{Historic Bitcoin XT node count. As of 2019-02-25 only three nodes are still active. Data retrieved from coin.dance~\cite{coin:dance}.}}
 	\label{fig:xt_nodes}
 	\hspace*{2mm} 	
 \end{figure}
@@ -60,7 +60,7 @@ As figure \ref{fig:xt_nodes} attests, bitcoin XT and classic failed to receive s
 
 \subsection{The Bitcoin Cash saga}
 
-The failures of Bitcoin Classic was just the beginning of the scaling debate. The proposal of Segregated Witness~\cite{bip:0141:segwit} was met with strong opposition as it was considered an overtly complicated and risky upgrade when the block limit could simply be increased. 
+The failures of Bitcoin Classic were just the beginning of the scaling debate. The proposal of Segregated Witness~\cite{bip:0141:segwit} was met with strong opposition as it was considered an overtly complicated and risky upgrade when the block limit could simply be increased. 
 
 Segregated Witness is in a way an increase in block space as it moves the unlocking script(witness) from the transaction to its own structure. Since each transaction takes up less space, more transactions fit in each block. The upgrade also addresses malleability, which many off-chain solutions require, and aligns economics incentives with resource costs~\cite{antonopoulos:segregated:witness:align:economic:incentives}. Although its possible to implement Lightning without a malleability fix, it increases its viability~\cite{song:lightning:malleability}.
 
