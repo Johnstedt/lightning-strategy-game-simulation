@@ -242,7 +242,7 @@ Therefor the policies determining by which preferences each \gls{node} takes int
 
 Random graphs have been studied extensively, specifically the Erdős–Rényi model~\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
-Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to the $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to LN as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the \gls{degree distribution} compared to that of Erdős–Rényi as it's exponential given as
+Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to the Lightning Network as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the \gls{degree distribution} compared to that of Erdős–Rényi as it's exponential given as
 
 \begin{equation}
 	p(k) = \dfrac{(2\delta)^k}{(1 + 2\delta)^{k+1}} 
@@ -270,7 +270,7 @@ Thus adding an age bias causes the characteristics of the \gls{degree distributi
 \end{figure}
 
 A more appropriate random model may be to consider $G_{n,m}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices and creates and edges when t < n. The probability of any previous vertex $i$ being selected is thus $p_i = \dfrac{m}{t_i}$. 
-As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a \gls{node} creates edges as part of joining the network.
+As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a \gls{node} creates edges as part of joining the network. $G_{n,m}$ would also have an exponential degree distribution.
 
 %[p(k) =  \begin{cases}
 %& \prod_{i=1}^{k} 1 - \sum_{j=1}^{n-1} m \dfrac{1}{n^2},~\text{if}~m<k\\
