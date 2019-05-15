@@ -226,6 +226,7 @@ The combinatorial optimization problem may be solved similarly as before but wit
 This is however still a NP-hard problem and network growth will eventually make an exact solution infeasible. 
 
 \subsection{Convert to probabilistic model}
+\label{probabilistic}
 
 It is cumbersome to calculate the optimal price for all edges; for simulation purposes it is completely infeasible. 
 
@@ -459,6 +460,8 @@ given a scalar $s$ by which the bias can by adjusted.
 Each \gls{node} can define how high the utility value must be to consider to re-balancing the channel by routing a payment to oneself.
 
 \section{Funding and allocation strategies}
+
+The funding available to a node and the amount allocated to each channel strategies are easily defined by an integer. Funding may to some extent rely on external factors, but most likely a node reaches a point were it may be profitable to start a second node instead of increasing the funding on the first one. Allocation clearly depends on the average size of payments. The two categories together determines the amount of open channels. 
 
 \section{Simulation}
 

@@ -34,6 +34,6 @@ def simulations(directory):
 
 
 if __name__ == "__main__":
-	simulations("barabasi_random")
+	simulations("edge-balance_test")
 
 
