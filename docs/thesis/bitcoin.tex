@@ -3,6 +3,8 @@
 
 \gls{bitcoin} is a peer-to-peer electronic cash system without any trusted third party and was described by Satoshi Nakamoto in October 2008~\cite{nakamoto:bitcoin}. The name Bitcoin refers to both the operating network of \gls{node}s and the system's native currency. The network and protocol are usually refereed to with a large B, Bitcoin, and the currency with a small b, bitcoin.\footnote{While it's convention to not capitalize currencies in the English language, it's not widely followed in mainstream or semi-mainstream outlets. Also the plural form of currencies is equivalent to the singular. The convention will be followed in this report.}
 
+\vspace*{-0.5cm}
+
 \section{Digital Signatures}
 
 Part of the solution is provided by one way asymmetric encryption utilizing the \texttt{secp256k1} elliptic curve. Asymmetric encryption or public-key encryption allows the generation of key pairs with the ability to derive a public key from a private key without the ability to derive the private key from the public key and the ability to prove ownership of the private key through signatures without disclosing the private key. Ownership and expenditure of bitcoin are proved by signing a previous transaction output payable to the public key derived bitcoin address\footnote{A bitcoin address is derived from the public key by \gls{hash}ing the public key with both \texttt{SHA256} and \texttt{RIPEMD160}} with the accompanying private key.\footnote{This part of the solution has been suggested many times before, earliest 1983~\cite{chaum:blind:signatures}}
@@ -19,9 +21,11 @@ Part of the solution is provided by one way asymmetric encryption utilizing the 
 
 Bitcoin is essentially a long ledger of inputs and outputs. Note that the whole output must be spent in the same transaction and usually there is an output leading back to an address the spender controls with the 'change'. The sum of all the inputs and the sum of all the outputs usually do not line up, the differential is the implicit miners fee the miner receives if the transaction is included in a block. 
 
+\vspace*{-0.5cm}
+
 \section{The Double-Spending problem}
 
-While digital signatures are able prove ownership of bitcoin, there is nothing to stop the owner of an amount of bitcoin to sign two different transactions spending the same transaction output and broadcasting them to different parts of the network. This is called the double-spending problem which is a variation of the more general Byzantine Generals Problem~\cite{lamport:shostak:byzantine:generals}.
+While digital signatures are able prove ownership of bitcoin, there is nothing to stop the owner of an amount of bitcoin to sign two different transactions spending the same transaction output and broadcasting them to different parts of the network. This is called the double-spending problem\footnote{At least known before 1993, mentioned in multiple articles in Advances in Cryptology - CRYPTO '93 e.g brands~\cite{crypto-1993-1108}. } which is a variation of the more general Byzantine Generals Problem~\cite{lamport:shostak:byzantine:generals}.
 
 %\subsection{Proof-of-Work}
 
@@ -34,7 +38,7 @@ The \textit{Proof-of-work} algorithm is directly tied into the bitcoin transacti
 	\hspace*{-0.4cm} 
 	\centering
 	\includegraphics[width=9cm]{images/blockchain.png}
-	\caption{\textit{Three blocks linked by the hash of the previous block's header(\gls{blockchain}). The content in the header is immutable and can't be replaced without redoing \textit{Proof-of-work}.
+	\caption{\textit{Three blocks linked by the hash of the previous block's header(\gls{blockchain}). The content in the header is immutable and can't be replaced without redoing the \textit{Proof-of-work}.
 	}}
 	\label{fig:blockchain}
 	\hspace{2mm} 

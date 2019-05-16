@@ -8,13 +8,15 @@ def simulations(directory):
 
 	histories = []
 	graphs = []
+	fail = []
 
 	env = json.loads(open("presets/{}.json".format(directory), "r").read())
 
 	for i in range(10):
-		h, g = simulation.simulate(env)
+		h, g, failures = simulation.simulate(env)
 		histories.append(h)
 		graphs.append(g)
+		fail.append(failures)
 
 	if not os.path.exists("plots/{}".format(directory)):
 		os.mkdir("plots/{}".format(directory))
@@ -32,8 +34,10 @@ def simulations(directory):
 	plot.plot_robustness_random(undirected, 10, directory)
 	plot.plot_robustness_coordinated(undirected, 7, directory)
 
+	print(fail)
+
 
 if __name__ == "__main__":
-	simulations("edge-balance_test")
+	simulations("funding_test_private_random")
 
 

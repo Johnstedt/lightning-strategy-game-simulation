@@ -32,13 +32,13 @@ It may be useful to view the fee market as existing under normal free market pre
 		\hspace*{2mm} 	
 \end{figure}
 
-Consider Figure \ref{fig:equilibrium}. The demand curve DD' signifies users demand to utilize a shortest path in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
+Consider Figure \ref{fig:equilibrium}. The demand curve DD' signifies users demand to utilize a shortest \gls{path} in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
 
 The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing \gls{node}s joining if its a profitable venture or leaving if its a unprofitable one. Here again driving prices towards equilibrium. 
 
 It may be unusual to view demand through the usage of its medium, their is of course a dimension here between payment systems. But there's also a the possibility of streamable payments where the say one's rent might be paid hourly or a documentary per second dependent on the fee price. With a decreased fee these payments becomes more viable driving demand.
 
-The cost of procuring a shortest path between $s$ and $d$ might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes and still procuring sufficient high fees.
+The cost of procuring a shortest \gls{path} between $s$ and $d$ might not be equal for two different routing nodes dependent on already existing paths and set strategies. The viability of a strategy is in essence determined in its ability to be included in shortest paths between nodes and still procuring sufficient high fees.
 
 \section{Fee floor}
 
@@ -91,7 +91,7 @@ However, the strategies success are dependent on the graph state and thus previo
 
 \subsection{Non-advertised nodes}
 
-The network is not only made up of actors, or players, trying to maximize profit. But also, of course, of nodes wanting to utilize the network as a payment medium. Since routing requires a bit of commitment, regular users can open private channels and not broadcast these to the rest of the network. These non-advertised nodes have other priorities than profit, as it doesn't receive any fees, like having highly liquid paths to many nodes. It may also be worth deviating from the shortest payment paths to increase privacy and paying a higher fee than necessary.
+The network is not only made up of actors, or players, trying to maximize profit. But also, of course, of nodes wanting to utilize the network as a payment medium. Since routing requires a bit of commitment, regular users can open private channels and not broadcast these to the rest of the network. These non-advertised nodes have other priorities than profit, as it doesn't receive any fees, like having highly liquid \gls{path}s to many nodes. It may also be worth deviating from the shortest payment paths to increase privacy and paying a higher fee than necessary.
 
 Although this thesis concerns the routing \gls{node}s, the behavior of non-advertised affect the routing nodes. If non-advertised nodes prefer to open channels with high capacity nodes, in attempt to receive high liquid paths, it would be preferred to have high capacity for a routing node.  
 
@@ -118,13 +118,13 @@ The \gls{Lightning Network} consists of nodes, each utilizing different strategi
 
 \section{Optimal fee price}
 
-To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other paths may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}~\cite{freeman:betweenness:centrality} and defined it as
+To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other \gls{path}s may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}~\cite{freeman:betweenness:centrality} and defined it as
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
 where $\sigma_{sd}$ are all shortest paths from s to d and v is vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
 
-It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest paths are used are assumed the optimal price for one payment size is given by
+It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest \gls{path}s are used are assumed the optimal price for one payment size is given by
 
 \[ x_{opt} \textrm{ is the optimal price } iff \]
 
@@ -165,7 +165,7 @@ Efficient algorithms for edge betweenness centrality have been developed~\cite{b
 Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
 \begin{enumerate}
-	\item Calculate the shortest path from all-to-all vertices without going through $e$ with either Floyd-Warshall~\cite{bakhtiar:floyd:warshall} or Johnson~\cite{johnson:shortest:path:sparse:network} obtaining table A.
+	\item Calculate the shortest \gls{path} from all-to-all vertices without going through $e$ with either Floyd-Warshall~\cite{bakhtiar:floyd:warshall} or Johnson~\cite{johnson:shortest:path:sparse:network} obtaining table A.
 	\item Calculate shortest path from the source of $e$, $V$-to-all explicitly going through $e$ with Dijkstra obtaining table D where $e$ weight set to 0.
 	\item Retrieve the difference for all pairs between the all-to-all distance with the all-to-$V$-to-all distance, A[s][d] - (A[s][V] + D[d]). Throw away the negative values and produce a cumulative summation over the differences in a table H.
 	\item Select $x_{opt}$ such that \[ \forall x (x H(x)) \leq x_{opt} H(x_{opt}) \]
@@ -185,7 +185,7 @@ depends on both edges and vertices.
 \subsection{Cost function}
 
 As the previous solution naively assumes a fixed payment size, it's altered to encompass a payment size distribution.
-The fee is proportional to the size of the payment, $F_B + F_P S$, thus the shortest path may be different for two different payment sizes. 
+The fee is proportional to the size of the payment, $F_B + F_P S$, thus the shortest \gls{path} may be different for two different payment sizes. 
 The problem is thus a combinatorial optimization problem,
 
 \begin{equation*}
@@ -207,7 +207,7 @@ where $\Omega_{abe}(x, y, \phi)$, and $\sigma_{ab}(\phi)$ is given by
 	\sigma_{ab}(\phi) = \Bigg( \sum_{c \in \sigma_{ab}} c_b + c_p\phi \Bigg)
 \end{equation*}
 
-where $\rho(\phi)$ is the fraction of payments size $\phi$. $e_s$, $e_d$ is edge source and destination \gls{node}s. $\sigma_{ab}$ is the edge set of the shortest path without going through $e$. $\overline{\overline{\sigma_{ab}}}$ is the number of paths equally short with the shortest path.
+where $\rho(\phi)$ is the fraction of payments size $\phi$. $e_s$, $e_d$ is edge source and destination \gls{node}s. $\sigma_{ab}$ is the edge set of the shortest path without going through $e$. $\overline{\overline{\sigma_{ab}}}$ is the number of paths equally short with the shortest \gls{path}.
 
 The function over $F_B$, $F_P$ in $f(x,y)$ follows the same pattern as over $F$ and is shown in Figure \ref{fig:cost:function:space}.
 
@@ -221,7 +221,7 @@ The function over $F_B$, $F_P$ in $f(x,y)$ follows the same pattern as over $F$ 
 	\hspace*{2mm} 
 \end{figure}
 
-The combinatorial optimization problem may be solved similarly as before but with a modified Floyd-Warshall. Instead of the weights being integers, the weights are linear cost functions. For each new path the cumulative cost functions of edges in the paths are compared. If both $m$ and $k$ are greater than any previous found path it can be thrown away. If either $m$ or $k$ is greater their intersection can be stored as an index. If the intersections are stored in order only a logarithm of previously found paths need to be compared in the worst case. This finds all the shortest paths for each \gls{node} pair over all transaction sizes. The paths may then be adjusted over intersection distance and payment size frequency, giving the optimal price.
+The combinatorial optimization problem may be solved similarly as before but with a modified Floyd-Warshall. Instead of the weights being integers, the weights are linear cost functions. For each new path the cumulative cost functions of edges in the paths are compared. If both $m$ and $k$ are greater than any previous found path it can be thrown away. If either $m$ or $k$ is greater their intersection can be stored as an index. If the intersections are stored in order only a logarithm of previously found paths need to be compared in the worst case. This finds all the shortest paths for each \gls{node} pair over all transaction sizes. The \gls{path}s may then be adjusted over intersection distance and payment size frequency, giving the optimal price.
 
 This is however still a NP-hard problem and network growth will eventually make an exact solution infeasible. 
 
@@ -237,7 +237,7 @@ The price range given for an edge of well connected \gls{node} used as a probabi
 Setting fee price is only one aspect of a routing \gls{node}, maybe more importantly is that of opening and closing channels.
 As the protocol now stands\footnote{Is very plausible that that BIP66 may be activated allowing multi-sourced channels~\cite{bip:0118:sighash:noinput}} it only allows for single source funding of channels. There is a non negligible cost to opening channels and it would be very beneficial for a node if other nodes opened channels with it instead of the other way around. This is also a prerequisite to earn profit as otherwise the \gls{node} may only earn back its own funding. 
 
-Therefor the policies determining by which preferences each \gls{node} takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest path and robustness in case of node failures.
+Therefor the policies determining by which preferences each \gls{node} takes into account to open channels is of interest. Further these policies also affects the topology of the network, the average shortest \gls{path} and robustness in case of node failures.
 
 \subsection{Traditional random models}
 
@@ -412,7 +412,7 @@ The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure}
 
 \subsection{Average shortest path}
 
-Each additional hop required in a payment path decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. \gls{node} compatibility and protocols levels below to fail. The average path growths at the same rate as the diameter, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
+Each additional hop required in a payment \gls{path} decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. \gls{node} compatibility and protocols levels below to fail. The average path growths at the same rate as the diameter, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
 
 \[ \ell \sim d \approx \dfrac{ln~N}{ln~pN} \]
 
@@ -424,7 +424,7 @@ The average path can be gathered empirically with Floyd-Warshall or Johnson,
 
 \[ \ell = \dfrac{\sum_{i \neq j} \sigma_{ij}}{N(N-1)} \]
 
-where $\sigma_{ij}$ is the length of the shortest path between $i$ and $j$.
+where $\sigma_{ij}$ is the length of the shortest \gls{path} between $i$ and $j$.
 
 \section{Re-balancing channels}
 
@@ -444,7 +444,7 @@ where $B_{1S}$, $B_{2S}$ are the states of the out and in channels and $B_{1M}$,
 
 \[f_c(L) = \sum_{i=1}^{n} B_i + P_iL \]
 
-with $B_i$ is the base fee, $P_i$ is the proportional fee for \gls{node} $i$ in path $c$.
+with $B_i$ is the base fee, $P_i$ is the proportional fee for \gls{node} $i$ in \gls{path} $c$.
 
 \subsection{Edge biased displacement}
 \label{sec:edge:bias:displacement}

@@ -312,7 +312,7 @@ def plot_multiple_histories(histories, directory):
 	plt.clf()
 	fig, ax = plt.subplots()
 	ax.set_xlabel("$Days$")
-	ax.set_ylabel("$Average Population$")
+	ax.set_ylabel("$Average-Population$")
 
 	#print(histories)
 

@@ -83,6 +83,36 @@ def random_strategy(g, n, m, env, day):
 	return True
 
 
+def random_biased_strategy(g, n, m, env, day):
+
+	if m >= len(g.nodes):
+		targets = g.nodes()
+	else:
+		targets = random.sample([k for k in g.nodes() if g.nodes[k]["public"]], m)
+
+		nodes = len(g.nodes)
+
+		capacity = [g.nodes[u]["original_funding"] for u in g.nodes()]
+		tot = sum(capacity)
+		normalized = [x / tot for x in capacity]
+
+		targets = numpy.random.choice(g.nodes, m, p=normalized)
+
+	g.add_node(n["nodeid"], **n)
+
+	channels = [create_channel(n, target_id, n['public']) for target_id in targets]
+	g.add_edges_from(zip([n["nodeid"]] * m, targets, channels))
+
+	channels = [create_channel(g.nodes[target_id], n['nodeid'], n['public']) for target_id in targets]
+	g.add_edges_from(zip(targets, [n["nodeid"]] * m, channels))
+
+	for s in range(m):
+		reduce_funding(g, n["nodeid"], env)
+		remove_profit(g, n["nodeid"], env['environment']['fee'], day)
+
+	return True
+
+
 def hassan_islam_haque(g, n, m, env, day):
 
 	if m >= len(g.edges):
@@ -204,5 +234,6 @@ def switch(policy):
 		"barabasi_albert": barabasi_albert,
 		"random": random_strategy,
 		"hassan_islam_haque": hassan_islam_haque,
-		"inverse_barabasi_albert": inverse_barabasi_albert
+		"inverse_barabasi_albert": inverse_barabasi_albert,
+		"fitness": random_biased_strategy,
 	}[policy]

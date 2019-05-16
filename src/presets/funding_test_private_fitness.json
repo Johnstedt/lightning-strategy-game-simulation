@@ -1,0 +1,79 @@
+{
+  "routing_nodes": [
+    {
+      "name": "Rich",
+      "attachment_strategy": "random",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "neutral",
+      "price_model": "price_models/barabasi_3_cycle.json",
+      "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+      "funding_strategy": 240000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 0.25
+    },
+    {
+      "name": "Upper_Middle",
+      "attachment_strategy": "random",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "neutral",
+      "price_model": "price_models/barabasi_3_cycle.json",
+      "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+      "funding_strategy": 120000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 0.25
+    },
+    {
+      "name": "Lower_Middle",
+      "attachment_strategy": "random",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "neutral",
+      "price_model": "price_models/barabasi_3_cycle.json",
+      "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+      "funding_strategy": 60000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 0.25
+    },
+    {
+      "name": "Poor",
+      "attachment_strategy": "random",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "neutral",
+      "price_model": "price_models/barabasi_3_cycle.json",
+      "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+      "funding_strategy": 30000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 0.25
+    }
+  ],
+  "private_nodes": [
+    {
+      "name": "give-me-liquidity",
+      "attachment_strategy": "fitness",
+      "timing_strategy": {"name": "close_avg_bankruptcy"},
+      "price_strategy": "random",
+      "price_model": "price_models/barabasi.json",
+      "rebalance_strategy": {"name": "sanity_check"},
+      "funding_strategy": 50000000,
+      "allocation_strategy": 10000000,
+      "initial_distribution": 1
+    }
+  ],
+  "environment": {
+    "payments_distribution": "uniform_all",
+    "initial_nodes": 250,
+    "payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
+    "initial_private_nodes": 100,
+    "payments_per_step": 1000,
+    "risk_free_rent": 0.07,
+    "risk_premium": 0.05,
+    "operational_cost": 200000,
+    "immunity_period": 5,
+    "new_nodes_per_step": 2,
+    "changed_private_per_step": 0,
+    "new_nodes_policy": "mirror",
+    "new_node_quantity": "percentage",
+    "time_steps": 500,
+    "fee": 10000,
+    "initial_mode": "exact"
+  }
+}

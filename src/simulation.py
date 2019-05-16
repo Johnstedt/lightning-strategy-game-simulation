@@ -49,7 +49,8 @@ def create_node(settings, immunity, day, public=True):
 		"funding": settings["funding_strategy"],
 		"original_funding": settings["funding_strategy"],
 		"public": public,
-		"born": day
+		"born": day,
+		"payment_failures": 0
 	}
 
 
@@ -77,6 +78,8 @@ def simulate(env):
 
 	print_alive_nodes(g, env)
 
+	total_non_advertised_failures = 0
+
 	history = OrderedDict()
 	for node in env["routing_nodes"]:
 		history[node["name"]] = [0] * (env['environment']['time_steps'])
@@ -86,7 +89,8 @@ def simulate(env):
 		add_survival_history(g, history, day)
 		reset_day(g, day)
 		for j in range(env['environment']['payments_per_step']):
-			route_payments_all_to_all(g, env, day)
+			if not route_payments_all_to_all(g, env, day):
+				total_non_advertised_failures += 1
 
 		network_probability_node_creation(g, env, day)
 		check_for_bankruptcy(g, env)
@@ -98,7 +102,7 @@ def simulate(env):
 	print_alive_nodes(g, env)
 	plot.plot_survival_history(history, [])
 
-	return history, g
+	return history, g, total_non_advertised_failures
 
 
 def build_environment(env, g):
@@ -153,12 +157,18 @@ def route_payments_all_to_all(g, env, day):
 		dest = random.sample(g.nodes, 1)[0]
 
 	routers = create_liquid_route(g, source, dest, size)
+
 	if not routers:
-		return
+		if not g.nodes[source]["public"]:
+			g.nodes[source]["payment_failures"] += 1
+			return False
+		else:
+			return True
 	else:
 		offset_liquidity(g, routers, size)
 		routers.remove(source)
 		pay_routers(g, routers, day, size)
+		return True
 
 
 def is_path_liquid(g, routers, amount):
