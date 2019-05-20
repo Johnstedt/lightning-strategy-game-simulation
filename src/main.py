@@ -38,6 +38,6 @@ def simulations(directory):
 
 
 if __name__ == "__main__":
-	simulations("funding_test_private_random")
+	simulations("edge_vs_linear")
 
 

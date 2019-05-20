@@ -37,10 +37,14 @@ The different attachment strategies, excluding biases, were simulated against ea
 
 \section{Funding}
 
-A simulation with four different level of funding was simulated. Each increasing step had twice the funding. The results seen in Figure \ref{fig:funding} suggests that it may be advantageous to be an outlier. Since allocation per channel is equal, this essentially hints at difference in amounts of open channels.
+A simulation with four different level of funding was simulated. Each increasing step had twice the funding. The results seen in Figure \ref{fig:funding} suggests that it may be advantageous to be an outlier. Since allocation per channel is equal, this also hints at the optimal amounts of open channels.
+
+However, if the non-advertised nodes would have a fitness attachment selection favoring nodes with high capacity - the well-funded nodes would be highly advantageous as seen in Figure [].  
+
+\newpage
 
 \begin{figure}[!htb]
-	%\hspace*{-1cm}\
+	\hspace*{-0.7cm}\
 	\centering
 	\includegraphics[width=9cm]{images/histories_deviation_fund.png}
 	\caption{ Displays the node count and node count average with one standard deviation for four different levels of funding. All other strategies being equal.
@@ -49,20 +53,54 @@ A simulation with four different level of funding was simulated. Each increasing
 	\hspace*{2mm} 
 \end{figure}
 
+\newpage
 
-(preferential attachment)
+\section{Re-balancing channels}
 
-(funding)
+The two different re-balancing  strategies were tried with various level of aggressiveness. The strategies were first simulated separately and then the best level of aggressiveness of each strategy were simulated. 
 
-(open close)
+\begin{figure}[!htb]
+	\hspace*{-0.7cm}\
+	\centering
+	\includegraphics[width=9cm]{images/histories_linear.png}
+	\label{fig:funding}
+	\hspace*{2mm} 
+\end{figure}
+\vspace*{-1cm}
+\begin{figure}[!htb]
+	\hspace*{-0.7cm}\
+	\centering
+	\includegraphics[width=9cm]{images/histories_edge.png}
+	\caption{ The above Figure shows the linear displacement strategy with different aggressiveness. While the Figure below shows the edge displacement strategy with different level of bias towards the edge. They look rather similar. They also have a little overall importance, as they all do quite well.
+	}
+	\label{fig:funding}
+	\hspace*{2mm} 
+\end{figure}
 
-(degree distribution)
-(profit distribution)
+\section{Revenue distribution}
 
-(re-balance channel)
+To explore the innate distribution of the network, only one set of strategies was simulated. Every routing node behaved exactly the same, as it would be the case were the distribution would be expected to be the least extreme. Hence, the extreme tendency here in Figures \ref{fig:path}, \ref{fig:same} suggest that the real distribution would be at least this extreme.   
 
-(combined best strategies)
+\begin{figure}[!htb]
+	\hspace*{-0.7cm}\
+	\centering
+	\includegraphics[width=9cm]{images/wealth_distribution_path.png}
+	\caption{ Shows the four different simulations separate. Aggregated over two simulations each. Note that environment variables are equal and shows that a broader selection bias supports more nodes. Barabasi-Albert and Hassan-Islam-Haque having a high selection bias towards and few nodes. Random have no bias at al except for time and supports more nodes. Inverse-Barabasi-Albert has an inverse selection bias and subsequently support the most nodes. 
+	}
+	\label{fig:path}
 
-(is strategy set stable from invasion)
+\end{figure}
 
-(external pressures, payment pressure, routing / private channels.)
+\begin{figure}[!htb]
+	\vspace{-3cm}
+	%\hspace*{-1cm}\
+	\centering
+	\includegraphics[width=9cm]{images/wealth_distribution_same.png}
+	\caption{ Shows
+	}
+	\label{fig:same}
+	\hspace*{2mm} 
+\end{figure}
+
+The exponential distribution is akin to previously mentioned Pareto Principle, although in Figures \ref{fig:path}, \ref{fig:same} 20\% of the network account for 60\% of the gross revenue. Note that if profit / net revenue where considered the quotient would be larger. The distribution shown here is in line with the wealth distribution in countries~\cite{credit:swiss:distribution}.
+

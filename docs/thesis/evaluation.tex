@@ -465,11 +465,9 @@ The funding available to a node and the amount allocated to each channel strateg
 
 \section{Simulation}
 
-The aforementioned strategies and a simulation environment were implemented in python 3.5 with extensive use of the Networkx library.
+The aforementioned strategies and a simulation environment were implemented in python 3.6 with extensive use of the Networkx library. Environment variables and strategies are detailed in \ref{chapter:strategies}. 
 
-The environment variables are tunable,  
-
-and each players chosen strategies can be changed in a higher level configure file. Each strategy is discussed in detail in Appendix \ref{chapter:strategies} as well how a game may be created and simulated from altering the input file. Each set of strategies, under certain network dynamics may then be put into the same network to see which are stable and which are not. Similarly the emerging network is studied as successful strategies becomes more numerous at the hand of unsuccessful ones. 
+Actors were given a set of strategies, one per category. For each time step a number of transactions were routed through the network, the fees were distributed to the nodes in the route and liquidity displaced. If a node received to little fees in relation to the liquidity it provided, it would go 'bankrupt' and be removed from the pool before the next time step. Each time step a number of new nodes would join. The strategies the new node utilize would be proportional to the actors already present in the network. Non-advertised nodes may also be in the network, they never route or go bankrupt, but may receive or send the initial payment. Otherwise the utilize the same strategies as the routing nodes. The simulation does not require non-advertised nodes and are not used in all simulations in the next Chapter. 
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf
 

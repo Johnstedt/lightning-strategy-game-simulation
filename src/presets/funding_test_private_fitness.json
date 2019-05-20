@@ -7,7 +7,7 @@
       "price_strategy": "neutral",
       "price_model": "price_models/barabasi_3_cycle.json",
       "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
-      "funding_strategy": 240000000,
+      "funding_strategy": 240320000,
       "allocation_strategy": 10000000,
       "initial_distribution": 0.25
     },
@@ -18,7 +18,7 @@
       "price_strategy": "neutral",
       "price_model": "price_models/barabasi_3_cycle.json",
       "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
-      "funding_strategy": 120000000,
+      "funding_strategy": 120240000,
       "allocation_strategy": 10000000,
       "initial_distribution": 0.25
     },
@@ -29,7 +29,7 @@
       "price_strategy": "neutral",
       "price_model": "price_models/barabasi_3_cycle.json",
       "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
-      "funding_strategy": 60000000,
+      "funding_strategy": 60160000,
       "allocation_strategy": 10000000,
       "initial_distribution": 0.25
     },
@@ -40,7 +40,7 @@
       "price_strategy": "neutral",
       "price_model": "price_models/barabasi_3_cycle.json",
       "rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
-      "funding_strategy": 30000000,
+      "funding_strategy": 30080000,
       "allocation_strategy": 10000000,
       "initial_distribution": 0.25
     }
@@ -60,12 +60,12 @@
   ],
   "environment": {
     "payments_distribution": "uniform_all",
-    "initial_nodes": 250,
+    "initial_nodes": 200,
     "payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
-    "initial_private_nodes": 100,
-    "payments_per_step": 1000,
-    "risk_free_rent": 0.07,
-    "risk_premium": 0.05,
+    "initial_private_nodes": 80,
+    "payments_per_step": 800,
+    "risk_free_rent": 0.10,
+    "risk_premium": 0.07,
     "operational_cost": 200000,
     "immunity_period": 5,
     "new_nodes_per_step": 2,
