@@ -53,17 +53,15 @@ However, if the non-advertised nodes would have a fitness attachment selection f
 	\hspace*{2mm} 
 \end{figure}
 
-\newpage
-
 \section{Re-balancing channels}
 
-The two different re-balancing  strategies were tried with various level of aggressiveness. The strategies were first simulated separately and then the best level of aggressiveness of each strategy were simulated. 
+The two different re-balancing  strategies were tried with various level of aggressiveness. The strategies were first simulated separately and then the best level of aggressiveness of each strategy were simulated again against each other.
 
 \begin{figure}[!htb]
 	\hspace*{-0.7cm}\
 	\centering
 	\includegraphics[width=9cm]{images/histories_linear.png}
-	\label{fig:funding}
+	\label{fig:linear}
 	\hspace*{2mm} 
 \end{figure}
 \vspace*{-1cm}
@@ -73,10 +71,23 @@ The two different re-balancing  strategies were tried with various level of aggr
 	\includegraphics[width=9cm]{images/histories_edge.png}
 	\caption{ The above Figure shows the linear displacement strategy with different aggressiveness. While the Figure below shows the edge displacement strategy with different level of bias towards the edge. They look rather similar. They also have a little overall importance, as they all do quite well.
 	}
+	\label{fig:edge}
+	\hspace*{2mm} 
+\end{figure}
+
+
+
+\begin{figure}[!htb]
+	\hspace*{-0.7cm}\
+	\centering
+	\includegraphics[width=9cm]{images/histories_edge_linear.png}
+	\caption{ The above Figure shows the best linear displacement strategy against the best strategy from Figure \ref{fig:edge}.
+	}
 	\label{fig:funding}
 	\hspace*{2mm} 
 \end{figure}
 
+\newpage
 \section{Revenue distribution}
 
 To explore the innate distribution of the network, only one set of strategies was simulated. Every routing node behaved exactly the same, as it would be the case were the distribution would be expected to be the least extreme. Hence, the extreme tendency here in Figures \ref{fig:path}, \ref{fig:same} suggest that the real distribution would be at least this extreme.   

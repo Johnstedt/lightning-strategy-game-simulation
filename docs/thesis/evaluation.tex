@@ -16,7 +16,7 @@ The Lightning Network may be modeled as a directional Graph $G$ with vertices re
 	\hspace*{2mm}
 \end{figure}
 
-Modeling the network as a graph allows the use of graph theory. Thus, routing concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The topology of both Testnet and Mainnet are visualized in Figure \ref{fig:topology}.
+Modeling the network as a graph allows the use of graph theory. Thus, routing concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The current topology of both Testnet and Mainnet are visualized in Figure \ref{fig:topology}.
 
 \section{Fee as a competitive equilibrium}
 
@@ -32,7 +32,7 @@ It may be useful to view the fee market as existing under normal free market pre
 		\hspace*{2mm} 	
 \end{figure}
 
-Consider Figure \ref{fig:equilibrium}. The demand curve DD' signifies users demand to utilize a shortest \gls{path} in the lightning network and the supply curve the existing competing paths between s and d. Say there exists a Equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
+Consider Figure \ref{fig:equilibrium}. The demand curve DD' signifies users demand to utilize a shortest \gls{path} in the lightning network and the supply curve the existing competing paths between s and d. Say there exists an equilibrium point E by with the market price will move towards. Suppose the average fee price is greater than equilibrium at $F_{1}$ with demand $F_{1}D_{1}$ and supply $F_{1}S_{2}$, and more operators would open a path between s and d driving the curve fee towards E. If it instead lay under the equilibrium at $F_2$ their would be an excess supply $F_{2}S_{1}$ and low demand $F_{2}D_{2}$, making operators loose money by having liquidity locked up on a path not used. Thus leading operators to close channels between s and d, again driving the fee towards E.
 
 The fee market may also be seen in its aggregate, where the axis represents the whole network. Here the drivers might be seen as new routing \gls{node}s joining if its a profitable venture or leaving if its a unprofitable one. Here again driving prices towards equilibrium. 
 
@@ -64,11 +64,11 @@ The operational cost, i.e. electricity and the human labor needed to operate the
 
 \section{Routing strategies under Game Theory}
 
-There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a Game Theoretic problem. More exactly it resembles a subset of Game Theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory(EGT).
+There are clearly marked dynamics at play here. Node operator have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to exist along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a game theoretic problem. More exactly it resembles a subset of game theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory(EGT).
 
-In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In Game Theory a Nash equilibrium is a state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
+In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In game theory a Nash equilibrium is a state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
 
-Although Lightning nodes do not pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
+Although Lightning nodes do not pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and allowed to freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
 To evaluate strategies, the game is divided into six categories.
 
@@ -118,11 +118,11 @@ The \gls{Lightning Network} consists of nodes, each utilizing different strategi
 
 \section{Optimal fee price}
 
-To determine the fee price, one could intuitively imagine that and increased fee price would yield higher fees but for less pairs as other \gls{path}s may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}~\cite{freeman:betweenness:centrality} and defined it as
+To determine the fee price, one could intuitively imagine that an increased fee price would yield higher fees but for less pairs as other \gls{path}s may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}~\cite{freeman:betweenness:centrality} and defined it as
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
-where $\sigma_{sd}$ are all shortest paths from s to d and v is vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
+where $\sigma_{sd}$ are all shortest paths from $s$ to $d$ and $v$ is the vertex. As the fee is determined on an edge basis the definition is altered to regard edges instead of vertices. 
 
 It is possible to determine the optimal fee for an edge if some assumption, of the probability of all pairs transacting and the probability of the size of the transactions, are made. If a uniform probability over all pairs and that the shortest \gls{path}s are used are assumed the optimal price for one payment size is given by
 
@@ -130,7 +130,7 @@ It is possible to determine the optimal fee for an edge if some assumption, of t
 
 \[ f: X \to \mathbb{Z} \textrm{ and } (\forall x \subseteq X)f(x_{opt}) \geqslant f(x) \textrm{ where }\]
 
-\[ f(x) = x\sum_{s \neq e \neq d}\frac{\sigma_{sd}(e(x))}{\sigma_{sd}} \textrm{ and } \]
+\[ f(x) = x\sum_{s \neq e \neq d}\frac{\sigma_{sd}(e(x))}{\sigma_{sd}} \]
 
 %\[ \sigma_{sd}(e(x)) =  \begin{cases}
 %		n, & \text{if n shortest paths exists} \\
@@ -138,15 +138,15 @@ It is possible to determine the optimal fee for an edge if some assumption, of t
 %		0, & \text{otherwise}
 %	\end{cases} \]
 
-\[ \sigma_{sd}(e(x)) =  \begin{cases}
- & \text{Is the sum of shortest } \\
- & \text{paths between $s$ and $d$} \\
-& \text{through $e$ with weight x.} \\
+%\[ \sigma_{sd}(e(x)) =  \begin{cases}
+% & \text{Is the sum of shortest } \\
+% & \text{paths between $s$ and $d$} \\
+%& \text{through $e$ with weight x.} \\
 
-\end{cases} \]
+%\end{cases} \]
 
 
-The $\sigma_{sd}$ represents the total amount of shortest paths between $s$ and $d$.
+The $\sigma_{sd}$ represents the total amount of shortest paths between $s$ and $d$, while $\sigma_{sd}(e(x))$ is the sum of shortest path specifically through edge $e$ with weight $x$.
 The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for a fictitious generated graph. 
 
 \begin{figure}[!htb]
@@ -164,6 +164,8 @@ Freeman also defined a centrality measurement for whole graphs, it utilizes the 
 Efficient algorithms for edge betweenness centrality have been developed~\cite{brandes:betweenness:centrality:algorithm}. Although it is possible to run such an algorithm for each potential fee price to find the optima it would be very slow.
 Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
+\newpage
+
 \begin{enumerate}
 	\item Calculate the shortest \gls{path} from all-to-all vertices without going through $e$ with either Floyd-Warshall~\cite{bakhtiar:floyd:warshall} or Johnson~\cite{johnson:shortest:path:sparse:network} obtaining table A.
 	\item Calculate shortest path from the source of $e$, $V$-to-all explicitly going through $e$ with Dijkstra obtaining table D where $e$ weight set to 0.
@@ -172,7 +174,7 @@ Instead the optimal fee price an for outgoing channel $e$, still holding the ass
 
 \end{enumerate} 
 
-Whenever Floyd-Warshall or Johnson should be used depends on the sparseness of G as Floyd-Warshall have a time complexity of
+Whenever Floyd-Warshall or Johnson should be used depends on the sparseness of $G$ as Floyd-Warshall have a time complexity of
 
 \[ O(V^3) \]
 
@@ -230,7 +232,9 @@ This is however still a NP-hard problem and network growth will eventually make 
 
 It is cumbersome to calculate the optimal price for all edges; for simulation purposes it is completely infeasible. 
 
-The price range given for an edge of well connected \gls{node} used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
+Instead a probabilistic fee model may be created. With a defined simulation environment, including actors and their strategies, after simulation a well connected edge is selected and the relative revenue field is calculated as in Figure \ref{fig:cost:function:space}. The field is then normalized and converted to a probability. The probability may then be used as a fee strategy where the probability of choosing a fee corresponds with the relative revenue. This process can be repeated multiple times, the next simulation uses the previous fee model. 
+
+%The price range given for an edge of well connected \gls{node} used as a probabilistic model in quickly setting a good fee price. Given a simulation environment with defined strategies,  
 
 \section{Topology and Preferential Attachment}
 
@@ -291,7 +295,7 @@ In 1999 Barabási and Albert showed that many networks \gls{degree distribution}
 \end{equation}
 
 and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Effect}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible}, after remark by Robert K. Merton~\cite{merton:matthew:effect}. }. 
-A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex may be said to have a preferred attachment and the probability of a vertex receiving an edge from the new vertex:
+A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex have a preferential attachment and the probability of a vertex receiving an edge from the new vertex is,
 
 \[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j} \]
 
@@ -324,7 +328,7 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 % Mainnet 4322 nodes and 21258 edges
 % Testnet 2027 nodes, 8712 edges  
 
-It should again be stated that the \gls{Lightning Network} is still in a very early state of it's development and most of the \gls{node}s and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
+It should again be stated that the \gls{Lightning Network} is still in a very early state of its development and most of the \gls{node}s and transactions over the network are made by enthusiasts trying it out. So the current state of the \gls{degree distribution} may indicate very little of future states. 
 
 \subsection{Mediation-driven attachment}
 
@@ -338,7 +342,7 @@ They also show that it will lead to a scale free network, however the \gls{degre
 
 %https://www.ncbi.nlm.nih.gov/pubmed/23005719
 
-It may seem ridiculous that selecting nodes with low degree would be successful, however doing the opposite to the majority may be very promising. As these niche routes have considerably less competition, especially considering a \gls{node} created at a large $t$ . If differentiation is a good strategy, this may capture it. The selection probability follows as, 
+It may seem ridiculous that selecting nodes with low degree would be successful, however doing the opposite to the majority may be very promising. As these niche routes have considerably less competition, especially considering a \gls{node} created at a large $t$. If differentiation is a good strategy, this may capture it. The selection probability follows as, 
 
 \[ \Pi(i) =  \dfrac{\dfrac{1}{k_i}}{\sum_{j}^{n} \dfrac{1}{k_j}} \]
 
@@ -346,7 +350,7 @@ where $\Pi(i)$ is the probability that node $i$ is selected with degree $k_i$
 
 \subsection{Fitness models}
 
-Node attachment may be influenced by fitness heuristics not intrinsic to the topology. E.g. Google overtook incumbent search engines having larger degree. The Bianconi-Barabasi model~\cite{bianconi:barabasi:fitness:network} was created to account for external heuristics.
+Node attachment may be influenced by fitness heuristics not intrinsic to the topology. E.g. Google overtook incumbent search engines having larger degree. The Bianconi-Barabasi model~\cite{bianconi:barabasi:fitness:network} was created to account for external heuristics as,
 
 \[ \Pi(i) = \dfrac{\eta_ik_i}{\sum_{j=1}^{n}\eta_jk_j}\ \]
 
@@ -382,28 +386,30 @@ All previous models have assumed that degree is relevant\footnote{Which is proba
 
 which is evidently the same as the time biased random model. 
 
+\vspace*{-0.3cm}
+
 \subsection{Robustness}
 
 Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves \gls{node} connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
 
 The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
 
-\vspace*{-0.45cm}
+\vspace*{-0.38cm}
 \begin{figure}[!htb]
-	\hspace*{-1cm} 
+	\hspace*{-0.5cm} 
 	\centering
 	\includegraphics[width=9.5cm]{images/robustness_accidental.png}
-	\caption{... . The data is retrieved running a c-lightning node~\cite{repository:clightning} on 2019-04-17.
+	\caption{Shows the Giant Component as a fraction of network when a percentage is removed at random, repeated 100 times per percentage. Retrieved from Mainnet running a c-lightning node~\cite{repository:clightning} on 2019-04-17..
 	}
 	\label{fig:accidental_failure}
 	\hspace*{2mm} 
 \end{figure}
-\vspace*{-1.1cm}
+
 \begin{figure}[!htb]
 	\hspace*{-1cm} 
 	\centering
 	\includegraphics[width=9.5cm]{images/robustness_coordinated_mait.png}
-	\caption{... . The data is retrieved running a c-lightning node~\cite{repository:clightning} on 2019-04-17.
+	\caption{Shows the Giant Component as a fraction of network when a percentage of the nodes with highest degree are removed. The data is retrieved from Mainnet running a c-lightning node~\cite{repository:clightning} on 2019-04-17.
 	}
 	\label{fig:coordinated_attack}
 	\hspace*{2mm}
@@ -428,7 +434,7 @@ where $\sigma_{ij}$ is the length of the shortest \gls{path} between $i$ and $j$
 
 \section{Re-balancing channels}
 
-The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol~[my impl ] which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 
+The ability to route payments is wholly dependent on having liquidity available. Constructing a route and pay to oneself is possible with the current protocol which changes the balance of two edges for a fee. By doing a regular \textit{depth-first-search} cycles can be identified. For a route to be useful it must leave the two channels in a more balanced state than before. Here two simple heuristics are suggested. 
 
 \subsection{Linear displacement}
 \label{sec:linear:displacement}
@@ -468,6 +474,7 @@ The funding available to a node and the amount allocated to each channel strateg
 The aforementioned strategies and a simulation environment were implemented in python 3.6 with extensive use of the Networkx library. Environment variables and strategies are detailed in \ref{chapter:strategies}. 
 
 Actors were given a set of strategies, one per category. For each time step a number of transactions were routed through the network, the fees were distributed to the nodes in the route and liquidity displaced. If a node received to little fees in relation to the liquidity it provided, it would go 'bankrupt' and be removed from the pool before the next time step. Each time step a number of new nodes would join. The strategies the new node utilize would be proportional to the actors already present in the network. Non-advertised nodes may also be in the network, they never route or go bankrupt, but may receive or send the initial payment. Otherwise the utilize the same strategies as the routing nodes. The simulation does not require non-advertised nodes and are not used in all simulations in the next Chapter. 
+
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf
 
