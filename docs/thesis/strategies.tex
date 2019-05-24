@@ -5,7 +5,60 @@ This appendix contains a short summary of each implemented strategy and tunable 
 
 \section{Simulation Environment}
 
-\subsection*{Bankruptcy} 
+\subsection*{initial\_nodes \texttt{[amount]}}
+
+The amount of nodes in the beginning of the simulation.
+
+\subsection*{payment\_distribution \texttt{[json]} }
+
+The distribution of the size of the payments. 
+
+\subsection*{payments\_per\_step \texttt{[amount]}}
+
+The amount of payments each step.
+
+\subsection*{risk\_free\_rent \texttt{[annual\_percent]}}
+
+The risk free interest rate. In annual percentage of liquidity. 
+
+\subsection*{risk\_premium \texttt{[annual\_percent]}}
+
+The security risk premium. In annual percentage of liquidity.
+
+\subsection*{operational\_cost \texttt{[annual\_cost(satoshis)]}}
+
+The annual operational cost in satoshi.
+
+\subsection*{new\_nodes\_per\_step \texttt{[amount]}}
+
+The amount of new nodes each simulation step. 
+
+\subsection*{new\_nodes\_policy \texttt{[option]}}
+
+The policy by which the strategy of the new node is selected. Either 
+
+\subsection*{new\_nodes\_quantity \texttt{[json]}}
+
+\subsection*{time\_steps \texttt{[steps]}}
+
+\subsection*{fee \texttt{[amount(satoshis)]}}
+
+\subsection*{initial\_mode \texttt{[option]}}
+
+"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
+"initial_private_nodes": 80,
+"payments_per_step": 600,
+"risk_free_rent": 0.30,
+"risk_premium": 0.17,
+"operational_cost": 200000,
+"immunity_period": 5,
+"new_nodes_per_step": 2,
+"changed_private_per_step": 0,
+"new_nodes_policy": "mirror",
+"new_node_quantity": "percentage",
+"time_steps": 500,
+"fee": 10000,
+"initial_mode": "exact"
 
 
 \section{Strategies}

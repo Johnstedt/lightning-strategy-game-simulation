@@ -30,9 +30,9 @@ It is critical that the signatures of the spending transaction are exchanged bef
 
 \subsection{Commitment Transaction}
 
-In order for a channel to be useful the creation of a new commitment transaction\footnote{It may be easier to think of these types of transaction outputs as smart contracts, as in this context it's the same thing.}, updating the balance, would need to invalidate the previous one. The previous transaction is after all still a valid bitcoin transaction. This creates a problem since each party would benefit from different commitment transactions being broadcast to the network.
+In order for a channel to be useful the creation of a new \gls{commitment transaction}\footnote{It may be easier to think of these types of transaction outputs as smart contracts, as in this context it's the same thing.}, updating the balance, would need to invalidate the previous one. The previous transaction is after all still a valid bitcoin transaction. This creates a problem since each party would benefit from different commitment transactions being broadcast to the network.
 
-The solution is to construct the commitment transaction similar to that of a fidelity bond where one party would be penalized if violating the agreement. In this case violation is broadcasting any but the latest commitment transaction. To be able to ascribe blame to the violating party the commitment transactions for the same channel state must be unique as otherwise one would not know which party broadcast the transaction to the network. Only uniqueness is however not enough since there is no way to enforce the penalty for violation.
+The solution is to construct the \gls{commitment transaction} similar to that of a fidelity bond where one party would be penalized if violating the agreement. In this case violation is broadcasting any but the latest commitment transaction. To be able to ascribe blame to the violating party the commitment transactions for the same channel state must be unique as otherwise one would not know which party broadcast the transaction to the network. Only uniqueness is however not enough since there is no way to enforce the penalty for violation.
 
 The enforcement is possible if revocation is built into the commitment transaction, where the other party could revoke a faulty broadcast. This became possible with the addition of relative block maturity introduced with BIP68(see section \ref{sec:rlt}). The commitment transaction has two outputs, one is the other party's funds spendable immediately. The other output has two redeemable paths. Either,
 
@@ -41,7 +41,7 @@ The enforcement is possible if revocation is built into the commitment transacti
 	\item The non broadcasting party can refute that the commitment transaction is not last signed spending spending the output as penalty.
 \end{enumerate}
 
-Remember that the commitment transactions is reversed for the other party. This type of output which enable revocation is called a Revocable Sequence Maturity Contract(RSMC).
+Remember that the commitment transactions is reversed for the other party. This type of output which enable revocation is called a Revocable Sequence Maturity Contract(\gls{RSMC}).
 
 \begin{figure}[!htb]
 			\hspace*{-0.8cm} 
@@ -55,15 +55,15 @@ Remember that the commitment transactions is reversed for the other party. This 
 
 \subsection{Revocation of old commitment transaction}
 
-In order to update the channel balance a new pair of commitment transactions is created. The previous commitment transactions is invalidated by both signing a Breach Remedy Transaction(BRT) spending from their own previous commitment transactions RSMC output and handing it over to the other party. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
+In order to update the channel balance a new pair of commitment transactions is created. The previous commitment transactions is invalidated by both signing a Breach Remedy Transaction(\gls{BRT}) spending from their own previous \gls{commitment transaction}s \gls{RSMC} output and handing it over to the other party. If a previous commitment transaction were to be broadcast the BRT would take precedence since the revocable delivery takes a certain amount of time before it is valid. The Breach Remedy Transaction will send all funds to the non faulty party, this is the penalty for violating the contract.
 
-It is necessary for each party to monitor the \gls{blockchain} for old commitment transactions and to broadcast the BRT in case it happens. If the BRT is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and may be spent, settling the incorrect channel balance is settled and valid on the blockchain.
+It is necessary for each party to monitor the \gls{blockchain} for old commitment transactions and to broadcast the \gls{BRT} in case it happens. If the BRT is not broadcast in the designated time the revocable delivery output of the previous commitment transaction will become valid and may be spent, settling the incorrect channel balance is settled and valid on the blockchain.
 
 \subsection{Alice and Bob opens a channel}
 
 Alice and Bob wants to open a channel. They agree on funding the channel with \textbf{0.5\bitcoin} each. They construct a funding transaction $F$ which require both Alice and Bobs signatures to be spent. Alice constructs a $CT_{A1}$ with two outputs $RSMC_{A1}$ and $SO_{B1}$ and similarly Bob constructs $CT_{B1}$ with outputs $RSMC_{B1}$ and $SO_{A1}$. Alice signs $CT_{B1}$ and Bob signs $CT_{A1}$\footnote{A note on notation - The lowered A,B indicates whether the output is spendable by Alice or Bob. The number denote the channel state the output corresponds to. SO stands for Spendable Output.}. Alice and Bob exchange signatures for $F$ and either of them broadcast $F$.
 
-Alice wants to buy a cookie from Bob for \textbf{0.2\bitcoin} and Bob agrees to sell. They each constructs new commitment transactions $CT_{A2}$, $CT_{B2}$, each with new $RSMC_{A2}$, $RSMC_{B2}$ and $SO_{B2}$, $SO_{A2}$ that reflects the new balance \textbf{0.7\bitcoin} to Bob and \textbf{0.3\bitcoin} to Alice without signing them. Before Bob can hand Alice the cookie the old $CT_{A1}$, $CT_{B1}$ is invalidated by Alice signing a $BRT_{B1}$ spending from $RSMC_{A1}$. Although Bob has nothing to gain by broadcasting $CT_{B1}$ as he would net \textbf{0.2\bitcoin} less - Bob signs $BRT_{A1}$ spending from $RSMC_{B1}$. Alice signs $CT_{B2}$ and Bob signs $CT_{A2}$. The channel balance is updated.
+Alice wants to buy a cookie from Bob for \textbf{0.2\bitcoin} and Bob agrees to sell. They each constructs new \gls{commitment transaction}s $CT_{A2}$, $CT_{B2}$, each with new $RSMC_{A2}$, $RSMC_{B2}$ and $SO_{B2}$, $SO_{A2}$ that reflects the new balance \textbf{0.7\bitcoin} to Bob and \textbf{0.3\bitcoin} to Alice without signing them. Before Bob can hand Alice the cookie the old $CT_{A1}$, $CT_{B1}$ is invalidated by Alice signing a $BRT_{B1}$ spending from $RSMC_{A1}$. Although Bob has nothing to gain by broadcasting $CT_{B1}$ as he would net \textbf{0.2\bitcoin} less - Bob signs $BRT_{A1}$ spending from $RSMC_{B1}$. Alice signs $CT_{B2}$ and Bob signs $CT_{A2}$. The channel balance is updated.
 
 If Alice tries to undo the cookie purchase by broadcasting $CT_{A1}$ giving \textbf{0.5\bitcoin} each. Bob simply broadcasts the $BRT_{B1}$ spending from Alice's share of the $CT_{A1}$ and Bob receives \textbf{1\bitcoin} and Alice \textbf{0\bitcoin}. 
 
@@ -81,7 +81,7 @@ As long as the channel is open Alice and Bob may settle any imbalances between t
 
 \subsection{Contracts and implementation}
 \label{sec:hdw}
-Signing and sending $BRT$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree structure. Each key in the tree can derive its children and no child can derive its parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key may be used. So each party only needs to store the latest disclosed key as the other child keys can be derived from it.
+Signing and sending $\gls{BRT}$s is unnecessarily inefficient if a HD wallet is used to generate keys\cite{bip:0032:hd:wallet}. HD wallets have a master key which can derive new keys in a tree structure. Each key in the tree can derive its children and no child can derive its parent. This works both for the public and the private keys independent of each other. A new key is used for each $CT$ and if that is deep in the tree, say a millionth layer down, and can simply be disclosed to the other party whenever the $CT$ is invalidated. The public master key may be shared with the other party so all public keys can be derived for transaction construction. With each new invalidated $CT$ the previous $CT$'s parent key may be used. So each party only needs to store the latest disclosed key as the other child keys can be derived from it.
 
 \begin{figure}[hbt!]
 	\centering
@@ -113,11 +113,11 @@ It's possible to close a channel by broadcasting either of the latest $CT$s. How
 
 \section{Network wide payments}
 
-By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel to transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle \gls{node}s as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(HTLC) for each of the channels in the route.
+By combining channels into a network, a payment could potentially ripple through multiple channels and may allow parties without a direct channel to transact. Such a multi-hop payment would need the same trust-less custodial properties for the routing middle \gls{node}s as between direct channel parties shown above. This is solved by utilizing a Hashed Timelock Contract(\gls{HTLC}) for each of the channels in the route.
 
 \subsection{Hashed Timelock Contract}
 
-A $HTLC$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a \gls{hash} in a designated time period. 
+A $\gls{HTLC}$ is an extra output added to a $CT$ which enforces a payment from Alice to party Bob if and only if Bob can produce and disclose a preimage R of a \gls{hash} in a designated time period. 
 
 \begin{figure}[hbt!]
 	\centering
@@ -147,7 +147,7 @@ A $HTLC$ can be seen in Figure \ref{fig:HTLC} and contains two validation paths.
 
 \subsection{Revocation of HTLCs}
 
-$HTLC$s have a similar problem as with direct payment channels, if an old $CT$ is broadcast both validation paths may be valid. In the same manner as before, the $HTLC$ is made revocable by the construction of two different contracts for each party $HTLC_{A1}$ and $HTLC_{B1}$. So here again the possibility to ascribe blame exists. Adding revocable paths to $HTLC_{A1}$ and $HTCL_{B1}$ is necessary\footnote{It's necessary to include this path as an uncooperative party may never broadcast the execution/timeout transaction in which revocation is possible.} but not enough since the execution path is also valid. A period for dispute must still be had as the disclosure may be correct but may be from an old commitment transaction. The same is true for the timeout path as Bob may not have knowledge of $R$ in an old commitment transaction.   
+$\gls{HTLC}$s have a similar problem as with direct payment channels, if an old $CT$ is broadcast both validation paths may be valid. In the same manner as before, the $HTLC$ is made revocable by the construction of two different contracts for each party $HTLC_{A1}$ and $HTLC_{B1}$. So here again the possibility to ascribe blame exists. Adding revocable paths to $HTLC_{A1}$ and $HTCL_{B1}$ is necessary\footnote{It's necessary to include this path as an uncooperative party may never broadcast the execution/timeout transaction in which revocation is possible.} but not enough since the execution path is also valid. A period for dispute must still be had as the disclosure may be correct but may be from an old commitment transaction. The same is true for the timeout path as Bob may not have knowledge of $R$ in an old commitment transaction.   
 
 Instead the timeout / execution path to oneself is spent into new transactions with a dispute period and ability for the other party to revoke an incorrect broadcast. 
 
@@ -180,7 +180,7 @@ Instead the timeout / execution path to oneself is spent into new transactions w
 The $HTLC_{A1}$ seen in Figure \ref{fig:alice:HTLC} can only be broadcast by Alice and contains three validation paths:
 
 \begin{enumerate}
-	\item Bob can revoke if it's not the last $CT$ constructing a $BRT$ spending the output.
+	\item Bob can revoke if it's not the last $CT$ constructing a $\gls{BRT}$ spending the output.
 	\item The output is spent by a pre-signed transaction to a new transaction $ST$ with a dispute period.
 	\item Bob can disclose knowledge of R and spend the output.
 \end{enumerate}
@@ -250,7 +250,7 @@ A $HTLC$ is terminated off-chain by creating a new commitment transaction, witho
 
 In this manner Hashed Timelock Contracts may be used without the need for either of the channel parties to trust each other.
 
-Note that key generation and disclosure may be used for $HTLC$ in the same manner previously disused in section \ref{sec:hdw}.
+Note that key generation and disclosure may be used for $\gls{HTLC}$ in the same manner previously disused in section \ref{sec:hdw}.
 
 \newpage
 \onecolumn
@@ -261,7 +261,7 @@ Note that key generation and disclosure may be used for $HTLC$ in the same manne
 	\includegraphics[width=15cm]{images/flow_htlc.png}
 
 	\caption{\textit{
-			Shows the state of transactions after Alice and Bob have agreed to a new Commitment Transaction $CT_{A3}$, $CT_{B3}$. 
+			Shows the state of transactions after Alice and Bob have agreed to a new \gls{commitment transaction} $CT_{A3}$, $CT_{B3}$. 
 			The transactions to the left side can be broadcast by Alice and the ones to the right by Bob. With the signing of the new $CT$s
 			Bob and Alice disclose keys for $BRT_{AH1}$, $BRT_{AH2}$, $BRT_{BH1}$, $BRT_{BH2}$ as penalty if an old commitment transaction is broadcast.
 		}}
