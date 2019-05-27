@@ -1,6 +1,6 @@
 \chapter{Discussion \& Conclusions}
 
-First, there is three points that should be remarked.
+First, there are three points that should be remarked.
  
 1) The topology and efficiency of the \gls{Lightning Network} will form as a product of profitable behavior, bottom up. It will not form from intervention, where a random mesh network is seen as preferable and the actors aim to fulfill such a model.
  
@@ -10,7 +10,7 @@ First, there is three points that should be remarked.
 
 \section{Limitations with simulation}
 
-Simulating many nodes behavior when each depend on everyone else is not computationally easy. Even without calculating the best price for each edge and relying on the suggested probabilistic model. This reduces the amount of nodes that can be simulated, especially considering the scope of this thesis. Although a few aspects of smaller networks probably holds true in larger networks, such as the revenue distribution; it most likely does not for attachment. In the comparison of attachment models, the Barabasi-Albert and Hassan-Islam-Haque models comes up short - this is most likely due to the networks size. As hubs becomes more useful the larger the network.  
+Simulating many nodes behavior when each depend on everyone else is not computationally easy, even without calculating the best price for each edge and relying on the suggested probabilistic model. This reduces the amount of nodes that can be simulated, especially considering the scope of this thesis. Although a few aspects of smaller networks probably holds true in larger networks, such as the revenue distribution; it most likely does not for attachment. In the comparison of attachment models, the Barabasi-Albert and Hassan-Islam-Haque models comes up short - this is most likely due to the networks size. As hubs becomes more useful the larger the network.  
 
 \section{Balanced Channels}
 
@@ -70,27 +70,24 @@ Future work might be interesting in many different directions.
 
 \subsection{Protocol changes and growth}
 
-As the lightning network protocol is still under development and small changes in the Bitcoin protocol may change the dynamics of which the nodes operate. E.g. It seem probably that funding channels by both parties will be available in the near future. \\
+As the lightning network protocol is still under development and small changes in the Bitcoin protocol may change the dynamics of which the nodes operate. E.g. It seems probable that funding channels by both parties will be available in the near future. \\
 
 It is difficult to say how universal these results are although surely many strategies suggested herein will still be successful with protocol changes. Each strategy is also dependent on what every other \gls{node} in the network does. As the network grow - strategies and behavior will change. Thus the practicality of the results of these simulations are very context dependent, with introduction of new strategies, protocol changes etc. will require this model to be gradually updated to remain relevant.  
 
 \subsection{Network theory}
 
-Albert-László Barabási recently remarked that the bottleneck in network theory is mainly data-driven~\cite{barabasi:decade:beyond}. The \gls{Lightning Network} provides accurate network data with clear economic incentives for each actor. This may, in many ways, are unprecedented. There might be worth to study the network, in addition to its ability to scale Bitcoin, for what it suggest for networks in general. Many studies, cited herein, have been done on attachment heuristics in relation to fitness - it has however, been difficult to apply in practice to real networks. The \gls{Lightning Network} may be a better empirical test-bed for models than any preceding network. 
+Albert-László Barabási recently remarked that the bottleneck in network theory is mainly data-driven~\cite{barabasi:decade:beyond}. The \gls{Lightning Network} provides accurate network data with clear economic incentives for each actor. This is, in many ways, unprecedented. It might be worth to study the network, in addition to its ability to scale Bitcoin, for what it suggest for networks in general. Many studies, cited herein, have been done on attachment heuristics in relation to fitness - it has however, been difficult to apply in practice to real networks. The \gls{Lightning Network} may be a better empirical test-bed for models than any preceding network. 
 
 \subsection{Game Theory}
 
-Much similar to Network Theory, Game theory have been difficult to use in empirical context. Especially in EGT as nature seldom have clear pay-off matrices. Even very clear examples, such as with the Bacteriophage shown by Turner and Chao~\cite{turner:chao:prisoners:dilemma, nowak:sigmund:phage}, still contains significant noise. Market data on the other hand, especially prices, is available in droves and it is arguable easier to apply game theory to economics. It usually still require effort to retrieve data, e.g. geo-locations of competing businesses. The \gls{Lightning Network} might give us further insight into regional nuances and due to completeness bridge the gap between individual strategy with full market Marshallian dynamics.    
+Much similar to Network Theory, Game theory have been difficult to use in empirical context. Especially in EGT as nature seldom have clear pay-off matrices. Even very clear examples, such as with the Bacteriophage shown by Turner and Chao~\cite{turner:chao:prisoners:dilemma, nowak:sigmund:phage}, still contains significant noise. Market data on the other hand, especially prices, is available in droves and it is arguably easier to apply game theory to economics. It usually still require effort to retrieve data, e.g. geo-locations of competing businesses. The \gls{Lightning Network} might give us further insight into regional nuances and due to completeness bridge the gap between individual strategy with full aggregated market dynamics.    
 
 \subsection{Fee complexity}
 
-The optimal fee price for each edge will most likely be to expensive to calculate in the near future as the network grows. It is not uncertain how much low capacity \gls{node}s affect the network and larger operators might be able to simply prune away these nodes before calculation. Another approach is to approximate, calculating the upper and lower bounds with adjustable granularity, akin to tolerance~\cite{goldengorin:jager:tolerance}. 
+The optimal fee price for each edge will most likely be too expensive to calculate in the near future as the network grows. It is not uncertain how much low capacity \gls{node}s affect the network and larger operators might be able to simply prune away these nodes before calculation. Another approach is to approximate, calculating the upper and lower bounds with adjustable granularity, akin to tolerance~\cite{goldengorin:jager:tolerance}. 
 
 \subsection{Empirical gathering}
 
-There is still many assumptions in this the
+There is still many assumptions in this the thesis. To use these strategies in practice would require extensive tuning and gathering of empirical realities. The payment size distribution may be approximated by storing the size of each routed payment. 
 
-(genetic algorithm)
-
-(lightning factories)
 

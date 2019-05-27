@@ -16,7 +16,7 @@ The Lightning Network may be modeled as a directional Graph $G$ with vertices re
 	\hspace*{2mm}
 \end{figure}
 
-Modeling the network as a graph allows the use of graph theory. Thus, routing concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The current topology of both Testnet and Mainnet are visualized in Figure \ref{fig:topology}.
+Modeling the network as a graph allows the use of graph theory. Thus, routing concepts of centrality and analytical frameworks may be borrowed from the extensive literature on graphs. The current topology of both \gls{Testnet} and \gls{Mainnet} are visualized in Figure \ref{fig:topology}.
 
 \section{Fee as a competitive equilibrium}
 
@@ -66,9 +66,9 @@ The operational cost, i.e. electricity and the human labor needed to operate the
 
 There are clearly marked dynamics at play here. Node operators have many different options at their disposal and although all actors may not be rational their behavior should approximate the behavior of maximizing profit. This phenomena has many names, e.g. in economic theory optional behaviors is sometimes refereed to exist along an \textit{agenda field} and the iterable process of finding the maxima as climbing the \textit{maximand hill} where an equilibrium lay at the top~\cite{boulding:evolutionary:economy}. Further each actor's profit depends on every other actor's behavior reasonable to regard it as a game theoretic problem. More exactly it resembles a subset of game theory similar to that of biological ecosystems first studied by W. D. Hamilton~\cite{hamilton:behavior} and later expanded to a rigorous framework by J.M Smith et al.~\cite{smith:price:logic:animal, smith:evolution:games} as Evolutionary Game Theory(EGT).
 
-In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for feed in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In game theory a Nash equilibrium is a state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
+In an ecosystem, species survival and propagation in the gene-pool depends on its behavior relative to the population. An aggressive animal may do very well in competition for food in a population of mostly coy animals. However against a population of mostly aggressive beings it may have to fight most encounters and end up wounded leading to a coy behavior to be preferred. Unsuccessful individuals die off and are removed from the population and subsequently successful individuals prosper and it's genes increases in the population. In game theory a Nash equilibrium is a state in which no actor can change strategy and receive a strictly higher payoff~\cite{nash:equilibrium}. In EGT this notion is slightly modified and named Evolutionary Stably Strategy(ESS) which disallows for an actor to change strategy and receive an equal payoff as that would allow for the population to constantly drift between those two strategies. 
 
-Although Lightning nodes do not pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tool are built as extensions/plugins and made available as open source and allowed to freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
+Although Lightning nodes do not pass on genes, successful strategies are more likely to be copied than unsuccessful ones. Especially if strategies and tools are built as extensions/plugins and made available as open source and allowed to freely propagate. Similarly stable points where no \gls{node} can change strategy and increase profit suggests the viability of the played strategies and hints at the emerging topology. 
 
 To evaluate strategies, the game is divided into six categories.
 
@@ -81,7 +81,7 @@ To evaluate strategies, the game is divided into six categories.
 	\item \textbf{Re-balance}, When and how aggressively should a node re-balance its channels. 
 \end{enumerate}
 
-Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category but are kept apart to keep the complexity down. Each routing \gls{node} may then choose a strategy per category, it is sufficient to only consider pure strategies. 
+Most categories are quite distinct and natural to separate but there is some ambiguity here. Preferential Attachment could very well be considered as the same category as Timing or Allocation but they are kept apart to lower their complexity. Each routing \gls{node} may then choose a strategy per category, it is sufficient to only consider pure strategies. 
 
 \subsection{Mixing strategies}
 
@@ -97,7 +97,7 @@ Although this thesis concerns the routing \gls{node}s, the behavior of non-adver
 
 \subsection{Emerging strategies}
 
-The \gls{Lightning Network} consists of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies is stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid \gls{node}s be profitable?
+The \gls{Lightning Network} consists of nodes, each utilizing different strategies whose success depends on strategies by other nodes. Over time successful strategies will emerge. Which strategies are stable, how should a routing node behave? Will certain biases be preferred, essentially forcing the network into a certain structure, e.g. scale free hub and spoke or random mesh network? Will only highly liquid \gls{node}s be profitable?
 
 \newpage
 \onecolumn
@@ -118,7 +118,7 @@ The \gls{Lightning Network} consists of nodes, each utilizing different strategi
 
 \section{Optimal fee price}
 
-To determine the fee price, one could intuitively imagine that an increased fee price would yield higher fees but for less pairs as other \gls{path}s may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement named \textit{Betweenness Centrality}~\cite{freeman:betweenness:centrality} and defined it as
+To determine the fee price, one could intuitively imagine that an increased fee price would yield higher fees but for less pairs as other \gls{path}s may become shorter for pairs to route through. So the amount of shortest paths passing through a vertex must be calculated. In 1977 Freeman introduced a measurement as \textit{\gls{betweenness centrality}}~\cite{freeman:betweenness:centrality} and defined it as
 
 \[ g(v) = \sum_{s \neq v \neq d}\frac{\sigma_{sd}(v)}{\sigma_{sd}} \]
 
@@ -153,7 +153,7 @@ The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for a fictitio
 
 	\centering
 	\includegraphics[width=8cm]{images/fee_curve.png}
-	\caption{ Shows the betweenness centrality * fee / fee for an edge in a generated graph with 1000 vertices, 5000 edges, uniform weight distribution over 1-1500 and random attachment policy. It holds intuitively as for low fees, many shortest paths passes but procure small overall profits as the fee is small. The profits increases with the increase in fees until a point where the decrease in paths overtakes the increase in fees.
+	\caption{ Shows the \gls{betweenness centrality} * fee / fee for an edge in a generated graph with 1000 vertices, 5000 edges, uniform weight distribution over 1-1500 and random attachment policy. It holds intuitively as for low fees, many shortest paths passes but procure small overall profits as the fee is small. The profits increases with the increase in fees until a point where the decrease in paths overtakes the increase in fees.
 	}
 	\label{fig:fee_curve}
 
@@ -161,8 +161,8 @@ The function $f(x)$ behaves as seen in figure \ref{fig:fee_curve} for a fictitio
 
 Freeman also defined a centrality measurement for whole graphs, it utilizes the betweenness centrality of every vertex and is thus brutal to calculate in practice for larger graphs. 
 
-Efficient algorithms for edge betweenness centrality have been developed~\cite{brandes:betweenness:centrality:algorithm}. Although it is possible to run such an algorithm for each potential fee price to find the optima it would be very slow.
-Instead the optimal fee price an for outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
+Efficient algorithms for edge \gls{betweenness centrality} have been developed~\cite{brandes:betweenness:centrality:algorithm}. Although it is possible to run such an algorithm for each potential fee price to find the optima it would be very slow.
+Instead the optimal fee price for an outgoing channel $e$, still holding the assumptions as before, may be calculated by following steps.
 
 \newpage
 
@@ -191,7 +191,7 @@ The fee is proportional to the size of the payment, $F_B + F_P S$, thus the shor
 The problem is thus a combinatorial optimization problem,
 
 \begin{equation*}
-\hspace*{-0.5cm}	\max_{ x,y \in \mathbb{Z} } \sum_{\phi\in \rho} \rho(\phi) \sum_{a \neq b}
+\hspace*{-0.5cm}	\max_{ x,y \in \mathbb{Z} } \sum_{\phi \in \mathbb{N}} \rho(\phi) \sum_{a \neq b}
 	\begin{cases}
 	\Omega_{abe}(x, y, \phi) & \Omega_{abe}(x, y, \phi) < \sigma_{ab}(\phi)  \\
 	0 & \Omega_{abe}(x, y, \phi) > \sigma_{ab}(\phi) \\
@@ -218,7 +218,7 @@ The function over $F_B$, $F_P$ in $f(x,y)$ follows the same pattern as over $F$ 
 	\hspace*{0cm} 
 	\centering
 	\includegraphics[width=9cm]{plots/price.png}
-	\caption{Shows the relative revenue for a well connected edge over base and proportional fee when all other for a well connected edge in a generated graph. Assuming a uniform payment size distribution over 2,000 Satoshi - 2,000,000 Satoshi. }
+	\caption{Shows the relative revenue for a well connected edge over base and proportional fee when all other fees are set randomly for a well connected edge in a generated graph. Assuming a uniform payment size distribution over 2,000 Satoshi - 2,000,000 Satoshi.}
 	\label{fig:cost:function:space}
 	\hspace*{2mm} 
 \end{figure}
@@ -245,7 +245,7 @@ Therefor the policies determining by which preferences each \gls{node} takes int
 
 \subsection{Traditional random models}
 
-Random graphs have been studied extensively, specifically the Erdős–Rényi model~\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges is then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
+Random graphs have been studied extensively, specifically the Erdős–Rényi model~\cite{erdos:renyi:random:graphs}. An ER graph is created by denoting a graph $G_{n,N}$ with $n$ vertices and $N$ edges. The edges are then selected randomly from set of ${n \choose 2}$ possible edges. A common approach today is to write $G_{n,p}$ with $p$ being the probability of two vertices having an edge. It's difficult to justify LN behaving as an Erdős–Rényi graph as it allows for isolated points and there is no inherent age bias present. 
 
 Callaway et al.~\cite{callaway:hopcraft:randomly:grown:graphs} added a phase transition to random graphs as to adjust for a supposed age bias. Consider $G_{n,\delta}$ where at first the graph is empty and for each time step a vertex v is added to $G$ and an edge is selected over $G_v \choose 2$ with a probability $\delta$ until $G$ has $n$ vertices. $G_{n,\delta}$ would have on average $n\delta$ edges and since $n\delta < n$ it only produces sparse graphs. As before this may be difficult to apply to the Lightning Network as a poorly connected graph would have high average paths and surely many payments would fail. It is however interesting to regard the \gls{degree distribution} compared to that of Erdős–Rényi as it's exponential given as
 
@@ -274,7 +274,7 @@ Thus adding an age bias causes the characteristics of the \gls{degree distributi
 		\hspace*{2mm} 
 \end{figure}
 
-A more appropriate random model may be to consider $G_{n,m}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices and creates and edges when t < n. The probability of any previous vertex $i$ being selected is thus $p_i = \dfrac{m}{t_i}$. 
+A more appropriate random model may be to consider $G_{n,m}$ where each time step $t$ a vertex is added to the graph and is connected with $m$ previous vertices while t < n. The probability of any previous vertex $i$ being selected is thus $p_i = \dfrac{m}{t_i}$. 
 As a node may not be viewed as part of LN before edges are made, it's reasonable to assume a \gls{node} creates edges as part of joining the network. $G_{n,m}$ would also have an exponential degree distribution.
 
 %[p(k) =  \begin{cases}
@@ -295,7 +295,7 @@ In 1999 Barabási and Albert showed that many networks \gls{degree distribution}
 \end{equation}
 
 and large network has been shown to follow this model. With notable networks of web hyperlinks having $\gamma_{www} = 2.1\pm 0.1$ and an actor collaboration graph having $\gamma_{actor} = 2.3\pm0.1$. Further suggestions have been made that network have an innate bias, as what has many links is well known and what is well known will receive many links - akin on the \textit{Pareto distribution}("80-20 rule") or the \textit{Matthew Effect}\footnote{As per KJB \texttt{Matthew 13:12 - For whosoever hath, to him shall be given, and he shall have more abundance: but whosoever hath not, from him shall be taken away even that he hath.}~\cite{king:james:bible}, after remark by Robert K. Merton~\cite{merton:matthew:effect}. }. 
-A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex have a preferential attachment and the probability of a vertex receiving an edge from the new vertex is,
+A model was suggested to generate a scale free graph $G_{n, m}$ by starting with a graph with $m$ fully connected vertices, and for each time step adding a new vertex and creating $m$ edges with a bias towards vertices with high degree. The vertex have a \gls{preferential attachment} and the probability of a vertex receiving an edge from the new vertex is,
 
 \[ \Pi(i) = \dfrac{k_i}{\sum_{j}^{}k_j} \]
 
@@ -305,7 +305,7 @@ Such a graph follows the scale free property with a $\gamma_{ba}$ = 2.9 and can 
 	\hspace*{-0.5cm} 
 	\centering
 	\includegraphics[width=9cm]{images/scale_free_degree_distribution.png}
-	\caption{Shows the degree distribution for an Barabási–Albert graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, m = 5 and the scale free\ref{eq:scale:free}(\textcolor{blue}{|}) with $\gamma$ = 2.9 compared Erdős–Rényi graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{red}{|}).
+	\caption{Shows the degree distribution for a Barabási–Albert graph(\tikzcircle[blue, fill=blue]{2pt}) with n = 10,000, m = 5 and the scale free\ref{eq:scale:free}(\textcolor{blue}{|}) with $\gamma$ = 2.9 compared Erdős–Rényi graph(\tikzcircle[red, fill=red]{2pt}) with n = 10,000, p = 0.0005 and its true distribution given by Equation \ref{eq:erdos:renyi}(\textcolor{red}{|}).
 	}
 	\label{fig:scale_free}
 	\hspace*{2mm} 
@@ -319,7 +319,7 @@ The actual degree distribution of the lightning network can be seen in Figure \r
 	\hspace*{-0.5cm} 
 	\centering
 	\includegraphics[width=9cm]{images/main-testnet_degree_distribution.png}
-	\caption{Shows the degree distribution for both the Mainnet (\tikzcircle[red, fill=red]{2pt}) and Testnet (\tikzcircle[blue, fill=blue]{2pt})
+	\caption{Shows the degree distribution for both the \gls{Mainnet} (\tikzcircle[red, fill=red]{2pt}) and \gls{Testnet} (\tikzcircle[blue, fill=blue]{2pt})
 		compared to the scale free function \ref{eq:scale:free}(\textcolor{black}{|}) with $\gamma$ = 1.5. The data is retrieved running a c-lightning \gls{node}~\cite{repository:clightning} on 2019-03-21.
 	}
 	\label{fig:real_network}
@@ -332,7 +332,7 @@ It should again be stated that the \gls{Lightning Network} is still in a very ea
 
 \subsection{Mediation-driven attachment}
 
-Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator \gls{node}. Consider a node $i$ which degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly,
+Rather than explicitly attaching with a degree bias as with the Barabási-Albert model, Hassan et al.~\cite{hassan:islam:haque:mediation} have suggested a more subtle approach by attaching to a random neighbor of a randomly selected mediator \gls{node}. Consider a node $i$ with degree $k_i$ and neighbors $1,2,...,k_i$ each having a degree of $k_1, k_2, ... k_{k_i}$ would thus have a probability $\Pi(i) \propto k_i$ and more explicitly,
 
 \[ \Pi(i) = \dfrac{1}{N} \bigg\lbrack \dfrac{1}{k_1} + \dfrac{1}{k_2} + ... + \dfrac{1}{k_{k_1}} \bigg\rbrack = \dfrac{\sum_{j=1}^{k_i}\dfrac{1}{k_j}}{N} \]
 
@@ -362,7 +362,7 @@ they are able to show that not all fitness distributions $\rho(\eta)$ results in
 
 As there are many possible \gls{node} heuristics beyond degree, e.g. capacity, availability and fee, these heuristics could be blend into the attachment models. 
 
-Although Bianconi and Barabasi only studied fitness with the Barabási-Albert preferential attachment, it can however be added to the other models as well.
+Although Bianconi and Barabasi only studied fitness with the Barabási-Albert \gls{preferential attachment}, it can however be added to the other models as well.
 
 Time biased random model,
 ~
@@ -390,16 +390,16 @@ which is evidently the same as the time biased random model.
 
 \subsection{Robustness}
 
-Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the giant component, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves \gls{node} connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks is not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
+Robustness is mainly regarded in terms of connectivity where reduction into sub components are measured when a percentage of either edges or nodes are removed. Usually the \gls{giant component}, the largest component, as a percentage of the total network is indicative of partitions. As LN channels are virtual, edge connectivity doesn't make sense, which leaves \gls{node} connectivity. Scale free networks are more robust than random networks\footnote{Note that time biased random networks are not considered here.} when nodes fail at random, but scale free networks are highly vulnerable if hubs are targeted~\cite{barabasi:robustness}. 
 
-The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
+The current robustness of \gls{Mainnet} is seen in Figure \ref{fig:accidental_failure} and \ref{fig:coordinated_attack} for accidental/random failures and targeted attacks respectively.
 
 \vspace*{-0.38cm}
 \begin{figure}[!htb]
 	\hspace*{-0.5cm} 
 	\centering
 	\includegraphics[width=9.5cm]{images/robustness_accidental.png}
-	\caption{Shows the Giant Component as a fraction of network when a percentage is removed at random, repeated 100 times per percentage. Retrieved from Mainnet running a c-lightning node~\cite{repository:clightning} on 2019-04-17..
+	\caption{Shows the \gls{giant component} as a fraction of network when a percentage is removed at random, repeated 100 times per percentage. Retrieved from \gls{Mainnet} running a c-lightning node~\cite{repository:clightning} on 2019-04-17..
 	}
 	\label{fig:accidental_failure}
 	\hspace*{2mm} 
@@ -409,7 +409,7 @@ The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure}
 	\hspace*{-1cm} 
 	\centering
 	\includegraphics[width=9.5cm]{images/robustness_coordinated_mait.png}
-	\caption{Shows the Giant Component as a fraction of network when a percentage of the nodes with highest degree are removed. The data is retrieved from Mainnet running a c-lightning node~\cite{repository:clightning} on 2019-04-17.
+	\caption{Shows the \gls{giant component} as a fraction of network when a percentage of the nodes with highest degree are removed. The data is retrieved from \gls{Mainnet} running a c-lightning node~\cite{repository:clightning} on 2019-04-17.
 	}
 	\label{fig:coordinated_attack}
 	\hspace*{2mm}
@@ -418,7 +418,7 @@ The current robustness of Mainnet is seen in Figure \ref{fig:accidental_failure}
 
 \subsection{Average shortest path}
 
-Each additional hop required in a payment \gls{path} decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. \gls{node} compatibility and protocols levels below to fail. The average path growths at the same rate as the diameter, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
+Each additional hop required in a payment \gls{path} decreases the chance of having enough liquidity. It also increases failures in other dimensions, e.g. \gls{node} compatibility and protocols levels below to fail. The average path grows at the same rate as the \gls{diameter}, the longest shortest path between two nodes. For Erdős–Rényi the average path thus follows~\cite{watts:stragatz:small:networks},
 
 \[ \ell \sim d \approx \dfrac{ln~N}{ln~pN} \]
 
@@ -473,7 +473,7 @@ The funding available to a node and the amount allocated to each channel strateg
 
 The aforementioned strategies and a simulation environment were implemented in python 3.6 with extensive use of the Networkx library. Environment variables and strategies are detailed in \ref{chapter:strategies}. 
 
-Actors were given a set of strategies, one per category. For each time step a number of transactions were routed through the network, the fees were distributed to the nodes in the route and liquidity displaced. If a node received to little fees in relation to the liquidity it provided, it would go 'bankrupt' and be removed from the pool before the next time step. Each time step a number of new nodes would join. The strategies the new node utilize would be proportional to the actors already present in the network. Non-advertised nodes may also be in the network, they never route or go bankrupt, but may receive or send the initial payment. Otherwise the utilize the same strategies as the routing nodes. The simulation does not require non-advertised nodes and are not used in all simulations in the next Chapter. 
+Actors were given a set of strategies, one per category. For each time step a number of transactions were routed through the network, the fees were distributed to the nodes in the route and liquidity displaced. If a node received to little fees in relation to the liquidity it provided, it would go 'bankrupt' and be removed from the pool before the next time step. Each time step a number of new nodes would join. The strategies the new node utilize would be proportional to the actors already present in the network. Non-advertised nodes may also be in the network, they never route or go bankrupt, but may receive or send the initial payment. Otherwise they utilize the same strategies as the routing nodes. The simulation does not require non-advertised nodes and are not used in all simulations in the next Chapter. 
 
 
 % THE ADJUSTABLE SCALE FREE  http://www.uvm.edu/pdodds/files/papers/others/2002/holme2002a.pdf

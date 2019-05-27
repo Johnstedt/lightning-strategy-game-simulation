@@ -38,4 +38,4 @@ def simulations(directory):
 
 
 if __name__ == "__main__":
-	simulations("f_t_p_f")
+	simulations("f_t_p_f_sanity")
