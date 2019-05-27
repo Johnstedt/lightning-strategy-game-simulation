@@ -7,20 +7,20 @@ Cinnober is a provider of IT solutions to the infrastructure providers of the gl
 
 \gls{bitcoin} is a peer-to-peer electronic cash system~\cite{nakamoto:bitcoin}. The decentralized nature of the system limits the performance to the weakest node - consequently limiting the transaction capacity. 
 
-Multiple solutions to reduce the burden on the Bitcoin nodes have been suggested~\cite{decker:wattenhofer:duplex, decker:russell:Osuntokun:eltoo, poon:dryja:lightning:network, blockstream:sidechain}. Where the solution receiving most attention is the \gls{Lightning Network} relying on payment channels.
+Multiple solutions to reduce the burden on the Bitcoin nodes have been suggested~\cite{decker:wattenhofer:duplex, decker:russell:Osuntokun:eltoo, poon:dryja:lightning:network, blockstream:sidechain}. The solution receiving most attention is the \gls{Lightning Network} relying on payment channels.
 
 In a payment channel, bitcoin is committed by a Bitcoin transaction and locked up between two parties. Once the transaction is registered, parties in the channel with positive balance may send it to the other party without the need to create a new transaction on the Bitcoin layer. The channel is strictly bidirectional and have a fixed capacity. Each party may settle the channel balance at any point by creating a closing Bitcoin transaction, settling the balance. Usage of payment channels may be very convenient with parties that transact often. 
 
 Many payment channels can be aggregated into a network. There is an ongoing effort to build such a network named The Lightning Network. Where a party without a direct channel to another party could route through multiple channels if enough liquidity exists between them. If such a scheme becomes viable in practice;  only a small fraction of all transactions would need to be settled on the Bitcoin blockchain. Thus increasing the capacity significantly.
 
-How the routing nodes should operate is still vastly unexplored. The node provides liquidity to allow routing payments and procures fees whenever the channels are used in a payment route. It is likely that a market for liquid channels will emerge, however strategically well allocated liquidity may earn much more than poorly allocated liquidity. The nodes may chose who to open channels with, what fee to set, how much liquidity should be locked up on each channel and when to re-balance channels.
+How the routing nodes should operate is still vastly unexplored. The node provides liquidity to allow routing payments and procures fees whenever the channels are used in a payment route. It is likely that a market for liquid channels will emerge, however strategically well allocated liquidity may earn much more than poorly allocated liquidity. The nodes may choose who to open channels with, what fee to set, how much liquidity should be locked up on each channel and when to re-balance channels.
 
 A simulation environment was implemented, along with operational strategies. The strategies were then combined and simulated to see how well they perform against each other.
 
 \section{Aim}
     \label{sec:aim}
 
-This thesis aims to address following two questions:
+This thesis aims to address following three questions:
 
 	\begin{enumerate}
 		\item How should a \gls{Lightning Network} routing node behave to maximize earnings?
@@ -58,7 +58,7 @@ This thesis is divided into eight chapters, including this one. The first three 
 \begin{enumerate}
 	\item \textbf{Introduction} introduces the thesis.
 	\item \textbf{Macroeconomics} gives a wide background to currencies and systems built on trust. 
-	\item \textbf{The Bitcoin Network} chapter introduces the basic \gls{bitcoin} architecture, answers how trust is solved and describes Bitcoin script as it allows further development no top of the base protocol.
+	\item \textbf{The Bitcoin Network} chapter introduces the basic \gls{bitcoin} architecture, answers how trust is solved and describes Bitcoin script as it allows further development on top of the base protocol.
 	\item \textbf{Scaling Bitcoin} describes historical attempts to scale Bitcoin and the merit of a wide array of scaling solutions.
 	\item \textbf{The \gls{Lightning Network}} chapter introduces the most fundamental parts of the Lightning Network protocol.
 	\item \textbf{Evaluation} reduces the Lightning Network to a manageable problem set, formulates strategies and measurements and suggests how these strategies may be evaluated.

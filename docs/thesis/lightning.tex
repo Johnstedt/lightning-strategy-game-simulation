@@ -38,7 +38,7 @@ The enforcement is possible if revocation is built into the commitment transacti
 
 \begin{enumerate}
 	\item The broadcasting party can spend the funds after a defined relative block time has passed. Essentially leaving time window for dispute for the violated party to enforce the penalty(Revocable delivery).
-	\item The non broadcasting party can refute that the commitment transaction is not last signed spending spending the output as penalty.
+	\item The non broadcasting party can refute that the commitment transaction is not last signed and spend the output as penalty.
 \end{enumerate}
 
 Remember that the commitment transactions is reversed for the other party. This type of output which enable revocation is called a Revocable Sequence Maturity Contract(\gls{RSMC}).
@@ -222,7 +222,7 @@ The $HTLC_{B1}$ seen in Figure \ref{fig:bob:HTLC} thus contain:
 	\item After the designated time Alice can spend the output.
 \end{enumerate}
 
-The new transactions by which both the second clauses spends to is constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $ST_{B1}$ in Figure \ref{fig:timeout:tx}.
+The new transactions by which both the second clauses spends to are constructed and pre-signed before the $HTLC$s is exchanged simply adds time for revocation as seen for $ST_{B1}$ in Figure \ref{fig:timeout:tx}.
 
 \begin{figure}[hbt!]
 	
@@ -246,11 +246,11 @@ The new transactions by which both the second clauses spends to is constructed a
 	\label{fig:timeout:tx}
 \end{figure}
 
-A $HTLC$ is terminated off-chain by creating a new commitment transaction, without $HTLC$ outputs, reflecting new the balance state as both parties knows what would transpire if the transaction were broadcast. In the creation of the new $CT$ both parties disclose both private keys corresponding to the two revocation outputs as a penalty if an old $CT$ were broadcast. Hence most transactions will be kept off chain and only held in case of an uncooperative party.
+A $HTLC$ is terminated off-chain by creating a new commitment transaction, without $HTLC$ outputs, reflecting the new balance state as both parties knows what would transpire if the transaction was broadcast. In the creation of the new $CT$ both parties disclose both private keys corresponding to the two revocation outputs as a penalty if an old $CT$ was broadcast. Hence most transactions will be kept off chain and only held in case of an uncooperative party.
 
 In this manner Hashed Timelock Contracts may be used without the need for either of the channel parties to trust each other.
 
-Note that key generation and disclosure may be used for $\gls{HTLC}$ in the same manner previously disused in section \ref{sec:hdw}.
+Note that key generation and disclosure may be used for $\gls{HTLC}$ in the same manner previously discussed in section \ref{sec:hdw}.
 
 \newpage
 \onecolumn
@@ -271,11 +271,11 @@ Note that key generation and disclosure may be used for $\gls{HTLC}$ in the same
 
 \section{Multi-hop payments} 
 
-With properly funded channels and Hashed Timelock Contracts in place network wide payments utilizing multiple channels is possible.
+With properly funded channels and Hashed Timelock Contracts in place network wide payments utilizing multiple channels are possible.
 The network uses a Gossip protocol\footnote{as per BOLT\#7 routing-gossip in Lightning RFC\cite{repository:lightning:rfc}} where
 public channels are broadcast. Each \gls{node} may then find a path through multiple channels and construct a chain of $HTLC$s with decreasing time locks.
 
-Alice wants to pay David but have no direct path to Carol. She finds a route via Bob and Carol to David as seen in Figure \ref{fig:multihop}.
+Alice wants to pay David but have no direct path to David. She finds a route via Bob and Carol to David as seen in Figure \ref{fig:multihop}.
 
 \begin{figure}[!htb]
 
@@ -298,4 +298,4 @@ The routing \gls{node}s receive a fee as compensation for displaced channel liqu
 
 \[ F_{P} = F_{B} + (AF * F_{R} / 1000000) \]
 
-This fee structured does not discriminate for channel balance and it is difficult to 'discount' transactions that 'balance' the network. Reasons for this is given in Chapter 8.  
+This fee structure does not discriminate for channel balance and it is difficult to 'discount' transactions that 'balance' the network. Reasons for this is given in Chapter 8.  
