@@ -11,7 +11,9 @@ The amount of nodes in the beginning of the simulation.
 
 \subsection*{payment\_distribution \texttt{[json]} }
 
-The distribution of the size of the payments. 
+The distribution of the size of the payments. E.g. \texttt{ \{"type": "random", "interval": \{"low": 2000, "high": 2000000\}\}}.
+
+For non-random distributions, each size and probability is provided in two lists. 
 
 \subsection*{payments\_per\_step \texttt{[amount]}}
 
@@ -35,31 +37,23 @@ The amount of new nodes each simulation step.
 
 \subsection*{new\_nodes\_policy \texttt{[option]}}
 
-The policy by which the strategy of the new node is selected. Either 
+The policy by which the strategy of the new node is selected. Either \textit{mirror} or \textit{initial}. \textit{Mirror} reflects probability of the current distribution while \textit{initial} have the same probability as in the beginning.
 
-\subsection*{new\_nodes\_quantity \texttt{[json]}}
+\subsection*{new\_nodes\_quantity \texttt{[option]}}
+
+Quantifies \texttt{new\_nodes\_per\_step}, either \textit{numeric} or as a \textit{percentage} of current population.
 
 \subsection*{time\_steps \texttt{[steps]}}
 
+The amount of steps the simulation should run. 
+
 \subsection*{fee \texttt{[amount(satoshis)]}}
+
+The average onchain fee. That the opening transaction and closing transaction are of different sizes does not matter, as the initiator pays both.
 
 \subsection*{initial\_mode \texttt{[option]}}
 
-"payment_distribution": {"type": "random", "interval": {"low": 2000, "high": 2000000}},
-"initial_private_nodes": 80,
-"payments_per_step": 600,
-"risk_free_rent": 0.30,
-"risk_premium": 0.17,
-"operational_cost": 200000,
-"immunity_period": 5,
-"new_nodes_per_step": 2,
-"changed_private_per_step": 0,
-"new_nodes_policy": "mirror",
-"new_node_quantity": "percentage",
-"time_steps": 500,
-"fee": 10000,
-"initial_mode": "exact"
-
+How the initial population should be distributed. Either \textit{exact} or \textit{stochastic}.
 
 \section{Strategies}
 
@@ -142,7 +136,6 @@ Funds the node with \texttt{satoshis}. Although relative a node with large quant
 one with small quantity a \textit{poor} strategy. It may seem dissonant to reefer to wealth as a strategy but remember 
 that profit is relative to funding and one operator may have many nodes instead of one large if a \textit{poor} strategy
 has higher \textit{fitness}. Further beetle size is similarly referred to as a strategy in EGT.
-
 
 \section*{Re-balance}
 
