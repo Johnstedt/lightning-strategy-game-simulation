@@ -31,7 +31,7 @@ Both use the same amount of liquidity, 3,500,000 satoshis each, but they start f
 
 The two payments would incur the same fee, 
 
-\[ F_{P_1 P_2} = F_B + (3,500,000 * F_R / 1,000,000) \]
+\[ F_{P_1 P_2} = F_B + \Big(3,500,000\dfrac{F_R}{1,000,000}\Big) \]
 
 but leave the channels in completely different states. $P_1$ at $B_2$ and $P_2$ at $B_4$. It is of course possible to bump the channel price after $P_1$ to
 be more expensive, but suppose a third larger payment $P_3$ going from $B_1$ to $B_4$ would still run into this problem.

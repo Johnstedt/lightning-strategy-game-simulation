@@ -296,6 +296,6 @@ After Alice has created $HTLC_{1}$ with $TL_{1}$, Bob is comfortable creating $H
 
 The routing \gls{node}s receive a fee as compensation for displaced channel liquidity, the time value of money and operational cost of bandwidth, computation and electricity. The fee is structured with a base fee $F_{B}$ and a fee $F_{R}$ proportional to satoshis forwarded $AF$. The base fee is always paid independent of payment size while the proportional part is the product of size and fee. The base fee is denominated in microsatoshi (\textbf{μS}) and the proportional in microsatoshi per satoshi forwarded (\textbf{μS / S}). The fee for a payment $P$ is thus:
 
-\[ F_{P} = F_{B} + (AF * F_{R} / 1000000) \]
+\[ F_{P} = F_{B} + \Big(AF \dfrac{F_{R}}{1000000}\Big) \]
 
 This fee structure does not discriminate for channel balance and it is difficult to 'discount' transactions that 'balance' the network. Reasons for this is given in Chapter 8.  
