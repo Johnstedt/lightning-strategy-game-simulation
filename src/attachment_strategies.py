@@ -202,6 +202,7 @@ def manage_channels(g, env, day):
 			close.append((e[0], e[1]))
 		elif g.nodes[e[0]]["timing_strategy"]["name"] == "close_avg_bankruptcy":
 			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < get_bankruptcy(g.nodes[e[0]], env) / g.nodes[e[0]]["original_funding"]:
+				print("CLOSE CHANNELS")
 				close.append((e[0], e[1]))
 		else:
 			if sum(g.get_edge_data(e[0], e[1])["last_10_fees"]) / g.get_edge_data(e[0], e[1])["satoshis"] < get_bankruptcy(g.nodes[e[0]], env) / g.nodes[e[0]]["original_funding"] * g.nodes[e[0]]["timing_strategy"]["scale"]:
@@ -220,8 +221,7 @@ def manage_channels(g, env, day):
 
 
 def get_bankruptcy(node, env):
-
-	return node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + node['original_funding'] * env["environment"]["risk_premium"] / 36.5 + env["environment"]["operational_cost"] / 36.5
+	return (node['original_funding'] * env["environment"]["risk_premium"] / 36.5) + (node['original_funding'] * env["environment"]["risk_premium"] / 36.5) + (env["environment"]["operational_cost"] / 36.5)
 
 
 def remove_profit(g, node, fee, day):

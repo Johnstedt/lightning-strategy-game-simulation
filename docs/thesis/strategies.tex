@@ -103,6 +103,14 @@ Selects a node in the network with a probability inversely dependent on degree. 
  
 where $\Pi(i)$ is the probability to select $i$ with degree $k_i$.
 
+\subsection*{fitness}
+
+Selects a node in the network with a probability correlating to its capacity. The probability is given by:
+
+\[ \Pi(i) = \dfrac{\eta_i}{\sum_{j=1}^{n} \eta_j} \]
+
+where $\Pi(i)$ is the probability to select $i$ with degree $k_i$. $\eta_i$ is the fitness - in this case the capacity. 
+
 \section*{Timing Strategies}
 The Timing strategies determine when a node should close a channel.
 
@@ -116,7 +124,7 @@ Does close a channel if the usage, on average, leads to bankruptcy. A channel is
 
 \[ \frac{recent\_profit}{channel\_liquidity} < \frac{floor\_bankrupcy}{total\_funding} \]
  
-\subsection*{bankruptcy\_avg\_usage\_aggressiveness \texttt{scalar}}
+\subsection*{bankruptcy\_avg\_usage\_aggressiveness \texttt{[scalar]}}
 
 Similar to \textbf{bankruptcy\_avg\_usage} but scaled with an aggressiveness scalar:
 
@@ -168,3 +176,26 @@ Does a \textit{breath-first-search} for cycles with \texttt{[depth]}. If the \te
 \[ U'(c) = U(c) \bigg(1,5 - \big(1 - \dfrac{B_{1S}}{2B_{1M}}\big) \bigg)^s \bigg(1,5 - \big(\dfrac{B_{2S}}{2B_{2M}}\big)\bigg)^s  \]
 
 where $s$ is a scalar given as argument \texttt{[scalar]}
+
+\section{Game}
+
+The game is formalized by a json file, where the environment variables are set along with an array of advertised nodes and an array of non-advertised nodes.
+The array objects, i.e the \textit{actors} or \textit{players} follows this convention:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+	"name": "Matthew",
+	"attachment_strategy": "barabasi_albert",
+	"timing_strategy": {"name": "close_avg_bankruptcy"},
+	"price_strategy": "neutral",
+	"price_model": "price_models/barabasi_3_cycle.json",
+	"rebalance_strategy": {"name": "linear_displacement", "ratio": 100000},
+	"funding_strategy": 50000000,
+	"allocation_strategy": 10000000,
+	"initial_distribution": 0.25
+}
+\end{lstlisting}
+
+
+
+

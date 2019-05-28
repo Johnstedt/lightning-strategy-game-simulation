@@ -260,6 +260,8 @@ def network_probability_node_creation(g, env, day):
 def reset_day(g, day):
 	for n in g.nodes:
 		g.nodes[n]['profits'][day % 10] = 0
+	for e in g.edges:
+		g.edges[e]['last_10_fees'][day % 10] = 0
 
 
 def check_for_bankruptcy(g, env):

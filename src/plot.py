@@ -299,7 +299,7 @@ def plot_wealth_distribution_in(graphs, directory):
 		print("NAOM: ", name)
 		f.write("Strategy: {}, average earnings: {} ".format(name, sum([x for (x, y) in color if y == name]) / len([x for (x, y) in color if y == name])))
 
-	ax1.set_ylabel("Profits(satoshi)")
+	ax1.set_ylabel("Revenue(satoshi)")
 	ax1.set_xlabel("Nodes")
 	ax1.legend()
 	plt.savefig("plots/{}/wealth_distribution_same".format(directory))
